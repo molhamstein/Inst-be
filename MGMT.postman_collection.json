@@ -1,0 +1,1460 @@
+{
+	"info": {
+		"_postman_id": "22af187f-b9d7-47d4-ba83-a6e9128e63b7",
+		"name": "MGMT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "login admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "628e653b-98f0-44ec-ad5a-c4d43ca8c128",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\": \"admin@mgmt.com\",\r\n    \"password\": \"password\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}admins/login",
+							"host": [
+								"{{baseUrl}}admins"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "category",
+			"item": [
+				{
+					"name": "get active category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}categories/getActiveCategory?filter={\"where\":{\"nameAr\":\"علمي\"}}",
+							"host": [
+								"{{baseUrl}}categories"
+							],
+							"path": [
+								"getActiveCategory"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"where\":{\"nameAr\":\"علمي\"}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "active category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}categories/1/activeCategory",
+							"host": [
+								"{{baseUrl}}categories"
+							],
+							"path": [
+								"1",
+								"activeCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deactive category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}categories/1/deactiveCategory",
+							"host": [
+								"{{baseUrl}}categories"
+							],
+							"path": [
+								"1",
+								"deactiveCategory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "subject",
+			"item": [
+				{
+					"name": "get active subject by category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}subjects/getActiveSubjectByCategory/1?filter={\"where\":{\"nameEn\":\"math\"}}",
+							"host": [
+								"{{baseUrl}}subjects"
+							],
+							"path": [
+								"getActiveSubjectByCategory",
+								"1"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"where\":{\"nameEn\":\"math\"}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "active subject",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}subjects/1/activeSubject",
+							"host": [
+								"{{baseUrl}}subjects"
+							],
+							"path": [
+								"1",
+								"activeSubject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deactive subject",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}subjects/1/deactiveSubject",
+							"host": [
+								"{{baseUrl}}subjects"
+							],
+							"path": [
+								"1",
+								"deactiveSubject"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "subcategory",
+			"item": [
+				{
+					"name": "get active subcategory by subject",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}subCategories/getActiveSubcategoryBySubject/1?filter={\"where\":{\"nameAr\":\"صف تاسع\"}}",
+							"host": [
+								"{{baseUrl}}subCategories"
+							],
+							"path": [
+								"getActiveSubcategoryBySubject",
+								"1"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"where\":{\"nameAr\":\"صف تاسع\"}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get active subcategory by subcategory",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}categories/getActiveCategory?filter={\"where\":{\"nameAr\":\"علمي\"}}",
+							"host": [
+								"{{baseUrl}}categories"
+							],
+							"path": [
+								"getActiveCategory"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"where\":{\"nameAr\":\"علمي\"}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "active subcategory",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}subcategories/1/activeSubcategory",
+							"host": [
+								"{{baseUrl}}subcategories"
+							],
+							"path": [
+								"1",
+								"activeSubcategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deactive subcategory",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}categories/1/deactiveCategory",
+							"host": [
+								"{{baseUrl}}categories"
+							],
+							"path": [
+								"1",
+								"deactiveCategory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "file",
+			"item": [
+				{
+					"name": "upload",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": ""
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}uploadFiles/image/upload",
+							"host": [
+								"{{baseUrl}}uploadFiles"
+							],
+							"path": [
+								"image",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "institute",
+			"item": [
+				{
+					"name": "add institute",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"instituteData\":{\"nameEn\": \"alrayan\",\"nameAr\": \"الريان\", \"descriptionEn\": \"english languages\",   \"descriptionAr\": \"لغة انكليزي\",   \"logoId\": 4 , \"dateOfIncorporation\": \"2019-09-24T09:53:21.623Z\" },\n\t\"adminData\":{\"password\":\"1234567\",\"phonenumber\":\"+963991414724\",\"name\":\"rami alzebk\",\"gender\":\"male\",\"birthdate\":\"Current Date and Time: Tue Sep 24 1995 13:15:03 GMT+0300 (Eastern European Summer Time)\",\"email\":\"rami@alrayan.com\"}\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}institutes/createNewInstitute",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"createNewInstitute"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"data\":{\"logoId\":1},\n\"imagesId\":[2,3]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}institutes/1/updateInstitue",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"1",
+								"updateInstitue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get admins",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}institutes/1/getAdmins",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"1",
+								"getAdmins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"password\":\"1234567\",\"phonenumber\":\"+963932237946\",\"name\":\"molham mahmod 2\",\"gender\":\"male\",\"birthdate\":\"Current Date and Time: Tue Sep 24 1995 13:15:03 GMT+0300 (Eastern European Summer Time)\",\"email\":\"molham2@new-horizon.com\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}institutes/1/addAdmin",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"1",
+								"addAdmin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin institute",
+			"item": [
+				{
+					"name": "login admin institute",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\":\"rami@alrayan.com\",\n\t\"password\":\"1234567\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}userInstitutes/login",
+							"host": [
+								"{{baseUrl}}userInstitutes"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "branch",
+			"item": [
+				{
+					"name": "get branch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add branch",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\":{\n    \"nameEn\": \"new horizen branch2\",\n    \"nameAr\": \"نيو هورايزين الفرع الثاني\",\n    \"addressEn\": \"damas\",\n    \"addressAr\": \"دمشق\",\n    \"instituteId\": 1,\n    \"isMain\": false,\n    \"phonenumber\": \"+963957465877\",\n    \"telnumber\": \"0114433253\",\n    \"lat\": 0,\n    \"lang\": 0\n  },\n  \"imagesId\":[2,3]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}branches/createNewBranch",
+							"host": [
+								"{{baseUrl}}branches"
+							],
+							"path": [
+								"createNewBranch"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update branch",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\":{\"isMain\":true,\"phonenumber\":\"+963932237947\"},\n  \"imagesId\":[2,3]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}branches/1/updateBranch",
+							"host": [
+								"{{baseUrl}}branches"
+							],
+							"path": [
+								"1",
+								"updateBranch"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "active branch",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}branches/1/activeBranch",
+							"host": [
+								"{{baseUrl}}branches"
+							],
+							"path": [
+								"1",
+								"activeBranch"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deactive branch",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}branches/1/deactiveBranch",
+							"host": [
+								"{{baseUrl}}branches"
+							],
+							"path": [
+								"1",
+								"deactiveBranch"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Branch Admin",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"phonenumber\":\"+963957465889\",\"name\":\"abd alrahman hayek\",\"gender\":\"male\",\"birthdate\":\"1995-09-24T10:15:03.000Z\",\"email\":\"abd-alrahman-hayek@email.com\",\"password\":\"1234567\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}branches/1/getBranchAdmin",
+							"host": [
+								"{{baseUrl}}branches"
+							],
+							"path": [
+								"1",
+								"getBranchAdmin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Branch Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"phonenumber\":\"+963957465889\",\"name\":\"abd alrahman hayek\",\"gender\":\"male\",\"birthdate\":\"1995-09-24T10:15:03.000Z\",\"email\":\"abd-alrahman-hayek@email.com\",\"password\":\"1234567\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}branches/1/addBranchAdmin",
+							"host": [
+								"{{baseUrl}}branches"
+							],
+							"path": [
+								"1",
+								"addBranchAdmin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Venues Branch",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin first branch token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}branches/1/getVenuesBranch",
+							"host": [
+								"{{baseUrl}}branches"
+							],
+							"path": [
+								"1",
+								"getVenuesBranch"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin branch",
+			"item": [
+				{
+					"name": "login admin branch",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\":\"abd-alrahman-hayek@email.com\",\n\t\"password\":\"1234567\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}userInstitutes/login",
+							"host": [
+								"{{baseUrl}}userInstitutes"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "venues",
+			"item": [
+				{
+					"name": "Create New Venue",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin first branch token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\":{\"nameEn\":\"room 1\",\"nameAr\":\"القاعة 1\",\"type\":\"قاعة محاضرات\"},\n\t\"imagesId\":[3],\n\t\"properties\":[{\"propertyId\":\"1\",\"value\":\"true\"},{\"propertyId\":\"2\",\"value\":\"5\"},{\"propertyId\":\"3\",\"value\":\"false\"},{\"propertyId\":\"4\",\"value\":\"true\"}]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}branches/1/createNewVenue",
+							"host": [
+								"{{baseUrl}}branches"
+							],
+							"path": [
+								"1",
+								"createNewVenue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update venue",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{admin first branch token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\":{},\n\t\"imagesId\":[3],\n\t\"properties\":[{\"propertyId\":\"1\",\"value\":\"false\"},{\"propertyId\":\"2\",\"value\":\"0\"},{\"propertyId\":\"3\",\"value\":\"true\"},{\"propertyId\":\"4\",\"value\":\"true\"}]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}venues/1/updateVenue",
+							"host": [
+								"{{baseUrl}}venues"
+							],
+							"path": [
+								"1",
+								"updateVenue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "active venue",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin first branch token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/venues/1/activeVenue",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"venues",
+								"1",
+								"activeVenue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deactive venue",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin first branch token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/venues/1/deactiveVenue",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"venues",
+								"1",
+								"deactiveVenue"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "student",
+			"item": [
+				{
+					"name": "add new student",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin first branch token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\t\"instituteId\":1,\n\t\t\"branchId\":1,\n\t\t\"phonenumber\":\"+963957465876\",\n\t\t\"name\":\"anas alazmeh\",\n\t\t\"gender\":\"male\",\n\t\t\"birthdate\":\"1995-06-25 12:24:20\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}students/addNewStudent",
+							"host": [
+								"{{baseUrl}}students"
+							],
+							"path": [
+								"addNewStudent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add old student",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin first branch token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\t\"instituteId\":2,\n\t\t\"branchId\":2,\n\t\t\"phonenumber\":\"+963957445545\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}students/addOldStudent",
+							"host": [
+								"{{baseUrl}}students"
+							],
+							"path": [
+								"addOldStudent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login student",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"phonenumber\":\"+963957445545\",\n\"instituteId\":1,\n\"password\":\"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}students/login",
+							"host": [
+								"{{baseUrl}}students"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get student",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin first branch token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}students/1/getStudent",
+							"host": [
+								"{{baseUrl}}students"
+							],
+							"path": [
+								"1",
+								"getStudent"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "teacher",
+			"item": [
+				{
+					"name": "add new teacher",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"instituteId\":1,\n\t\"password\":\"1234567\",\n\t\"phonenumber\":\"+96395746587\",\n\t\"name\":\"ahmad ataya\",\n\t\"gender\":\"male\",\n\t\"birthdate\":\"1994-5-25\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}teachers/addNewTeacher",
+							"host": [
+								"{{baseUrl}}teachers"
+							],
+							"path": [
+								"addNewTeacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add old teacher",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"instituteId\":2,\n\t\"password\":\"1234567\",\n\t\"phonenumber\":\"+963957445546\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}teachers/addOldTeacher",
+							"host": [
+								"{{baseUrl}}teachers"
+							],
+							"path": [
+								"addOldTeacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get teacher",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin first branch token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}teachers/1/getTeacher",
+							"host": [
+								"{{baseUrl}}teachers"
+							],
+							"path": [
+								"1",
+								"getTeacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change subcategory",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"subcategoryId\":[7,5]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}teachers/1/changeSubcategory",
+							"host": [
+								"{{baseUrl}}teachers"
+							],
+							"path": [
+								"1",
+								"changeSubcategory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "waiting list",
+			"item": [
+				{
+					"name": "create waiting list",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin first branch token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"titleEn\":\"English course level 4 B\",\n\t\"titleAr\":\"كورس انكليزي مستوى رابع B\",\n\t\"subcategoryId\":5,\n\t\"inceptionCount\":4\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}institutes/1/createWaitingList",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"1",
+								"createWaitingList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get waiting list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin first branch token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"titleEn\":\"English course level 4 B\",\n\t\"titleAr\":\"كورس انكليزي مستوى رابع B\",\n\t\"subcategoryId\":5,\n\t\"inceptionCount\":4\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}institutes/1/getWaitingList",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"1",
+								"getWaitingList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add student to waiting",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin first branch token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"studentId\":1,\n\t\"branchId\":1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}waitingLists/1/addStudentToWaitingList",
+							"host": [
+								"{{baseUrl}}waitingLists"
+							],
+							"path": [
+								"1",
+								"addStudentToWaitingList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get student in waiting",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin first branch token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}waitingLists/1/getStudentForwaitingList",
+							"host": [
+								"{{baseUrl}}waitingLists"
+							],
+							"path": [
+								"1",
+								"getStudentForwaitingList"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "15df742e-23ca-4a17-8024-bd59c1f597e6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "983a39cf-79fa-4ab1-b8ff-023caab0d973",
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Status code is 200\", function () {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"",
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "d2ad3591-028b-4b82-8ed5-9eb69bea7e8b",
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api/",
+			"type": "string"
+		},
+		{
+			"id": "1d571ad9-9a55-4c99-af4f-cfc292c77fc6",
+			"key": "admin token",
+			"value": "67bOSPH8QygoGcguh4mZxYrIB6DzDraBcuMFogzIC5QTD2dPlPNmFam3D0SJ9XIm",
+			"type": "string"
+		},
+		{
+			"id": "e75954ab-a993-4f96-9ce8-4dba78fe4a12",
+			"key": "admin institue token new horizen",
+			"value": "HsZtLUYPRqOEHiawGMuI97khGQQePYFGHhqwSmz6uZ2VRXYEKoNFt4DRO5G1xY0p",
+			"type": "string"
+		},
+		{
+			"id": "67f1f7dc-5466-483e-bc53-ef5add30a9bb",
+			"key": "admin first branch token",
+			"value": "105V0BvBzF44pBjCXQssZmfsjs7X31ct30OXmlJPUNlg0UrTldQ6GcgdxiCsBPAm",
+			"type": "string"
+		},
+		{
+			"id": "9626d2a5-34c2-47fc-bafd-73c65ae4864c",
+			"key": "admin institue token alrayan",
+			"value": "I305GwuYjJv2BuwriOizlxJ1AGpj3qRRSp3Aoji74mpaOkPc5SP6ZxJQIJqdO8e9",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,246 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "User": {
+    "dataSource": "mainDB",
+    "public": false
+  },
+  "AccessToken": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "ACL": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "RoleMapping": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "strictObjectIDCoercion": true
+    }
+  },
+  "Role": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "category": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "admin": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "subject": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "subCategory": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "property": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "user": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "uploadFile": {
+    "dataSource": "files",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "upload": true,
+          "download": true
+        }
+      }
+    }
+  },
+  "media": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "institute": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "institutesImages": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "instituteAdmin": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "MultiAccessToken": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "branch": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "branchImages": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "branchAdmin": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "venue": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "venueProperties": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "venueImages": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "student": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "verificationCode": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "teacher": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "userInstitute": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "teacherSubcategory": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "waitingList": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "waitingListStudent": {
+    "dataSource": "mainDB",
+    "public": true
+  }
+}

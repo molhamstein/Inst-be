@@ -1,0 +1,22 @@
+{
+  "name": "venueImages",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "venueId": {
+      "type": "number",
+      "required": true
+    },
+    "imageId": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

@@ -1,0 +1,39 @@
+{
+  "name": "branchImages",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "imageId": {
+      "type": "number",
+      "required": true
+    },
+    "branchId": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "branch": {
+      "type": "belongsTo",
+      "model": "branch",
+      "foreignKey": "branchId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "media": {
+      "type": "belongsTo",
+      "model": "media",
+      "foreignKey": "imageId",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

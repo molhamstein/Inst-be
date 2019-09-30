@@ -1,0 +1,43 @@
+{
+  "name": "instituteAdmin",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "scope": {
+    "include": [
+      {
+        "relation": "userInstitute"
+      }
+    ]
+  },
+  "properties": {
+    "userInstituteId": {
+      "type": "number",
+      "required": true
+    },
+    "instituteId": {
+      "type": "number",
+      "required": true
+    },
+    "createdAt": {
+      "type": "date",
+      "required": true,
+      "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "userInstitute": {
+      "type": "belongsTo",
+      "model": "userInstitute",
+      "foreignKey": "userInstituteId",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
