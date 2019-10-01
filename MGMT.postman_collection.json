@@ -570,6 +570,40 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "reset password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{admin token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"newPassword\":\"1234567\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}instituteAdmins/1/changePassword",
+							"host": [
+								"{{baseUrl}}instituteAdmins"
+							],
+							"path": [
+								"1",
+								"changePassword"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -580,13 +614,26 @@
 					"name": "get branch",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": ""
 						},
 						"url": {
-							"raw": ""
+							"raw": "{{baseUrl}}institutes/1/getBranch",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"1",
+								"getBranch"
+							]
 						}
 					},
 					"response": []
@@ -841,6 +888,40 @@
 							],
 							"path": [
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"newPassword\":\"1234567\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}branchAdmins/1/changePassword",
+							"host": [
+								"{{baseUrl}}branchAdmins"
+							],
+							"path": [
+								"1",
+								"changePassword"
 							]
 						}
 					},
@@ -1105,6 +1186,34 @@
 							"path": [
 								"1",
 								"getStudent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activate student",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"phonenumber\":\"+963957465876\",\n\"code\":35956,\n\"instituteId\":1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}students/activateStudent",
+							"host": [
+								"{{baseUrl}}students"
+							],
+							"path": [
+								"activateStudent"
 							]
 						}
 					},
@@ -1427,31 +1536,31 @@
 	],
 	"variable": [
 		{
-			"id": "d2ad3591-028b-4b82-8ed5-9eb69bea7e8b",
+			"id": "f12644ec-1bad-4a27-8540-86e5e37c87e5",
 			"key": "baseUrl",
 			"value": "http://localhost:3000/api/",
 			"type": "string"
 		},
 		{
-			"id": "1d571ad9-9a55-4c99-af4f-cfc292c77fc6",
+			"id": "195fb92b-3e60-4e70-a65f-afc3feda4614",
 			"key": "admin token",
 			"value": "67bOSPH8QygoGcguh4mZxYrIB6DzDraBcuMFogzIC5QTD2dPlPNmFam3D0SJ9XIm",
 			"type": "string"
 		},
 		{
-			"id": "e75954ab-a993-4f96-9ce8-4dba78fe4a12",
+			"id": "6f65b666-99ac-4840-b588-05ee1ed3a471",
 			"key": "admin institue token new horizen",
 			"value": "HsZtLUYPRqOEHiawGMuI97khGQQePYFGHhqwSmz6uZ2VRXYEKoNFt4DRO5G1xY0p",
 			"type": "string"
 		},
 		{
-			"id": "67f1f7dc-5466-483e-bc53-ef5add30a9bb",
+			"id": "e1f91dd1-b705-4d18-8b99-65d034269b53",
 			"key": "admin first branch token",
 			"value": "105V0BvBzF44pBjCXQssZmfsjs7X31ct30OXmlJPUNlg0UrTldQ6GcgdxiCsBPAm",
 			"type": "string"
 		},
 		{
-			"id": "9626d2a5-34c2-47fc-bafd-73c65ae4864c",
+			"id": "96255c48-7aee-4ac4-b9a8-e695168a3666",
 			"key": "admin institue token alrayan",
 			"value": "I305GwuYjJv2BuwriOizlxJ1AGpj3qRRSp3Aoji74mpaOkPc5SP6ZxJQIJqdO8e9",
 			"type": "string"

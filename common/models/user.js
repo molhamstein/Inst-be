@@ -59,6 +59,7 @@ module.exports = function (User) {
     })
   }
 
+  
   User.checkRoleInstituteUser = function (instituteId, req) {
     return new Promise(function (resolve, reject) {
       var institutesAdminModel = User.app.models.instituteAdmin;
@@ -150,6 +151,4 @@ module.exports = function (User) {
       }
     })
   }
-
-
 };

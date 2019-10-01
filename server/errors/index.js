@@ -26,7 +26,15 @@ module.exports.user = {
   },
   userInInstituteAlready: function () {
     return new cError(456, 'user in institute already', 456);
+  },
+  codeNotFound: function () {
+    return new cError(459, 'code not found', 459);
+  },
+  codeNotActive: function () {
+    return new cError(460, 'code not active', 460);
   }
+
+
 }
 
 

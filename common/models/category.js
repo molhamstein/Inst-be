@@ -7,6 +7,7 @@ module.exports = function (Category) {
     in: ['active', 'deactive']
   });
 
+  
   Category.getActiveCategory = function (filter, callback) {
     if (filter == null) {
       filter = {
@@ -61,7 +62,6 @@ module.exports = function (Category) {
       })
     })
   };
-
 
 
   Category.checkCategory = function (id) {

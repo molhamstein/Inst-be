@@ -206,7 +206,6 @@ module.exports = function (Branch) {
   };
 
 
-
   Branch.createNewVenue = async function (id, data, properties = [], imagesId = [], req, callback) {
     try {
       var branch = await Branch.findById(id);

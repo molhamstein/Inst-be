@@ -253,6 +253,4 @@ module.exports = function (Teacher) {
       callback(error)
     }
   };
-
-
 };

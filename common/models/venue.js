@@ -57,6 +57,7 @@ module.exports = function (Venue) {
     }
   }
 
+  
   Venue.activeVenue = async function (id, req, callback) {
     try {
       var venue = await Venue.findById(id);

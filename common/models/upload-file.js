@@ -7,6 +7,8 @@ const config = require(configPath);
 var ffmpeg = require('fluent-ffmpeg');
 
 module.exports = function (Uploadfile) {
+
+  
   Uploadfile.afterRemote('upload', function (context, result, next) {
     let files = [];
     var folderName = context.req.params.container;

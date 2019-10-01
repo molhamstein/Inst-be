@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 30, 2019 at 05:28 PM
+-- Generation Time: Oct 01, 2019 at 11:51 AM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -284,9 +284,7 @@ CREATE TABLE `multiaccesstoken` (
 --
 
 INSERT INTO `multiaccesstoken` (`id`, `ttl`, `scopes`, `created`, `userId`, `principalType`) VALUES
-('105V0BvBzF44pBjCXQssZmfsjs7X31ct30OXmlJPUNlg0UrTldQ6GcgdxiCsBPAm', 31556926, NULL, '2019-09-30 12:33:28', '4', 'userInstitute'),
 ('b45yBdjkzzwnuQ86mDeu5XTJurEDir0kReCPlfQPvL5fTj1LKEnJSqhr97xzg6Fl', 31556926, NULL, '2019-09-30 11:39:10', '1', 'admin'),
-('HsZtLUYPRqOEHiawGMuI97khGQQePYFGHhqwSmz6uZ2VRXYEKoNFt4DRO5G1xY0p', 31556926, NULL, '2019-09-30 12:08:46', '1', 'userInstitute'),
 ('I305GwuYjJv2BuwriOizlxJ1AGpj3qRRSp3Aoji74mpaOkPc5SP6ZxJQIJqdO8e9', 31556926, NULL, '2019-09-30 12:09:51', '2', 'userInstitute'),
 ('Yh3x0IQXgb92x3Jicvo852DwTvKCvnmYqKSpjo2jIeUCQfSvHVpFpoPdlJ7b5GKj', 31556926, NULL, '2019-09-30 11:40:49', '1', 'admin');
 
@@ -391,7 +389,7 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`id`, `userId`, `instituteId`, `branchId`, `email`, `status`, `createdAt`, `realm`, `username`, `password`, `emailVerified`, `verificationToken`) VALUES
-(1, 1, 1, 1, NULL, 'pending', '2019-09-30 12:48:57', NULL, NULL, '$2a$10$hTpLNW/9WScANONpH8xufuouYlzPjZq.UhWGZXrNX1jPQ22NA.nl.', NULL, NULL);
+(1, 1, 1, 1, NULL, 'active', '2019-09-30 12:48:57', NULL, NULL, '$2a$10$hTpLNW/9WScANONpH8xufuouYlzPjZq.UhWGZXrNX1jPQ22NA.nl.', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -543,10 +541,10 @@ CREATE TABLE `userinstitute` (
 --
 
 INSERT INTO `userinstitute` (`id`, `gender`, `birthdate`, `name`, `email`, `realm`, `username`, `password`, `emailVerified`, `verificationToken`) VALUES
-(1, 'male', '1992-09-24 10:15:03', 'molham mahmod', 'molham@new-horizon.com', NULL, NULL, '$2a$10$dfCqzwCukmDn4P1zETQy0upu0cfT5xeuYOf/o5axd8VcY7MqDmSOW', NULL, NULL),
+(1, 'male', '1992-09-24 10:15:03', 'molham mahmod', 'molham@new-horizon.com', NULL, NULL, '$2a$10$w9F/45OEo4mzoZtAM/x6j.CAAlEVvvK73YWeffB6DdPxrFRGfvU6y', NULL, NULL),
 (2, 'male', '1995-09-24 10:15:03', 'rami alzebk', 'rami@alrayan.com', NULL, NULL, '$2a$10$.MGk5Ve/c/9tW6DHvpan0eIqMjHUqsrbw.2xcUesKllCz3l9veVTO', NULL, NULL),
 (3, 'male', '1995-09-24 10:15:03', 'molham mahmod 2', 'molham2@new-horizon.com', NULL, NULL, '$2a$10$qQv9ufodxZWmN8CVka0GpOtuTmF4X0xnALTo6HrTi/ipYn4QZ1cvO', NULL, NULL),
-(4, 'male', '1995-09-24 10:15:03', 'abd alrahman hayek', 'abd-alrahman-hayek@email.com', NULL, NULL, '$2a$10$we06zN2qgg4LNOGsDbMgzeiKSK82vRn6BKgIhdo6VJcv/n/lvbXq.', NULL, NULL);
+(4, 'male', '1995-09-24 10:15:03', 'abd alrahman hayek', 'abd-alrahman-hayek@email.com', NULL, NULL, '$2a$10$cAU2IK.amkdtzb8ISreCLOWC0J3tvNXspTi75SLoeHXT53g177ade', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -635,7 +633,7 @@ CREATE TABLE `verificationcode` (
 --
 
 INSERT INTO `verificationcode` (`id`, `code`, `typeUser`, `userId`, `expiredDate`, `status`, `createdAt`) VALUES
-(1, 35956, 'student', 1, '2019-09-30 14:48:57', 'active', '2019-09-30 12:48:57');
+(1, 35956, 'student', 1, '2019-09-30 14:48:57', 'used', '2019-09-30 12:48:57');
 
 -- --------------------------------------------------------
 

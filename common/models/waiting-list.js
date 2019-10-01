@@ -46,6 +46,7 @@ module.exports = function (Waitinglist) {
       callback(error)
     }
   };
+  
 
   Waitinglist.getStudentForwaitingList = async function (id, req, callback) {
 

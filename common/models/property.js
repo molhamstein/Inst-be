@@ -37,8 +37,6 @@ module.exports = function (Property) {
   };
 
 
-
-
   Property.getActiveProperty = function (filter, callback) {
     if (filter == null) {
       filter = {
@@ -59,6 +57,4 @@ module.exports = function (Property) {
       return callback(err, data)
     })
   };
-
-
 };

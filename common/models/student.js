@@ -132,7 +132,7 @@ module.exports = function (Student) {
     }
   }
 
-  
+
   Student.login = function (credentials, include, fn) {
     var self = this;
     if (typeof include === 'function') {
@@ -241,6 +241,55 @@ module.exports = function (Student) {
         throw Student.app.err.global.notFound()
       await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
       callback(null, student)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
+  Student.activateStudent = async function (phonenumber, instituteId, code, callback) {
+    try {
+
+
+      var verificationCodeModel = Student.app.models.verificationCode;
+      var userModel = Student.app.models.user;
+
+      var user = await userModel.findOne({
+        "where": {
+          "phonenumber": phonenumber
+        }
+      })
+      if (user == null) {
+        throw Student.app.err.user.userNotFound()
+      }
+
+      var student = await Student.findOne({
+        "where": {
+          "userId": user.id,
+          "instituteId": instituteId
+        }
+      })
+      code = await verificationCodeModel.findOne({
+        "where": {
+          "userId": student.id,
+          "typeUser": "student",
+          "code": code,
+          "expiredDate": {
+            "gt": new Date()
+          }
+        }
+      })
+      if (code == null) {
+        throw Student.app.err.user.codeNotFound()
+      }
+
+      if (code.status != "active") {
+        throw Student.app.err.user.codeNotActive()
+
+      }
+      user = await student.updateAttribute("status", "active");
+      code = await code.updateAttribute("status", "used");
+      callback(null, user)
     } catch (error) {
       callback(error)
     }

@@ -104,6 +104,13 @@
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "getStudent"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "ALLOW",
+      "property": "activateStudent"
     }
   ],
   "methods": {
@@ -251,6 +258,43 @@
         {
           "path": "/:id/getStudent",
           "verb": "get"
+        }
+      ]
+    },
+    "activateStudent": {
+      "accepts": [
+        {
+          "arg": "phonenumber",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "instituteId",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "code",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "returns": [
+        {
+          "arg": "student",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/activateStudent",
+          "verb": "put"
         }
       ]
     }
