@@ -11,6 +11,9 @@
     "include": [
       {
         "relation": "user"
+      },
+      {
+        "relation": "packageStudents"
       }
     ]
   },
@@ -69,6 +72,14 @@
       "options": {
         "nestRemoting": true
       }
+    },
+    "packageStudents": {
+      "type": "hasMany",
+      "model": "packageStudent",
+      "foreignKey": "studentId",
+      "options": {
+        "nestRemoting": true
+      }
     }
   },
   "acls": [
@@ -111,6 +122,13 @@
       "principalId": "$unauthenticated",
       "permission": "ALLOW",
       "property": "activateStudent"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getPackage"
     }
   ],
   "methods": {
@@ -295,6 +313,43 @@
         {
           "path": "/activateStudent",
           "verb": "put"
+        }
+      ]
+    },
+    "getPackage": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "array",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/:id/getPackage",
+          "verb": "get"
         }
       ]
     }

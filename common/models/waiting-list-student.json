@@ -29,6 +29,11 @@
       "type": "string",
       "required": false
     },
+    "payment": {
+      "type": "number",
+      "required": false,
+      "default": 0
+    },
     "createdAt": {
       "type": "date",
       "required": true,
@@ -58,7 +63,52 @@
       "principalType": "ROLE",
       "principalId": "super-admin",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "removeStudentFromWaitingList"
     }
   ],
-  "methods": {}
+  "methods": {
+    "removeStudentFromWaitingList": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/:id/removeStudentFromWaitingList",
+          "verb": "delete"
+        }
+      ]
+    }
+  }
 }

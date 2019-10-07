@@ -53,7 +53,7 @@
     }
   ],
   "methods": {
-    "changePassword": {
+    "changePasswordInstituteAdmin": {
       "accepts": [
         {
           "arg": "id",
@@ -82,7 +82,7 @@
       "description": "",
       "http": [
         {
-          "path": "/:id/changePassword",
+          "path": "/:id/changePasswordInstituteAdmin",
           "verb": "put"
         }
       ]

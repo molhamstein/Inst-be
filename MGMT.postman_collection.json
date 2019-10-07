@@ -368,6 +368,94 @@
 			]
 		},
 		{
+			"name": "Property",
+			"item": [
+				{
+					"name": "get active property",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}properties/getActiveProperty",
+							"host": [
+								"{{baseUrl}}properties"
+							],
+							"path": [
+								"getActiveProperty"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "active property",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}properties/1/activeProperty",
+							"host": [
+								"{{baseUrl}}properties"
+							],
+							"path": [
+								"1",
+								"activeProperty"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deactive property",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}properties/1/deactiveProperty",
+							"host": [
+								"{{baseUrl}}properties"
+							],
+							"path": [
+								"1",
+								"deactiveProperty"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "file",
 			"item": [
 				{
@@ -544,6 +632,72 @@
 			"name": "admin institute",
 			"item": [
 				{
+					"name": "change user institue password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"oldPassword\":\"1234567\",\n\t\"newPassword\":\"12345678\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}userInstitutes/changeUserInstituePassword",
+							"host": [
+								"{{baseUrl}}userInstitutes"
+							],
+							"path": [
+								"changeUserInstituePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user institue",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"gender\":\"male\",\n\t\"name\":\"molham mahmod\",\n\t\"birthdate\":\"1992-09-24 10:15:03\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}userInstitutes/updateUserInstitue",
+							"host": [
+								"{{baseUrl}}userInstitutes"
+							],
+							"path": [
+								"updateUserInstitue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "login admin institute",
 					"request": {
 						"method": "POST",
@@ -557,7 +711,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\":\"rami@alrayan.com\",\n\t\"password\":\"1234567\"\n}"
+							"raw": "{\n\t\"email\":\"molham@new-horizon.com\",\n\t\"password\":\"1234567\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}userInstitutes/login",
@@ -593,13 +747,13 @@
 							"raw": "{\n\t\"newPassword\":\"1234567\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}instituteAdmins/1/changePassword",
+							"raw": "{{baseUrl}}instituteAdmins/1/changePasswordInstituteAdmin",
 							"host": [
 								"{{baseUrl}}instituteAdmins"
 							],
 							"path": [
 								"1",
-								"changePassword"
+								"changePasswordInstituteAdmin"
 							]
 						}
 					},
@@ -799,6 +953,43 @@
 					"response": []
 				},
 				{
+					"name": "get one Branch",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"phonenumber\":\"+963957465889\",\"name\":\"abd alrahman hayek\",\"gender\":\"male\",\"birthdate\":\"1995-09-24T10:15:03.000Z\",\"email\":\"abd-alrahman-hayek@email.com\",\"password\":\"1234567\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}branches/1/getOneBranch",
+							"host": [
+								"{{baseUrl}}branches"
+							],
+							"path": [
+								"1",
+								"getOneBranch"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Add Branch Admin",
 					"request": {
 						"method": "POST",
@@ -915,13 +1106,13 @@
 							"raw": "{\n\t\"newPassword\":\"1234567\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}branchAdmins/1/changePassword",
+							"raw": "{{baseUrl}}branchAdmins/1/changePasswordBranchAdmin",
 							"host": [
 								"{{baseUrl}}branchAdmins"
 							],
 							"path": [
 								"1",
-								"changePassword"
+								"changePasswordBranchAdmin"
 							]
 						}
 					},
@@ -995,6 +1186,43 @@
 							"path": [
 								"1",
 								"updateVenue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get one venue",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\":{},\n\t\"imagesId\":[3],\n\t\"properties\":[{\"propertyId\":\"1\",\"value\":\"false\"},{\"propertyId\":\"2\",\"value\":\"0\"},{\"propertyId\":\"3\",\"value\":\"true\"},{\"propertyId\":\"4\",\"value\":\"true\"}]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}venues/1/getOneVenue",
+							"host": [
+								"{{baseUrl}}venues"
+							],
+							"path": [
+								"1",
+								"getOneVenue"
 							]
 						}
 					},
@@ -1165,7 +1393,7 @@
 							{
 								"key": "Authorization",
 								"type": "text",
-								"value": "{{admin first branch token}}"
+								"value": "{{admin institue token new horizen}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1186,6 +1414,40 @@
 							"path": [
 								"1",
 								"getStudent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get package to student",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}students/1/getPackage",
+							"host": [
+								"{{baseUrl}}students"
+							],
+							"path": [
+								"1",
+								"getPackage"
 							]
 						}
 					},
@@ -1298,7 +1560,7 @@
 							{
 								"key": "Authorization",
 								"type": "text",
-								"value": "{{admin first branch token}}"
+								"value": "{{admin institue token new horizen}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1408,7 +1670,7 @@
 							{
 								"key": "Authorization",
 								"type": "text",
-								"value": "{{admin first branch token}}"
+								"value": "{{admin institue token new horizen}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1479,7 +1741,7 @@
 							{
 								"key": "Authorization",
 								"type": "text",
-								"value": "{{admin first branch token}}"
+								"value": "{{admin institue token new horizen}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1500,6 +1762,592 @@
 							"path": [
 								"1",
 								"getStudentForwaitingList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove student from waiting list",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}waitingListStudents/1/removeStudentFromWaitingList",
+							"host": [
+								"{{baseUrl}}waitingListStudents"
+							],
+							"path": [
+								"1",
+								"removeStudentFromWaitingList"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "course",
+			"item": [
+				{
+					"name": "create course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\":{\n\t\t\"instituteId\":1,\n\t\t\"branchId\":1,\n\t\t\"subcategoryId\":5,\n\t\t\"cost\":8000,\n\t\t\"sessionsNumber\":8,\n\t\t\"nameEn\":\"course english\",\n\t\t\"nameAr\":\"كورس انكليزي\",\n\t\t\"descriptionEn\":\"course english level b\",\n\t\t\"descriptionAr\":\"كورس انكليزي مستوى B\",\n\t\t\"startAt\":\"2019-11-1\",\n\t\t\"maxCountStudent\":15,\n\t\t\"sessionAvgDuration\":2\n\t},\n\t\"imagesId\":[2,3],\n\t\"sessions\":[\n\t\t{\n\t\t\t\"venueId\":1,\n\t\t\t\"start\":\"Fri Nov 01 2019 18:30:00 GMT+0200 (Eastern European Standard Time)\",\n\t\t\t\"duration\":90\n\t\t}]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}courses/createNewCourse",
+							"host": [
+								"{{baseUrl}}courses"
+							],
+							"path": [
+								"createNewCourse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit course",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\":{\n\t\t\"cost\":10000,\n\t\t\"sessionsNumber\":8,\n\t\t\"nameEn\":\"course english\",\n\t\t\"nameAr\":\"كورس انكليزي\",\n\t\t\"descriptionEn\":\"course english level b\",\n\t\t\"descriptionAr\":\"كورس انكليزي مستوى B\",\n\t\t\"startAt\":\"2019-11-1\",\n\t\t\"maxCountStudent\":15,\n\t\t\"sessionAvgDuration\":2\n\t},\n\t\"imagesId\":[2]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}courses/2/editCourse",
+							"host": [
+								"{{baseUrl}}courses"
+							],
+							"path": [
+								"2",
+								"editCourse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get One course",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\":{\n\t\t\"cost\":10000,\n\t\t\"sessionsNumber\":8,\n\t\t\"nameEn\":\"course english\",\n\t\t\"nameAr\":\"كورس انكليزي\",\n\t\t\"descriptionEn\":\"course english level b\",\n\t\t\"descriptionAr\":\"كورس انكليزي مستوى B\",\n\t\t\"startAt\":\"2019-11-1\",\n\t\t\"maxCountStudent\":15,\n\t\t\"sessionAvgDuration\":2\n\t},\n\t\"imagesId\":[2]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}courses/2/getOneCourse",
+							"host": [
+								"{{baseUrl}}courses"
+							],
+							"path": [
+								"2",
+								"getOneCourse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check session",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sessions\":[\n\t\t{\n\t\t\t\"venueId\":1,\n\t\t\t\"start\":\"Fri Nov 01 2019 20:00:00 GMT+0200 (Eastern European Standard Time)\",\n\t\t\t\"duration\":90\n\t\t}]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}sessions/checkSessions",
+							"host": [
+								"{{baseUrl}}sessions"
+							],
+							"path": [
+								"checkSessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add teacher to course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"teacherId\":1,\n\t\"typePaid\":\"fixed\",\n\t\"value\":15000\n\t\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}courses/2/addTeacherToCourse",
+							"host": [
+								"{{baseUrl}}courses"
+							],
+							"path": [
+								"2",
+								"addTeacherToCourse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get teacher in course",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}courses/2/getTeacherInCourse",
+							"host": [
+								"{{baseUrl}}courses"
+							],
+							"path": [
+								"2",
+								"getTeacherInCourse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add payment to teacher",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"value\":5000,\n\t\"note\":\"by ahmad\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}teacherCourses/1/addPaymentToTeacher",
+							"host": [
+								"{{baseUrl}}teacherCourses"
+							],
+							"path": [
+								"1",
+								"addPaymentToTeacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get payment of teacher",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}teacherCourses/1/getPaymentsForTeacher",
+							"host": [
+								"{{baseUrl}}teacherCourses"
+							],
+							"path": [
+								"1",
+								"getPaymentsForTeacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add session to course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"venueId\":1,\n\t\"startAt\":\"Fri, 02 Nov 2019 14:00:00 GMT\",\n\t\"duration\":90\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}courses/2/addSessionToCourse",
+							"host": [
+								"{{baseUrl}}courses"
+							],
+							"path": [
+								"2",
+								"addSessionToCourse"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "session",
+			"item": [
+				{
+					"name": "cancel session",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}sessions/2/cancelSession",
+							"host": [
+								"{{baseUrl}}sessions"
+							],
+							"path": [
+								"2",
+								"cancelSession"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change session",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"startAt\":\"Fri, 03 Nov 2019 14:30:00 GMT\",\n\t\"duration\":90,\n\t\"venueId\":1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}sessions/3/changeSession",
+							"host": [
+								"{{baseUrl}}sessions"
+							],
+							"path": [
+								"3",
+								"changeSession"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "student in course",
+			"item": [
+				{
+					"name": "add student to course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"courseId\":2,\n\t\"studentId\":1,\n\t\"order\":5\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}studentCourses/addStudentToCourse",
+							"host": [
+								"{{baseUrl}}studentCourses"
+							],
+							"path": [
+								"addStudentToCourse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "submit student course in new package",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"data\":{\"cost\":2000,\"titleAr\":\"كورس لغة B\",\"titleEn\":\"Course B\"}\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}studentCourses/7/submitStudentCourseInNewPackage",
+							"host": [
+								"{{baseUrl}}studentCourses"
+							],
+							"path": [
+								"7",
+								"submitStudentCourseInNewPackage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "submit student course in old package",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"packageId\":11,\n\"newCost\":5000\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}studentCourses/8/submitStudentCourseInOldPackage",
+							"host": [
+								"{{baseUrl}}studentCourses"
+							],
+							"path": [
+								"8",
+								"submitStudentCourseInOldPackage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create package to student",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"data\":{\"studentId\":1,\"cost\":5000,\"titleEn\":\"tow course english\",\"titleAr\":\"كورسين عربي\"},\n\t\"coursesId\":[2,10]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}packageStudents/createPackage",
+							"host": [
+								"{{baseUrl}}packageStudents"
+							],
+							"path": [
+								"createPackage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add payment to package",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"value\":2000\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}packageStudents/5/addPaymentToPackage",
+							"host": [
+								"{{baseUrl}}packageStudents"
+							],
+							"path": [
+								"5",
+								"addPaymentToPackage"
 							]
 						}
 					},
@@ -1536,31 +2384,31 @@
 	],
 	"variable": [
 		{
-			"id": "f12644ec-1bad-4a27-8540-86e5e37c87e5",
+			"id": "bcf928fb-84a6-48cf-b6c5-8b08f52c4d47",
 			"key": "baseUrl",
 			"value": "http://localhost:3000/api/",
 			"type": "string"
 		},
 		{
-			"id": "195fb92b-3e60-4e70-a65f-afc3feda4614",
+			"id": "db0e2673-8c88-4619-9d01-e1f9a1c74fbf",
 			"key": "admin token",
 			"value": "67bOSPH8QygoGcguh4mZxYrIB6DzDraBcuMFogzIC5QTD2dPlPNmFam3D0SJ9XIm",
 			"type": "string"
 		},
 		{
-			"id": "6f65b666-99ac-4840-b588-05ee1ed3a471",
+			"id": "6e635830-361c-4bd8-90ec-89141141887c",
 			"key": "admin institue token new horizen",
 			"value": "HsZtLUYPRqOEHiawGMuI97khGQQePYFGHhqwSmz6uZ2VRXYEKoNFt4DRO5G1xY0p",
 			"type": "string"
 		},
 		{
-			"id": "e1f91dd1-b705-4d18-8b99-65d034269b53",
+			"id": "ec754ee5-cd42-49e6-8ff7-e35c22a314f7",
 			"key": "admin first branch token",
 			"value": "105V0BvBzF44pBjCXQssZmfsjs7X31ct30OXmlJPUNlg0UrTldQ6GcgdxiCsBPAm",
 			"type": "string"
 		},
 		{
-			"id": "96255c48-7aee-4ac4-b9a8-e695168a3666",
+			"id": "395c9310-7337-4792-bc10-ff31585d4cfa",
 			"key": "admin institue token alrayan",
 			"value": "I305GwuYjJv2BuwriOizlxJ1AGpj3qRRSp3Aoji74mpaOkPc5SP6ZxJQIJqdO8e9",
 			"type": "string"

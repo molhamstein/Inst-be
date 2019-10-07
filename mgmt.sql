@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 01, 2019 at 11:51 AM
+-- Generation Time: Oct 07, 2019 at 03:32 PM
 -- Server version: 10.1.35-MariaDB
 -- PHP Version: 7.2.9
 
@@ -173,6 +173,62 @@ INSERT INTO `category` (`id`, `nameEn`, `nameAr`, `status`, `createdAt`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `course`
+--
+
+CREATE TABLE `course` (
+  `id` int(11) NOT NULL,
+  `instituteId` int(11) NOT NULL,
+  `branchId` int(11) NOT NULL,
+  `subcategoryId` int(11) NOT NULL,
+  `cost` int(11) NOT NULL,
+  `sessionsNumber` int(11) NOT NULL,
+  `nameEn` varchar(512) NOT NULL,
+  `nameAr` varchar(512) NOT NULL,
+  `descriptionEn` varchar(512) NOT NULL,
+  `descriptionAr` varchar(512) NOT NULL,
+  `startAt` datetime NOT NULL,
+  `maxCountStudent` int(11) NOT NULL,
+  `countStudent` int(11) NOT NULL,
+  `sessionAvgDuration` int(11) NOT NULL,
+  `waitingListId` int(11) DEFAULT NULL,
+  `status` varchar(512) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `countStudentInQueue` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `course`
+--
+
+INSERT INTO `course` (`id`, `instituteId`, `branchId`, `subcategoryId`, `cost`, `sessionsNumber`, `nameEn`, `nameAr`, `descriptionEn`, `descriptionAr`, `startAt`, `maxCountStudent`, `countStudent`, `sessionAvgDuration`, `waitingListId`, `status`, `createdAt`, `countStudentInQueue`) VALUES
+(2, 1, 1, 5, 10000, 8, 'course english', 'كورس انكليزي', 'course english level b', 'كورس انكليزي مستوى B', '2019-10-31 22:00:00', 15, 3, 2, NULL, 'active', '2019-10-01 13:43:31', -2),
+(10, 1, 1, 5, 8000, 8, 'course english', 'كورس انكليزي', 'course english level b', 'كورس انكليزي مستوى B', '2019-10-31 22:00:00', 15, 1, 2, NULL, 'active', '2019-10-01 13:51:28', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `courseimages`
+--
+
+CREATE TABLE `courseimages` (
+  `id` int(11) NOT NULL,
+  `courseId` int(11) NOT NULL,
+  `imageId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `courseimages`
+--
+
+INSERT INTO `courseimages` (`id`, `courseId`, `imageId`) VALUES
+(17, 10, 2),
+(18, 10, 3),
+(21, 2, 2);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `institute`
 --
 
@@ -284,9 +340,69 @@ CREATE TABLE `multiaccesstoken` (
 --
 
 INSERT INTO `multiaccesstoken` (`id`, `ttl`, `scopes`, `created`, `userId`, `principalType`) VALUES
+('AFZI8TsD5bruYwuBwkBb1HELnNu6Gd2A4LAVqVFQBXVa202m6CyYZmdMr69TCank', 31556926, NULL, '2019-10-01 11:53:17', '2', 'userInstitute'),
 ('b45yBdjkzzwnuQ86mDeu5XTJurEDir0kReCPlfQPvL5fTj1LKEnJSqhr97xzg6Fl', 31556926, NULL, '2019-09-30 11:39:10', '1', 'admin'),
 ('I305GwuYjJv2BuwriOizlxJ1AGpj3qRRSp3Aoji74mpaOkPc5SP6ZxJQIJqdO8e9', 31556926, NULL, '2019-09-30 12:09:51', '2', 'userInstitute'),
-('Yh3x0IQXgb92x3Jicvo852DwTvKCvnmYqKSpjo2jIeUCQfSvHVpFpoPdlJ7b5GKj', 31556926, NULL, '2019-09-30 11:40:49', '1', 'admin');
+('Yh3x0IQXgb92x3Jicvo852DwTvKCvnmYqKSpjo2jIeUCQfSvHVpFpoPdlJ7b5GKj', 31556926, NULL, '2019-09-30 11:40:49', '1', 'admin'),
+('ZV1f0VL5oKxkR0PIy2SUTQAMsclWTtw1xIgow5Z5yAEWjvsGJG2TnI0XgUV6fpj6', 31556926, NULL, '2019-10-07 11:50:38', '1', 'userInstitute');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `packagecourse`
+--
+
+CREATE TABLE `packagecourse` (
+  `id` int(11) NOT NULL,
+  `packageId` int(11) NOT NULL,
+  `courseId` int(11) NOT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `packagecourse`
+--
+
+INSERT INTO `packagecourse` (`id`, `packageId`, `courseId`, `createdAt`) VALUES
+(15, 11, 2, '2019-10-03 13:41:31'),
+(16, 11, 10, '2019-10-03 14:52:45');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `packagestudent`
+--
+
+CREATE TABLE `packagestudent` (
+  `id` int(11) NOT NULL,
+  `studentId` int(11) NOT NULL,
+  `cost` int(11) NOT NULL,
+  `totalPayment` int(11) NOT NULL,
+  `titleEn` varchar(512) NOT NULL,
+  `titleAr` varchar(512) NOT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `packagestudent`
+--
+
+INSERT INTO `packagestudent` (`id`, `studentId`, `cost`, `totalPayment`, `titleEn`, `titleAr`, `createdAt`) VALUES
+(11, 1, 5000, 0, 'Course B', 'كورس لغة B', '2019-10-03 13:41:31');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `packagestudentpayment`
+--
+
+CREATE TABLE `packagestudentpayment` (
+  `id` int(11) NOT NULL,
+  `packageId` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  `note` varchar(512) DEFAULT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -366,6 +482,31 @@ INSERT INTO `rolemapping` (`id`, `principalType`, `principalId`, `roleId`) VALUE
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `session`
+--
+
+CREATE TABLE `session` (
+  `id` int(11) NOT NULL,
+  `courseId` int(11) NOT NULL,
+  `venueId` int(11) NOT NULL,
+  `startAt` datetime NOT NULL,
+  `endAt` datetime NOT NULL,
+  `status` varchar(512) NOT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `session`
+--
+
+INSERT INTO `session` (`id`, `courseId`, `venueId`, `startAt`, `endAt`, `status`, `createdAt`) VALUES
+(1, 2, 1, '2019-11-01 15:00:00', '2019-11-01 16:30:00', 'active', '2019-10-01 13:43:31'),
+(2, 10, 1, '2019-11-01 16:30:00', '2019-11-01 18:00:00', 'active', '2019-10-01 13:51:28'),
+(3, 2, 1, '2019-11-03 16:00:00', '2019-11-03 16:00:00', 'active', '2019-10-03 09:30:14');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `student`
 --
 
@@ -390,6 +531,51 @@ CREATE TABLE `student` (
 
 INSERT INTO `student` (`id`, `userId`, `instituteId`, `branchId`, `email`, `status`, `createdAt`, `realm`, `username`, `password`, `emailVerified`, `verificationToken`) VALUES
 (1, 1, 1, 1, NULL, 'active', '2019-09-30 12:48:57', NULL, NULL, '$2a$10$hTpLNW/9WScANONpH8xufuouYlzPjZq.UhWGZXrNX1jPQ22NA.nl.', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `studentcourse`
+--
+
+CREATE TABLE `studentcourse` (
+  `id` int(11) NOT NULL,
+  `studentId` int(11) NOT NULL,
+  `courseId` int(11) NOT NULL,
+  `isInQueue` tinyint(1) NOT NULL,
+  `order` int(11) DEFAULT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `studentcourse`
+--
+
+INSERT INTO `studentcourse` (`id`, `studentId`, `courseId`, `isInQueue`, `order`, `createdAt`) VALUES
+(7, 1, 2, 0, NULL, '2019-10-03 12:28:19'),
+(8, 1, 10, 0, NULL, '2019-10-03 14:48:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `studentsession`
+--
+
+CREATE TABLE `studentsession` (
+  `id` int(11) NOT NULL,
+  `sessionId` int(11) NOT NULL,
+  `studentId` int(11) NOT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `studentsession`
+--
+
+INSERT INTO `studentsession` (`id`, `sessionId`, `studentId`, `createdAt`) VALUES
+(4, 1, 1, '2019-10-03 13:41:32'),
+(5, 3, 1, '2019-10-03 13:41:32'),
+(6, 2, 1, '2019-10-03 14:52:45');
 
 -- --------------------------------------------------------
 
@@ -440,10 +626,10 @@ CREATE TABLE `subject` (
 --
 
 INSERT INTO `subject` (`id`, `nameEn`, `nameAr`, `categoryId`, `status`, `createdAt`) VALUES
-(1, 'english', 'انكليزي', 3, 'active', '2019-09-30 11:36:02'),
-(2, 'math', 'رياضيات', 1, 'active', '2019-09-30 11:36:02'),
-(3, 'physics', 'الفيزياء', 1, 'active', '2019-09-30 11:36:02'),
-(4, 'history', 'تاريخ', 2, 'active', '2019-09-30 11:36:02'),
+(1, 'math', 'رياضيات', 1, 'active', '2019-09-30 11:36:02'),
+(2, 'physics', 'الفيزياء', 1, 'active', '2019-09-30 11:36:02'),
+(3, 'history', 'تاريخ', 2, 'active', '2019-09-30 11:36:02'),
+(4, 'english', 'انكليزي', 3, 'active', '2019-09-30 11:36:02'),
 (5, 'french', 'فرنسي', 3, 'active', '2019-09-30 11:36:02');
 
 -- --------------------------------------------------------
@@ -472,6 +658,51 @@ CREATE TABLE `teacher` (
 
 INSERT INTO `teacher` (`id`, `userId`, `instituteId`, `email`, `status`, `createdAt`, `realm`, `username`, `password`, `emailVerified`, `verificationToken`) VALUES
 (1, 2, 1, NULL, 'active', '2019-09-30 13:04:11', NULL, NULL, '$2a$10$g1kBalE8pnRDOAigBo66WuST.OiknjxxyGE7fO46TNkNZrjQbBXY6', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `teachercourse`
+--
+
+CREATE TABLE `teachercourse` (
+  `id` int(11) NOT NULL,
+  `courseId` int(11) NOT NULL,
+  `teacherId` int(11) NOT NULL,
+  `typePaid` varchar(512) NOT NULL,
+  `value` int(11) NOT NULL,
+  `totalPayment` int(11) NOT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `teachercourse`
+--
+
+INSERT INTO `teachercourse` (`id`, `courseId`, `teacherId`, `typePaid`, `value`, `totalPayment`, `createdAt`) VALUES
+(1, 2, 1, 'fixed', 20000, 10000, '2019-10-01 15:17:38');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `teachercoursepayment`
+--
+
+CREATE TABLE `teachercoursepayment` (
+  `id` int(11) NOT NULL,
+  `teacherCourseId` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  `note` varchar(512) DEFAULT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `teachercoursepayment`
+--
+
+INSERT INTO `teachercoursepayment` (`id`, `teacherCourseId`, `value`, `note`, `createdAt`) VALUES
+(1, 1, 5000, NULL, '2019-10-02 08:52:33'),
+(2, 1, 5000, 'by ahmad', '2019-10-02 08:52:59');
 
 -- --------------------------------------------------------
 
@@ -541,7 +772,7 @@ CREATE TABLE `userinstitute` (
 --
 
 INSERT INTO `userinstitute` (`id`, `gender`, `birthdate`, `name`, `email`, `realm`, `username`, `password`, `emailVerified`, `verificationToken`) VALUES
-(1, 'male', '1992-09-24 10:15:03', 'molham mahmod', 'molham@new-horizon.com', NULL, NULL, '$2a$10$w9F/45OEo4mzoZtAM/x6j.CAAlEVvvK73YWeffB6DdPxrFRGfvU6y', NULL, NULL),
+(1, 'male', '1992-09-24 07:15:03', 'molham mahmod', 'molham@new-horizon.com', NULL, NULL, '$2a$10$Ag68/mF298qTOQZCjMC/Qun8dh0yDhjmHa4mylT8iyvzK4PhtAX4W', NULL, NULL),
 (2, 'male', '1995-09-24 10:15:03', 'rami alzebk', 'rami@alrayan.com', NULL, NULL, '$2a$10$.MGk5Ve/c/9tW6DHvpan0eIqMjHUqsrbw.2xcUesKllCz3l9veVTO', NULL, NULL),
 (3, 'male', '1995-09-24 10:15:03', 'molham mahmod 2', 'molham2@new-horizon.com', NULL, NULL, '$2a$10$qQv9ufodxZWmN8CVka0GpOtuTmF4X0xnALTo6HrTi/ipYn4QZ1cvO', NULL, NULL),
 (4, 'male', '1995-09-24 10:15:03', 'abd alrahman hayek', 'abd-alrahman-hayek@email.com', NULL, NULL, '$2a$10$cAU2IK.amkdtzb8ISreCLOWC0J3tvNXspTi75SLoeHXT53g177ade', NULL, NULL);
@@ -673,15 +904,9 @@ CREATE TABLE `waitingliststudent` (
   `studentId` int(11) NOT NULL,
   `branchId` int(11) NOT NULL,
   `note` varchar(512) DEFAULT NULL,
-  `createdAt` datetime NOT NULL
+  `createdAt` datetime NOT NULL,
+  `payment` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `waitingliststudent`
---
-
-INSERT INTO `waitingliststudent` (`id`, `waitingListId`, `studentId`, `branchId`, `note`, `createdAt`) VALUES
-(1, 1, 1, 1, NULL, '2019-09-30 15:04:51');
 
 --
 -- Indexes for dumped tables
@@ -730,6 +955,18 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `course`
+--
+ALTER TABLE `course`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `courseimages`
+--
+ALTER TABLE `courseimages`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `institute`
 --
 ALTER TABLE `institute`
@@ -762,6 +999,24 @@ ALTER TABLE `multiaccesstoken`
   ADD KEY `principalType` (`principalType`);
 
 --
+-- Indexes for table `packagecourse`
+--
+ALTER TABLE `packagecourse`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `packagestudent`
+--
+ALTER TABLE `packagestudent`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `packagestudentpayment`
+--
+ALTER TABLE `packagestudentpayment`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `property`
 --
 ALTER TABLE `property`
@@ -781,9 +1036,27 @@ ALTER TABLE `rolemapping`
   ADD KEY `principalId` (`principalId`);
 
 --
+-- Indexes for table `session`
+--
+ALTER TABLE `session`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `student`
 --
 ALTER TABLE `student`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `studentcourse`
+--
+ALTER TABLE `studentcourse`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `studentsession`
+--
+ALTER TABLE `studentsession`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -802,6 +1075,18 @@ ALTER TABLE `subject`
 -- Indexes for table `teacher`
 --
 ALTER TABLE `teacher`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `teachercourse`
+--
+ALTER TABLE `teachercourse`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `teachercoursepayment`
+--
+ALTER TABLE `teachercoursepayment`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -899,6 +1184,18 @@ ALTER TABLE `category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `course`
+--
+ALTER TABLE `course`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `courseimages`
+--
+ALTER TABLE `courseimages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
 -- AUTO_INCREMENT for table `institute`
 --
 ALTER TABLE `institute`
@@ -923,6 +1220,24 @@ ALTER TABLE `media`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `packagecourse`
+--
+ALTER TABLE `packagecourse`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `packagestudent`
+--
+ALTER TABLE `packagestudent`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `packagestudentpayment`
+--
+ALTER TABLE `packagestudentpayment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `property`
 --
 ALTER TABLE `property`
@@ -941,10 +1256,28 @@ ALTER TABLE `rolemapping`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `session`
+--
+ALTER TABLE `session`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `studentcourse`
+--
+ALTER TABLE `studentcourse`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `studentsession`
+--
+ALTER TABLE `studentsession`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `subcategory`
@@ -963,6 +1296,18 @@ ALTER TABLE `subject`
 --
 ALTER TABLE `teacher`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `teachercourse`
+--
+ALTER TABLE `teachercourse`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `teachercoursepayment`
+--
+ALTER TABLE `teachercoursepayment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `teachersubcategory`

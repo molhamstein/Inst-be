@@ -38,10 +38,11 @@ module.exports = function (User) {
       var institutesAdminModel = User.app.models.instituteAdmin;
       var principalType = req.accessToken.principalType
       var userId = req.accessToken.mainUserId
-      if (instituteId == null) {
-        reject(User.app.err.global.authorization())
-      } else if (principalType == "admin") {
+      if (principalType == "admin") {
         resolve()
+      } else
+      if (instituteId == null) {
+        reject(User.app.err.notFound.instituteNotFound())
       } else {
         institutesAdminModel.findOne({
           "where": {
@@ -59,7 +60,7 @@ module.exports = function (User) {
     })
   }
 
-  
+
   User.checkRoleInstituteUser = function (instituteId, req) {
     return new Promise(function (resolve, reject) {
       var institutesAdminModel = User.app.models.instituteAdmin;
@@ -67,10 +68,10 @@ module.exports = function (User) {
       var branchAdminModel = User.app.models.branchAdmin;
       var principalType = req.accessToken.principalType
       var userId = req.accessToken.mainUserId
-      if (instituteId == null) {
-        reject(User.app.err.global.authorization())
-      } else if (principalType == "admin") {
+      if (principalType == "admin") {
         resolve()
+      } else if (instituteId == null) {
+        reject(User.app.err.notFound.instituteNotFound())
       } else {
         institutesAdminModel.findOne({
           "where": {
@@ -118,10 +119,10 @@ module.exports = function (User) {
       var branchAdminModel = User.app.models.branchAdmin;
       var principalType = req.accessToken.principalType
       var userId = req.accessToken.mainUserId
-      if (instituteId == null || branchId == null) {
-        reject(User.app.err.global.authorization())
-      } else if (principalType == "admin") {
+      if (principalType == "admin") {
         resolve()
+      } else if (instituteId == null) {
+        reject(User.app.err.notFound.instituteNotFound())
       } else {
         institutesAdminModel.findOne({
           "where": {
@@ -133,19 +134,23 @@ module.exports = function (User) {
           if (admin)
             resolve()
           else {
-            branchAdminModel.findOne({
-              "where": {
-                "branchId": branchId,
-                "userInstituteId": userId
-              }
-            }, function (err, branchAdmin) {
-              if (err) reject(err)
-              if (branchAdmin) {
-                resolve()
-              } else
-                reject(User.app.err.global.authorization())
+            if (branchId == null) {
+              reject(User.app.err.notFound.branchNotFound())
+            } else {
+              branchAdminModel.findOne({
+                "where": {
+                  "branchId": branchId,
+                  "userInstituteId": userId
+                }
+              }, function (err, branchAdmin) {
+                if (err) reject(err)
+                if (branchAdmin) {
+                  resolve()
+                } else
+                  reject(User.app.err.global.authorization())
 
-            })
+              })
+            }
           }
         })
       }

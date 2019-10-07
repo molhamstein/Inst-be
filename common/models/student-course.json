@@ -1,5 +1,5 @@
 {
-  "name": "venue",
+  "name": "studentCourse",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -8,38 +8,26 @@
   "scope": {
     "include": [
       {
-        "relation": "media"
-      },
-      {
-        "relation": "venueProperties"
+        "relation": "course"
       }
     ]
   },
   "properties": {
-    "instituteId": {
+    "studentId": {
       "type": "number",
       "required": true
     },
-    "branchId": {
+    "courseId": {
       "type": "number",
       "required": true
     },
-    "nameEn": {
-      "type": "string",
+    "isInQueue": {
+      "type": "boolean",
       "required": true
     },
-    "nameAr": {
-      "type": "string",
-      "required": true
-    },
-    "type": {
-      "type": "string",
-      "required": true
-    },
-    "status": {
-      "type": "string",
-      "required": true,
-      "default": "active"
+    "order": {
+      "type": "number",
+      "required": false
     },
     "createdAt": {
       "type": "date",
@@ -49,20 +37,10 @@
   },
   "validations": [],
   "relations": {
-    "media": {
-      "type": "hasMany",
-      "model": "media",
-      "foreignKey": "venueId",
-      "options": {
-        "nestRemoting": true
-      },
-      "through": "venueImages",
-      "keyThrough": "imageId"
-    },
-    "venueProperties": {
-      "type": "hasMany",
-      "model": "venueProperties",
-      "foreignKey": "venueId",
+    "course": {
+      "type": "belongsTo",
+      "model": "course",
+      "foreignKey": "courseId",
       "options": {
         "nestRemoting": true
       }
@@ -86,32 +64,71 @@
       "principalType": "ROLE",
       "principalId": "user-institute",
       "permission": "ALLOW",
-      "property": "updateVenue"
+      "property": "addStudentToCourse"
     },
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "user-institute",
       "permission": "ALLOW",
-      "property": "activeVenue"
+      "property": "submitStudentCourseInNewPackage"
     },
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "user-institute",
       "permission": "ALLOW",
-      "property": "deactiveVenue"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
-      "property": "getOneVenue"
+      "property": "submitStudentCourseInOldPackage"
     }
   ],
   "methods": {
-    "updateVenue": {
+    "addStudentToCourse": {
+      "accepts": [
+        {
+          "arg": "courseId",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "studentId",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "order",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/addStudentToCourse",
+          "verb": "post"
+        }
+      ]
+    },
+    "submitStudentCourseInNewPackage": {
       "accepts": [
         {
           "arg": "id",
@@ -129,18 +146,6 @@
           "description": ""
         },
         {
-          "arg": "imagesId",
-          "type": "array",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "properties",
-          "type": "array",
-          "required": false,
-          "description": ""
-        },
-        {
           "arg": "req",
           "type": "object",
           "required": true,
@@ -161,86 +166,12 @@
       "description": "",
       "http": [
         {
-          "path": "/:id/updateVenue",
+          "path": "/:id/submitStudentCourseInNewPackage",
           "verb": "put"
         }
       ]
     },
-    "activeVenue": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "string",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "Branch",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/activeVenue",
-          "verb": "put"
-        }
-      ]
-    },
-    "deactiveVenue": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "string",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "Branch",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/deactiveVenue",
-          "verb": "put"
-        }
-      ]
-    },
-    "getOneVenue": {
+    "submitStudentCourseInOldPackage": {
       "accepts": [
         {
           "arg": "id",
@@ -252,6 +183,18 @@
           }
         },
         {
+          "arg": "packageId",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "newCost",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
           "arg": "req",
           "type": "object",
           "required": true,
@@ -272,8 +215,8 @@
       "description": "",
       "http": [
         {
-          "path": "/:id/getOneVenue",
-          "verb": "get"
+          "path": "/:id/submitStudentCourseInoldPackage",
+          "verb": "put"
         }
       ]
     }

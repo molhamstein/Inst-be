@@ -57,7 +57,7 @@ module.exports = function (Venue) {
     }
   }
 
-  
+
   Venue.activeVenue = async function (id, req, callback) {
     try {
       var venue = await Venue.findById(id);
@@ -94,4 +94,16 @@ module.exports = function (Venue) {
     }
   };
 
+
+  Venue.getOneVenue = async function (id, req, callback) {
+    try {
+      var venue = await Venue.findById(id);
+      if (venue == null)
+        throw Venue.app.err.global.notFound()
+      await Venue.app.models.user.checkRoleBranchAdmin(venue.instituteId, venue.branchId, req)
+      callback(null, venue)
+    } catch (error) {
+      return callback(error)
+    }
+  };
 };

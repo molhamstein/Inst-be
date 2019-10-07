@@ -46,6 +46,108 @@
       }
     }
   },
-  "acls": [],
-  "methods": {}
+  "acls": [
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "changeUserInstituePassword"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "updateUserInstitue"
+    }
+  ],
+  "methods": {
+    "changeUserInstituePassword": {
+      "accepts": [
+        {
+          "arg": "oldPassword",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "newPassword",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/changeUserInstituePassword",
+          "verb": "put"
+        }
+      ]
+    },
+    "updateUserInstitue": {
+      "accepts": [
+        {
+          "arg": "name",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "gender",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "birthdate",
+          "type": "date",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/updateUserInstitue",
+          "verb": "put"
+        }
+      ]
+    }
+  }
 }

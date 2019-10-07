@@ -1,5 +1,5 @@
 {
-  "name": "venue",
+  "name": "session",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -8,32 +8,25 @@
   "scope": {
     "include": [
       {
-        "relation": "media"
-      },
-      {
-        "relation": "venueProperties"
+        "relation": "course"
       }
     ]
   },
   "properties": {
-    "instituteId": {
+    "courseId": {
       "type": "number",
       "required": true
     },
-    "branchId": {
+    "venueId": {
       "type": "number",
       "required": true
     },
-    "nameEn": {
-      "type": "string",
+    "startAt": {
+      "type": "date",
       "required": true
     },
-    "nameAr": {
-      "type": "string",
-      "required": true
-    },
-    "type": {
-      "type": "string",
+    "endAt": {
+      "type": "date",
       "required": true
     },
     "status": {
@@ -49,20 +42,10 @@
   },
   "validations": [],
   "relations": {
-    "media": {
-      "type": "hasMany",
-      "model": "media",
-      "foreignKey": "venueId",
-      "options": {
-        "nestRemoting": true
-      },
-      "through": "venueImages",
-      "keyThrough": "imageId"
-    },
-    "venueProperties": {
-      "type": "hasMany",
-      "model": "venueProperties",
-      "foreignKey": "venueId",
+    "course": {
+      "type": "belongsTo",
+      "model": "course",
+      "foreignKey": "courseId",
       "options": {
         "nestRemoting": true
       }
@@ -86,74 +69,46 @@
       "principalType": "ROLE",
       "principalId": "user-institute",
       "permission": "ALLOW",
-      "property": "updateVenue"
+      "property": "checkSessions"
     },
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "user-institute",
       "permission": "ALLOW",
-      "property": "activeVenue"
+      "property": "cancelSession"
     },
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "user-institute",
       "permission": "ALLOW",
-      "property": "deactiveVenue"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
-      "property": "getOneVenue"
+      "property": "changeSession"
     }
   ],
   "methods": {
-    "updateVenue": {
+    "checkSessions": {
       "accepts": [
         {
-          "arg": "id",
-          "type": "number",
+          "arg": "sessions",
+          "type": "array",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
           "required": true,
           "description": "",
           "http": {
-            "source": "path"
+            "source": "req"
           }
-        },
+        }
+      ],
+      "returns": [
         {
           "arg": "data",
           "type": "object",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "imagesId",
-          "type": "array",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "properties",
-          "type": "array",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
           "root": true,
           "description": ""
         }
@@ -161,86 +116,12 @@
       "description": "",
       "http": [
         {
-          "path": "/:id/updateVenue",
-          "verb": "put"
+          "path": "/checkSessions",
+          "verb": "post"
         }
       ]
     },
-    "activeVenue": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "string",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "Branch",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/activeVenue",
-          "verb": "put"
-        }
-      ]
-    },
-    "deactiveVenue": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "string",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "Branch",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/deactiveVenue",
-          "verb": "put"
-        }
-      ]
-    },
-    "getOneVenue": {
+    "cancelSession": {
       "accepts": [
         {
           "arg": "id",
@@ -272,8 +153,63 @@
       "description": "",
       "http": [
         {
-          "path": "/:id/getOneVenue",
-          "verb": "get"
+          "path": "/:id/cancelSession",
+          "verb": "put"
+        }
+      ]
+    },
+    "changeSession": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "startAt",
+          "type": "date",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "duration",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "venueId",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/:id/changeSession",
+          "verb": "put"
         }
       ]
     }

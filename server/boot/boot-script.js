@@ -31,8 +31,18 @@ module.exports = function (app) {
   var teacherSubcategory = app.models.teacherSubcategory;
   var waitingList = app.models.waitingList;
   var waitingListStudent = app.models.waitingListStudent;
+  var course = app.models.course;
+  var courseImages = app.models.courseImages;
+  var session = app.models.session;
+  var teacherCourse = app.models.teacherCourse;
+  var teacherCoursePayment = app.models.teacherCoursePayment;
+  var studentCourse = app.models.studentCourse;
+  var packageStudent = app.models.packageStudent;
+  var packageCourse = app.models.packageCourse;
+  var studentSession = app.models.studentSession;
+  var packageStudentPayment = app.models.packageStudentPayment;
 
-  
+
 
 
 
@@ -255,7 +265,17 @@ module.exports = function (app) {
     await customdAutoUpload(teacherSubcategory, 'teacherSubcategory', []);
     await customdAutoUpload(waitingList, 'waitingList', []);
     await customdAutoUpload(waitingListStudent, 'waitingListStudent', []);
-    
+    await customdAutoUpload(course, 'course', []);
+    await customdAutoUpload(courseImages, 'courseImages', []);
+    await customdAutoUpload(session, 'session', []);
+    await customdAutoUpload(teacherCourse, 'teacherCourse', []);
+    await customdAutoUpload(teacherCoursePayment, 'teacherCoursePayment', []);
+    await customdAutoUpload(studentCourse, 'studentCourse', []);
+    await customdAutoUpload(packageStudent, 'packageStudent', []);
+    await customdAutoUpload(packageCourse, 'packageCourse', []);
+    await customdAutoUpload(studentSession, 'studentSession', []);
+    await customdAutoUpload(packageStudentPayment, 'packageStudentPayment', []);
+
   }
 
   init()

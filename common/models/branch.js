@@ -202,7 +202,19 @@ module.exports = function (Branch) {
     } catch (error) {
       return callback(error)
     }
+  };
 
+
+  Branch.getOneBranch = async function (id, req, callback) {
+    try {
+      var branch = await Branch.findById(id);
+      if (branch == null)
+        throw Branch.app.err.global.notFound()
+      await Branch.app.models.user.checkRoleBranchAdmin(branch.instituteId, id, req)
+      callback(null, branch)
+    } catch (error) {
+      return callback(error)
+    }
   };
 
 

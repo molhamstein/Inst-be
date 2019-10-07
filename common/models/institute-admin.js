@@ -18,7 +18,7 @@ module.exports = function (Instituteadmin) {
   }
 
 
-  Instituteadmin.changePassword = async function (id, newPassword, callback) {
+  Instituteadmin.changePasswordInstituteAdmin = async function (id, newPassword, callback) {
     try {
       var instituteAdmin = await Instituteadmin.findById(id)
       if (instituteAdmin == null)

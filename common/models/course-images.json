@@ -1,0 +1,22 @@
+{
+  "name": "courseImages",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "courseId": {
+      "type": "number",
+      "required": true
+    },
+    "imageId": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

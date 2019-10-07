@@ -242,5 +242,101 @@
   "waitingListStudent": {
     "dataSource": "mainDB",
     "public": true
+  },
+  "course": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "courseImages": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "session": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "teacherCourse": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "teacherCoursePayment": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "studentCourse": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "packageCourse": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "packageStudent": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "studentSession": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
+  },
+  "packageStudentPayment": {
+    "dataSource": "mainDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "deleteById": false
+        }
+      }
+    }
   }
 }

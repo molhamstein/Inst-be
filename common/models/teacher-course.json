@@ -1,27 +1,38 @@
 {
-  "name": "property",
+  "name": "teacherCourse",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
+  "scope": {
+    "include": [
+      {
+        "relation": "teacher"
+      }
+    ]
+  },
   "properties": {
-    "nameEn": {
+    "courseId": {
+      "type": "number",
+      "required": true
+    },
+    "teacherId": {
+      "type": "number",
+      "required": true
+    },
+    "typePaid": {
       "type": "string",
       "required": true
     },
-    "nameAr": {
-      "type": "string",
+    "value": {
+      "type": "number",
       "required": true
     },
-    "type": {
-      "type": "string",
-      "required": true
-    },
-    "status": {
-      "type": "string",
+    "totalPayment": {
+      "type": "number",
       "required": true,
-      "default": "active"
+      "default": 0
     },
     "createdAt": {
       "type": "date",
@@ -30,7 +41,24 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "teacher": {
+      "type": "belongsTo",
+      "model": "teacher",
+      "foreignKey": "teacherId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "course": {
+      "type": "belongsTo",
+      "model": "course",
+      "foreignKey": "courseId",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
   "acls": [
     {
       "accessType": "*",
@@ -39,107 +67,100 @@
       "permission": "DENY"
     },
     {
-      "accessType": "WRITE",
+      "accessType": "*",
       "principalType": "ROLE",
       "principalId": "super-admin",
       "permission": "ALLOW"
-    },
-    {
-      "accessType": "READ",
-      "principalType": "ROLE",
-      "principalId": "super-admin",
-      "permission": "ALLOW"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "super-admin",
-      "permission": "ALLOW",
-      "property": "activeProperty"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "super-admin",
-      "permission": "ALLOW",
-      "property": "deactiveProperty"
     },
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "user-institute",
       "permission": "ALLOW",
-      "property": "getActiveProperty"
+      "property": "addPaymentToTeacher"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getPaymentsForTeacher"
     }
   ],
   "methods": {
-    "activeProperty": {
+    "addPaymentToTeacher": {
       "accepts": [
         {
           "arg": "id",
-          "type": "string",
+          "type": "number",
           "required": true,
           "description": "",
           "http": {
             "source": "path"
           }
-        }
-      ],
-      "returns": [
+        },
         {
-          "arg": "property",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/activeProperty",
-          "verb": "put"
-        }
-      ]
-    },
-    "deactiveProperty": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "string",
+          "arg": "value",
+          "type": "number",
           "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "property",
-          "type": "object",
-          "root": true,
           "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
+        },
         {
-          "path": "/:id/deactiveProperty",
-          "verb": "put"
-        }
-      ]
-    },
-    "getActiveProperty": {
-      "accepts": [
-        {
-          "arg": "filter",
-          "type": "object",
+          "arg": "note",
+          "type": "string",
           "required": false,
           "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
         }
       ],
       "returns": [
         {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/:id/addPaymentToTeacher",
+          "verb": "post"
+        }
+      ]
+    },
+    "getPaymentsForTeacher": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
           "type": "array",
           "root": true,
           "description": ""
@@ -148,7 +169,7 @@
       "description": "",
       "http": [
         {
-          "path": "/getActiveProperty",
+          "path": "/:id/getPaymentsForTeacher",
           "verb": "get"
         }
       ]

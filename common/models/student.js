@@ -4,6 +4,7 @@ var debug = require('debug')('loopback:user');
 
 module.exports = function (Student) {
 
+  
   Student.addNewStudent = async function (instituteId, branchId, phonenumber, name, gender, birthdate, req, callback) {
     try {
       await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
@@ -293,6 +294,25 @@ module.exports = function (Student) {
     } catch (error) {
       callback(error)
     }
+  };
+
+
+  Student.getPackage = async function (id, req, callback) {
+    try {
+      var student = await Student.findById(id)
+      if (student == null)
+        throw Student.app.err.global.notFound()
+      await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
+      var packages = await Student.app.models.packageStudent.find({
+        "where": {
+          "studentId": id
+        }
+      })
+      callback(null, packages)
+    } catch (error) {
+      callback(error)
+    }
+
   };
 
 

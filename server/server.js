@@ -18,7 +18,6 @@ app.use(async function (req, res, next) {
     if (principalType == "userInstitute") {
       req.accessToken.mainUserId = userId
       next()
-
     } else {
       next()
     }
