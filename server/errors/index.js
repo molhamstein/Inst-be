@@ -69,7 +69,10 @@ module.exports.waitingList = {
 
   studentInwaitingListlready: function () {
     return new cError(458, 'student in waiting list already', 458);
-  }
+  },
+  duplicateWaitingList: function () {
+    return new cError(468, 'duplicate waiting list', 468);
+  },
 }
 
 module.exports.course = {

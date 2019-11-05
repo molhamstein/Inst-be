@@ -46,23 +46,44 @@ module.exports = function (Waitinglist) {
       callback(error)
     }
   };
-  
 
-  Waitinglist.getStudentForwaitingList = async function (id, req, callback) {
+
+  Waitinglist.getStudentForwaitingList = async function (id, filter = {
+    "where": {}
+  }, req, callback) {
 
     try {
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['waitingListId'] = id
+      if (filter["limit"] == null)
+        filter['limit'] = 10
+      if (filter["skip"] == null)
+        filter['skip'] = 0
+
       var waitingList = await Waitinglist.findById(id)
       if (waitingList == null)
         throw Waitinglist.app.err.global.notFound()
       await Waitinglist.app.models.user.checkRoleInstituteUser(waitingList.instituteId, req)
-      var students = await Waitinglist.app.models.waitingListStudent.find({
-        "where": {
-          "waitingListId": id
-        }
-      })
+      var students = await Waitinglist.app.query.threeLevel(Waitinglist.app, "waitingliststudent", "student", "user", "studentId", "id", "userId", "id", filter, false)
+
       callback(null, students)
     } catch (error) {
       callback(error)
     }
   };
+  Waitinglist.getStudentForwaitingListCount = async function (id, where = {}, req, callback) {
+    try {
+      where['waitingListId'] = id
+      var waitingList = await Waitinglist.findById(id)
+      if (waitingList == null)
+        throw Waitinglist.app.err.global.notFound()
+      await Waitinglist.app.models.user.checkRoleInstituteUser(waitingList.instituteId, req)
+      var studentsCount = await Waitinglist.app.query.threeLevel(Waitinglist.app, "waitingliststudent", "student", "user", "studentId", "id", "userId", "id", where, true)
+      callback(null, studentsCount)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
 };

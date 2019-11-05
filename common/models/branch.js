@@ -187,17 +187,41 @@ module.exports = function (Branch) {
   };
 
 
-  Branch.getBranchAdmin = async function (id, req, callback) {
+  Branch.getBranchAdmin = async function (id, filter = {
+    "where": {}
+  }, req, callback) {
     try {
       var branch = await Branch.findById(id);
       if (branch == null)
         throw Branch.app.err.global.notFound()
       await Branch.app.models.user.checkRoleBranchAdmin(branch.instituteId, id, req)
-      var admins = await Branch.app.models.branchAdmin.find({
-        "where": {
-          "branchId": id
-        }
-      })
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['branchId'] = id
+      if (filter["limit"] == null)
+        filter['limit'] = 10
+      if (filter["skip"] == null)
+        filter['skip'] = 0
+
+      var admins = await Branch.app.query.towLevel(Branch.app, "branchadmin", "userinstitute", "userInstituteId", "id", filter, false)
+
+      callback(null, admins)
+    } catch (error) {
+      return callback(error)
+    }
+  };
+
+
+  Branch.getBranchAdminCount = async function (id, where = {}, req, callback) {
+    try {
+      var branch = await Branch.findById(id);
+      if (branch == null)
+        throw Branch.app.err.global.notFound()
+      await Branch.app.models.user.checkRoleBranchAdmin(branch.instituteId, id, req)
+      where['branchId'] = id
+
+      var admins = await Branch.app.query.towLevel(Branch.app, "branchadmin", "userinstitute", "userInstituteId", "id", where, ["id", "userInstituteId", "branchId", "createdAt"], ["gender", "birthdate", "name", "email"], true)
+
       callback(null, admins)
     } catch (error) {
       return callback(error)
@@ -288,5 +312,26 @@ module.exports = function (Branch) {
     }
   };
 
+  Branch.getVenuesBranchCount = async function (id, where, req, callback) {
+    try {
+      var branch = await Branch.findById(id);
+      if (branch == null)
+        throw Branch.app.err.global.authorization()
+      await Branch.app.models.user.checkRoleBranchAdmin(branch.instituteId, id, req)
+      if (where == null) {
+        where = {
+          "branchId": id
+        }
+      } else {
+        where.branchId = id
+      }
+      var venuesCount = await Branch.app.models.venue.count(where)
+      callback(null, {
+        "count": venuesCount
+      })
+    } catch (error) {
+      callback(error)
+    }
+  };
 
 };

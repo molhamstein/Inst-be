@@ -64,7 +64,7 @@ module.exports = function (Course) {
     }
   };
 
-  
+
   Course.editCourse = async function (id, data, imagesId, req, callback) {
     try {
       var mainCourse = await Course.findById(id)
@@ -191,18 +191,77 @@ module.exports = function (Course) {
   };
 
 
-  Course.getTeacherInCourse = async function (id, req, callback) {
+  Course.getTeacherInCourse = async function (id, filter = {
+    "where": {}
+  }, req, callback) {
     try {
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['courseId'] = id
+      if (filter["limit"] == null)
+        filter['limit'] = 10
+      if (filter["skip"] == null)
+        filter['skip'] = 0
       var mainCourse = await Course.findById(id)
       if (mainCourse == null)
         throw Course.app.err.notFound.courseNotFound()
       await Course.app.models.user.checkRoleBranchAdmin(mainCourse.instituteId, mainCourse.branchId, req)
-      var teacherInCourse = await Course.app.models.teacherCourse.find({
-        "where": {
-          "courseId": id
-        }
-      })
+      var teacherInCourse = await Course.app.query.threeLevel(Course.app, "teachercourse", "teacher", "user", "teacherId", "id", "userId", "id", filter, false)
+
       callback(null, teacherInCourse);
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
+  Course.getTeacherInCourseCount = async function (id, where = {}, req, callback) {
+    try {
+      where['courseId'] = id
+      var mainCourse = await Course.findById(id)
+      if (mainCourse == null)
+        throw Course.app.err.notFound.courseNotFound()
+      await Course.app.models.user.checkRoleBranchAdmin(mainCourse.instituteId, mainCourse.branchId, req)
+      var teacherInCourse = await Course.app.query.threeLevel(Course.app, "teachercourse", "teacher", "user", "teacherId", "id", "userId", "id", where, true)
+      callback(null, teacherInCourse);
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
+  Course.getStudentInCourse = async function (id, filter = {
+    "where": {}
+  }, req, callback) {
+    try {
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['courseId'] = id
+      if (filter["limit"] == null)
+        filter['limit'] = 10
+      if (filter["skip"] == null)
+        filter['skip'] = 0
+      var mainCourse = await Course.findById(id)
+      if (mainCourse == null)
+        throw Course.app.err.notFound.courseNotFound()
+      await Course.app.models.user.checkRoleBranchAdmin(mainCourse.instituteId, mainCourse.branchId, req)
+      var studentInCourse = await Course.app.query.threeLevel(Course.app, "studentcourse", "student", "user", "studentId", "id", "userId", "id", filter, false)
+      callback(null, studentInCourse);
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
+  Course.getStudentInCourseCount = async function (id, where = {}, req, callback) {
+    try {
+      where['courseId'] = id
+      var mainCourse = await Course.findById(id)
+      if (mainCourse == null)
+        throw Course.app.err.notFound.courseNotFound()
+      await Course.app.models.user.checkRoleBranchAdmin(mainCourse.instituteId, mainCourse.branchId, req)
+      var studentInCourse = await Course.app.query.threeLevel(Course.app, "studentcourse", "student", "user", "studentId", "id", "userId", "id", where, true)
+      callback(null, studentInCourse);
     } catch (error) {
       callback(error)
     }

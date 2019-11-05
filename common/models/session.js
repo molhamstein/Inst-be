@@ -112,6 +112,13 @@ module.exports = function (Session) {
         "endAt": endAt,
         "venueId": venueId
       })
+
+      var studentSessionArray = await Session.app.models.studentSession.find({
+        "where": {
+          "sessionId": mainSession.id
+        }
+      })
+      Session.app.models.notification.createNotifications(studentSessionArray, 'studentId', 'student', 1, 'sessionId', mainSession.id)
       callback(null, mainSession.course())
     } catch (error) {
       callback(error)

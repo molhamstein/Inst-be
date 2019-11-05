@@ -338,5 +338,13 @@
         }
       }
     }
+  },
+  "notification": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "notificationType": {
+    "dataSource": "mainDB",
+    "public": true
   }
 }

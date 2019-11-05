@@ -174,14 +174,92 @@ module.exports = function (Institute) {
   };
 
 
-  Institute.getAdmins = async function (id, req, callback) {
+  Institute.getStudents = async function (id, filter = {
+    "where": {}
+  }, req, callback) {
     try {
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['instituteId'] = id
+      if (filter["limit"] == null)
+        filter['limit'] = 10
+      if (filter["skip"] == null)
+        filter['skip'] = 0
+
       await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
-      var admins = await Institute.app.models.instituteAdmin.find({
-        "where": {
-          "instituteId": id
-        }
-      })
+      var users = await Institute.app.query.towLevel(Institute.app, "student", "user", "userId", "id", filter, false)
+
+      callback(null, users)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+  Institute.getStudentsCount = async function (id, where = {}, req, callback) {
+    try {
+      // callback(null, filter)
+
+      where['instituteId'] = id
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      var studentCount = await Institute.app.query.towLevel(Institute.app, "student", "user", "userId", "id", where, true)
+
+      callback(null, studentCount)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
+  Institute.getTeachers = async function (id, filter = {
+    "where": {}
+  }, req, callback) {
+    try {
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['instituteId'] = id
+      if (filter["limit"] == null)
+        filter['limit'] = 10
+      if (filter["skip"] == null)
+        filter['skip'] = 0
+
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      var users = await Institute.app.query.towLevel(Institute.app, "teacher", "user", "userId", "id", filter, false)
+
+      callback(null, users)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+  Institute.getTeachersCount = async function (id, where = {}, req, callback) {
+    try {
+      // callback(null, filter)
+
+      where['instituteId'] = id
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      var teacherCount = await Institute.app.query.towLevel(Institute.app, "teacher", "user", "userId", "id", where, true)
+
+      callback(null, teacherCount)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+  Institute.getAdmins = async function (id, filter = {
+    "where": {}
+  }, req, callback) {
+    try {
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['instituteId'] = id
+      if (filter["limit"] == null)
+        filter['limit'] = 10
+      if (filter["skip"] == null)
+        filter['skip'] = 0
+
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      var admins = await Institute.app.query.towLevel(Institute.app, "instituteadmin", "userinstitute", "userInstituteId", "id", filter, false)
+
       callback(null, admins)
     } catch (error) {
       callback(error)
@@ -189,7 +267,23 @@ module.exports = function (Institute) {
   };
 
 
-  Institute.createWaitingList = async function (id, titleEn, titleAr, subcategoryId, inceptionCount, count, note, req, callback) {
+
+  Institute.getAdminsCount = async function (id, where = {}, req, callback) {
+    try {
+      // callback(null, filter)
+
+      where['instituteId'] = id
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      var admins = await Institute.app.query.towLevel(Institute.app, "instituteadmin", "userinstitute", "userInstituteId", "id", where, ["id", "userInstituteId", "instituteId", "createdAt"], ["gender", "birthdate", "name", "email"], true)
+
+      callback(null, admins)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
+  Institute.createWaitingList = async function (id, titleEn, titleAr, subcategoryId, inceptionCount, count = 0, note, req, callback) {
     try {
       await Institute.app.models.user.checkRoleInstituteUser(id, req)
       var oldWaitingList = await Institute.app.models.waitingList.findOne({
@@ -200,7 +294,7 @@ module.exports = function (Institute) {
         }
       })
       if (oldWaitingList) {
-        throw Institute.app.err.global.authorization()
+        throw Institute.app.err.waitingList.duplicateWaitingList()
       }
       var newWaitingList = await Institute.app.models.waitingList.create({
         "titleEn": titleEn,
@@ -218,16 +312,34 @@ module.exports = function (Institute) {
   };
 
 
-  Institute.getWaitingList = async function (id, req, callback) {
+  Institute.getWaitingList = async function (id, filter = {}, req, callback) {
     try {
       await Institute.app.models.user.checkRoleInstituteUser(id, req)
-      var WaitingList = await Institute.app.models.waitingList.findOne({
-        "where": {
+      if (filter.where == null) {
+        filter.where = {
           "instituteId": id
         }
-      })
+      } else {
+        filter.where.instituteId = id
+      }
+      var WaitingList = await Institute.app.models.waitingList.find(filter)
 
       callback(null, WaitingList)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
+  Institute.getWaitingListCount = async function (id, where = {}, req, callback) {
+    try {
+      await Institute.app.models.user.checkRoleInstituteUser(id, req)
+
+      where.instituteId = id
+      var WaitingListCount = await Institute.app.models.waitingList.count(where)
+      callback(null, {
+        "count": WaitingListCount
+      })
     } catch (error) {
       callback(error)
     }
@@ -260,4 +372,29 @@ module.exports = function (Institute) {
       callback(error)
     }
   };
+
+
+  Institute.getBranchCount = async function (id, where, req, callback) {
+    try {
+      var institute = await Institute.findById(id)
+      if (institute == null) {
+        throw Institute.app.err.global.notFound()
+      }
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      if (where == null) {
+        where = {
+          "instituteId": id
+        }
+      } else {
+        where.instituteId = id
+      }
+      var branchesCount = await Institute.app.models.Branch.count(where)
+      callback(null, {
+        "count": branchesCount
+      })
+    } catch (error) {
+      callback(error)
+    }
+  };
+
 };

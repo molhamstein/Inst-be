@@ -21,11 +21,15 @@
     "loopback-component-storage": "^3.6.3",
     "loopback-connector-mysql": "^5.4.2",
     "serve-favicon": "^2.0.1",
+    "sql-query": "^0.1.27",
     "strong-error-handler": "^3.2.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "eslint": "^3.17.1",
-    "eslint-config-loopback": "^8.0.0"
+    "eslint-config-loopback": "^8.0.0",
+    "mocha": "^6.2.1",
+    "request": "^2.88.0"
   },
   "repository": {
     "type": "",

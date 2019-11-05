@@ -1,7 +1,6 @@
 'use strict';
 
 module.exports = function (app) {
-  var mysqlDs = app.dataSources.mainDB;
   var Category = app.models.Category;
   var Subject = app.models.Subject;
   var Admin = app.models.Admin;
@@ -41,6 +40,8 @@ module.exports = function (app) {
   var packageCourse = app.models.packageCourse;
   var studentSession = app.models.studentSession;
   var packageStudentPayment = app.models.packageStudentPayment;
+  var notification = app.models.notification;
+  var notificationType = app.models.notificationType;
 
 
 
@@ -169,11 +170,20 @@ module.exports = function (app) {
   ]
 
 
+  var notificationTypeData = [{
+    "name": "CHANGE_SESSION"
+  }, {
+    "name": "CANCEL_SESSION"
+  }, {
+    "name": "ADD_SESSION"
+  }]
+
+
 
 
   function customdAutoUpload(database, databaseName, data) {
     return new Promise(resolve => {
-
+      var mysqlDs = app.dataSources.mainDB;
       mysqlDs.autoupdate(databaseName, function (err) {
         if (err) resolve(err);
         console.log('\nAutoupdated table `' + databaseName + '`.');
@@ -190,6 +200,19 @@ module.exports = function (app) {
             })
           }
         })
+      })
+    })
+  }
+
+  function deleteDB() {
+    return new Promise(resolve => {
+      var mysqlDs = app.dataSources.mainDB;
+      const connector = mysqlDs.connector;
+      var query = "DROP DATABASE `mgmt-test`"
+      // connector.execute(query, null, (err, resultObjects) => {
+      connector.execute("CREATE DATABASE `mgmt-test`", null, (err, resultObjects) => {
+        resolve()
+        // })
       })
     })
   }
@@ -275,8 +298,63 @@ module.exports = function (app) {
     await customdAutoUpload(packageCourse, 'packageCourse', []);
     await customdAutoUpload(studentSession, 'studentSession', []);
     await customdAutoUpload(packageStudentPayment, 'packageStudentPayment', []);
+    await customdAutoUpload(notification, 'notification', []);
+    await customdAutoUpload(notificationType, 'notificationType', notificationTypeData);
 
   }
 
-  init()
+
+  async function initTest() {
+
+    await deleteDB();
+    await customdAutoUpload(Category, 'category', [])
+    await customdAutoUpload(Admin, 'admin', adminData);
+    await customdAutoUpload(Role, 'Role', roleData);
+    await customdAutoUpload(RoleMapping, 'RoleMapping', []);
+    await addRoleToadmin();
+    await customdAutoUpload(AccessToken, 'AccessToken', []);
+    await customdAutoUpload(MultiAccessToken, 'MultiAccessToken', []);
+    await customdAutoUpload(ACL, 'ACL', []);
+    await customdAutoUpload(Subject, 'subject', []);
+    await customdAutoUpload(SubCategory, 'subCategory', []);
+    await customdAutoUpload(Property, 'property', []);
+    await customdAutoUpload(User, 'user', []);
+    await customdAutoUpload(userInstitute, 'userInstitute', []);
+    await customdAutoUpload(Media, 'media', []);
+    await customdAutoUpload(Institute, 'institute', []);
+    await customdAutoUpload(InstitutesImages, 'institutesImages', []);
+    await customdAutoUpload(instituteAdmin, 'instituteAdmin', []);
+    await customdAutoUpload(Branch, 'branch', []);
+    await customdAutoUpload(branchImages, 'branchImages', []);
+    await customdAutoUpload(branchAdmin, 'branchAdmin', []);
+    await customdAutoUpload(venue, 'venue', []);
+    await customdAutoUpload(venueProperties, 'venueProperties', []);
+    await customdAutoUpload(venueImages, 'venueImages', []);
+    await customdAutoUpload(student, 'student', []);
+    await customdAutoUpload(verificationCode, 'verificationCode', []);
+    await customdAutoUpload(teacher, 'teacher', []);
+    await customdAutoUpload(teacherSubcategory, 'teacherSubcategory', []);
+    await customdAutoUpload(waitingList, 'waitingList', []);
+    await customdAutoUpload(waitingListStudent, 'waitingListStudent', []);
+    await customdAutoUpload(course, 'course', []);
+    await customdAutoUpload(courseImages, 'courseImages', []);
+    await customdAutoUpload(session, 'session', []);
+    await customdAutoUpload(teacherCourse, 'teacherCourse', []);
+    await customdAutoUpload(teacherCoursePayment, 'teacherCoursePayment', []);
+    await customdAutoUpload(studentCourse, 'studentCourse', []);
+    await customdAutoUpload(packageStudent, 'packageStudent', []);
+    await customdAutoUpload(packageCourse, 'packageCourse', []);
+    await customdAutoUpload(studentSession, 'studentSession', []);
+    await customdAutoUpload(packageStudentPayment, 'packageStudentPayment', []);
+    await customdAutoUpload(notification, 'notification', []);
+    await customdAutoUpload(notificationType, 'notificationType', []);
+  }
+
+  console.log("process.env.NODE_ENV")
+  console.log(process.env.NODE_ENV)
+  if (process.env.NODE_ENV == 'test') {
+    initTest()
+  } else {
+    // init()
+  }
 };

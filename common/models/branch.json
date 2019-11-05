@@ -147,6 +147,13 @@
       "principalType": "ROLE",
       "principalId": "user-institute",
       "permission": "ALLOW",
+      "property": "getBranchAdminCount"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
       "property": "getOneBranch"
     },
     {
@@ -162,6 +169,13 @@
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "getVenuesBranch"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getVenuesBranchCount"
     }
   ],
   "methods": {
@@ -340,6 +354,12 @@
           }
         },
         {
+          "arg": "filter",
+          "type": "object",
+          "required": false,
+          "description": ""
+        },
+        {
           "arg": "req",
           "type": "object",
           "required": true,
@@ -361,6 +381,49 @@
       "http": [
         {
           "path": "/:id/getBranchAdmin",
+          "verb": "get"
+        }
+      ]
+    },
+    "getBranchAdminCount": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "where",
+          "type": "object",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/:id/getBranchAdminCount",
           "verb": "get"
         }
       ]
@@ -569,6 +632,49 @@
       "http": [
         {
           "path": "/:id/getVenuesBranch",
+          "verb": "get"
+        }
+      ]
+    },
+    "getVenuesBranchCount": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "where",
+          "type": "object",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "array",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/:id/getVenuesBranchCount",
           "verb": "get"
         }
       ]
