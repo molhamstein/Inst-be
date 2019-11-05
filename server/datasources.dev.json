@@ -1,0 +1,17 @@
+{
+  "mainDB": {
+    "host": "http://104.217.253.15",
+    "database": "mgmt",
+    "username": "root",
+    "password": "foxRiver123!@#",
+    "name": "mainDB",
+    "connector": "mysql",
+    "allowExtendedOperators": true
+  },
+  "files": {
+    "name": "files",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "../../MGMTImage/uploadFiles"
+  }
+}

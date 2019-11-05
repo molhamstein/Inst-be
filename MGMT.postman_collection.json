@@ -565,6 +565,40 @@
 					"response": []
 				},
 				{
+					"name": "get admins Count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}institutes/1/getAdminsCount?where={\"userinstitute.name\":{\"like\":\"2\"}}",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"1",
+								"getAdminsCount"
+							],
+							"query": [
+								{
+									"key": "where",
+									"value": "{\"userinstitute.name\":{\"like\":\"2\"}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "get admins",
 					"request": {
 						"method": "GET",
@@ -580,13 +614,155 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}institutes/1/getAdmins",
+							"raw": "{{baseUrl}}institutes/1/getAdmins?filter={\"where\":{\"userinstitute.name\":{\"like\":\"2\"}}}",
 							"host": [
 								"{{baseUrl}}institutes"
 							],
 							"path": [
 								"1",
 								"getAdmins"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"where\":{\"userinstitute.name\":{\"like\":\"2\"}}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get students",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}institutes/1/getStudents?filter={\"where\":{\"user.name\":{\"like\":\"2\"}}}",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"1",
+								"getStudents"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"where\":{\"user.name\":{\"like\":\"2\"}}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get teachers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}institutes/1/getTeachers?filter={\"where\":{\"user.name\":{\"like\":\"\"}}}",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"1",
+								"getTeachers"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"where\":{\"user.name\":{\"like\":\"\"}}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get students count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}institutes/1/getStudentsCount?where={\"user.name\":{\"like\":\"\"}}",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"1",
+								"getStudentsCount"
+							],
+							"query": [
+								{
+									"key": "where",
+									"value": "{\"user.name\":{\"like\":\"\"}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get teachers count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}institutes/1/getTeachersCount?where={\"user.name\":{\"like\":\"\"}}",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"1",
+								"getTeachersCount"
+							],
+							"query": [
+								{
+									"key": "where",
+									"value": "{\"user.name\":{\"like\":\"\"}}"
+								}
 							]
 						}
 					},
@@ -780,13 +956,53 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}institutes/1/getBranch",
+							"raw": "{{baseUrl}}institutes/1/getBranch?filter={}",
 							"host": [
 								"{{baseUrl}}institutes"
 							],
 							"path": [
 								"1",
 								"getBranch"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get branch Count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admin institue token new horizen}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}institutes/1/getBranchCount?filter={}",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"1",
+								"getBranchCount"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{}"
+								}
 							]
 						}
 					},
@@ -940,13 +1156,63 @@
 							"raw": "{\n\"phonenumber\":\"+963957465889\",\"name\":\"abd alrahman hayek\",\"gender\":\"male\",\"birthdate\":\"1995-09-24T10:15:03.000Z\",\"email\":\"abd-alrahman-hayek@email.com\",\"password\":\"1234567\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}branches/1/getBranchAdmin",
+							"raw": "{{baseUrl}}branches/1/getBranchAdmin?filter={\"where\":{\"userinstitute.name\":{\"like\":\"abd\"}}}",
 							"host": [
 								"{{baseUrl}}branches"
 							],
 							"path": [
 								"1",
 								"getBranchAdmin"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"where\":{\"userinstitute.name\":{\"like\":\"abd\"}}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Branch Admin count",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"phonenumber\":\"+963957465889\",\"name\":\"abd alrahman hayek\",\"gender\":\"male\",\"birthdate\":\"1995-09-24T10:15:03.000Z\",\"email\":\"abd-alrahman-hayek@email.com\",\"password\":\"1234567\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}branches/1/getBranchAdminCount?",
+							"host": [
+								"{{baseUrl}}branches"
+							],
+							"path": [
+								"1",
+								"getBranchAdminCount"
+							],
+							"query": [
+								{
+									"key": "where",
+									"value": "{\"asda.name\":{\"like\":\"abd\"}}",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -1039,13 +1305,53 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}branches/1/getVenuesBranch",
+							"raw": "{{baseUrl}}branches/1/getVenuesBranch?filter",
 							"host": [
 								"{{baseUrl}}branches"
 							],
 							"path": [
 								"1",
 								"getVenuesBranch"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Venues Branch Count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}branches/1/getVenuesBranchCount?where",
+							"host": [
+								"{{baseUrl}}branches"
+							],
+							"path": [
+								"1",
+								"getVenuesBranchCount"
+							],
+							"query": [
+								{
+									"key": "where",
+									"value": ""
+								}
 							]
 						}
 					},
@@ -1632,7 +1938,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{admin first branch token}}",
+								"value": "{{admin institue token new horizen}}",
 								"type": "text"
 							},
 							{
@@ -1644,7 +1950,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"titleEn\":\"English course level 4 B\",\n\t\"titleAr\":\"كورس انكليزي مستوى رابع B\",\n\t\"subcategoryId\":5,\n\t\"inceptionCount\":4\n}"
+							"raw": "{\n\t\"titleEn\":\"tenth\",\n\t\"titleAr\":\"صف عاشر\", \n\t\"subcategoryId\":2,\n\t\"inceptionCount\":4\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}institutes/1/createWaitingList",
@@ -1697,6 +2003,43 @@
 					"response": []
 				},
 				{
+					"name": "get waiting list Count",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"titleEn\":\"English course level 4 B\",\n\t\"titleAr\":\"كورس انكليزي مستوى رابع B\",\n\t\"subcategoryId\":5,\n\t\"inceptionCount\":4\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}institutes/1/getWaitingListCount",
+							"host": [
+								"{{baseUrl}}institutes"
+							],
+							"path": [
+								"1",
+								"getWaitingListCount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "add student to waiting",
 					"request": {
 						"method": "POST",
@@ -1704,7 +2047,7 @@
 							{
 								"key": "Authorization",
 								"type": "text",
-								"value": "{{admin first branch token}}"
+								"value": "{{admin institue token new horizen}}"
 							},
 							{
 								"key": "Content-Type",
@@ -1718,12 +2061,12 @@
 							"raw": "{\n\t\"studentId\":1,\n\t\"branchId\":1\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}waitingLists/1/addStudentToWaitingList",
+							"raw": "{{baseUrl}}waitingLists/2/addStudentToWaitingList",
 							"host": [
 								"{{baseUrl}}waitingLists"
 							],
 							"path": [
-								"1",
+								"2",
 								"addStudentToWaitingList"
 							]
 						}
@@ -1755,13 +2098,62 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}waitingLists/1/getStudentForwaitingList",
+							"raw": "{{baseUrl}}waitingLists/2/getStudentForwaitingList?filter={\"where\":{\"student.user.name\":{\"like\":\"ana\"}}}",
 							"host": [
 								"{{baseUrl}}waitingLists"
 							],
 							"path": [
-								"1",
+								"2",
 								"getStudentForwaitingList"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"where\":{\"student.user.name\":{\"like\":\"ana\"}}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get student in waiting Count",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}waitingLists/2/getStudentForwaitingListCount?where={\"student.user.name\":{\"like\":\"ana\"}}",
+							"host": [
+								"{{baseUrl}}waitingLists"
+							],
+							"path": [
+								"2",
+								"getStudentForwaitingListCount"
+							],
+							"query": [
+								{
+									"key": "where",
+									"value": "{\"student.user.name\":{\"like\":\"ana\"}}"
+								}
 							]
 						}
 					},
@@ -1999,13 +2391,59 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}courses/2/getTeacherInCourse",
+							"raw": "{{baseUrl}}courses/2/getTeacherInCourse?filter={\"where\":{\"teacher.user.name\":{\"like\":\"a\"}}}",
 							"host": [
 								"{{baseUrl}}courses"
 							],
 							"path": [
 								"2",
 								"getTeacherInCourse"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"where\":{\"teacher.user.name\":{\"like\":\"a\"}}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get teacher in course count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}courses/2/getTeacherInCourseCount?where={\"teacher.user.name\":{\"like\":\"a\"}}",
+							"host": [
+								"{{baseUrl}}courses"
+							],
+							"path": [
+								"2",
+								"getTeacherInCourseCount"
+							],
+							"query": [
+								{
+									"key": "where",
+									"value": "{\"teacher.user.name\":{\"like\":\"a\"}}"
+								}
 							]
 						}
 					},
@@ -2168,12 +2606,12 @@
 							"raw": "{\n\t\"startAt\":\"Fri, 03 Nov 2019 14:30:00 GMT\",\n\t\"duration\":90,\n\t\"venueId\":1\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}sessions/3/changeSession",
+							"raw": "{{baseUrl}}sessions/1/changeSession",
 							"host": [
 								"{{baseUrl}}sessions"
 							],
 							"path": [
-								"3",
+								"1",
 								"changeSession"
 							]
 						}
@@ -2213,6 +2651,86 @@
 							],
 							"path": [
 								"addStudentToCourse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get student in course count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}courses/2/getStudentInCourseCount?where={\"teacher.user.name\":{\"like\":\"a\"}}",
+							"host": [
+								"{{baseUrl}}courses"
+							],
+							"path": [
+								"2",
+								"getStudentInCourseCount"
+							],
+							"query": [
+								{
+									"key": "where",
+									"value": "{\"teacher.user.name\":{\"like\":\"a\"}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get student in course",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{admin institue token new horizen}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}courses/2/getStudentInCourse?filter={\"where\":{\"teacher.user.name\":{\"like\":\"a\"}}}",
+							"host": [
+								"{{baseUrl}}courses"
+							],
+							"path": [
+								"2",
+								"getStudentInCourse"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"where\":{\"teacher.user.name\":{\"like\":\"a\"}}}"
+								}
 							]
 						}
 					},
@@ -2384,31 +2902,31 @@
 	],
 	"variable": [
 		{
-			"id": "bcf928fb-84a6-48cf-b6c5-8b08f52c4d47",
+			"id": "f37ad671-1b31-47fd-8f84-af058394d068",
 			"key": "baseUrl",
 			"value": "http://localhost:3000/api/",
 			"type": "string"
 		},
 		{
-			"id": "db0e2673-8c88-4619-9d01-e1f9a1c74fbf",
+			"id": "bf1b6394-1b6f-40c3-b861-8e6d13b48efc",
 			"key": "admin token",
 			"value": "67bOSPH8QygoGcguh4mZxYrIB6DzDraBcuMFogzIC5QTD2dPlPNmFam3D0SJ9XIm",
 			"type": "string"
 		},
 		{
-			"id": "6e635830-361c-4bd8-90ec-89141141887c",
+			"id": "f3fc8123-5242-428b-94c7-50da16fd94b0",
 			"key": "admin institue token new horizen",
 			"value": "HsZtLUYPRqOEHiawGMuI97khGQQePYFGHhqwSmz6uZ2VRXYEKoNFt4DRO5G1xY0p",
 			"type": "string"
 		},
 		{
-			"id": "ec754ee5-cd42-49e6-8ff7-e35c22a314f7",
+			"id": "e06eb1da-c06d-4acc-aac1-7bd7c013de5f",
 			"key": "admin first branch token",
 			"value": "105V0BvBzF44pBjCXQssZmfsjs7X31ct30OXmlJPUNlg0UrTldQ6GcgdxiCsBPAm",
 			"type": "string"
 		},
 		{
-			"id": "395c9310-7337-4792-bc10-ff31585d4cfa",
+			"id": "1b2b095b-d44e-4e0e-b937-78f5146f12d8",
 			"key": "admin institue token alrayan",
 			"value": "I305GwuYjJv2BuwriOizlxJ1AGpj3qRRSp3Aoji74mpaOkPc5SP6ZxJQIJqdO8e9",
 			"type": "string"

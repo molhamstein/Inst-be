@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 07, 2019 at 03:32 PM
--- Server version: 10.1.35-MariaDB
+-- Generation Time: Nov 05, 2019 at 02:00 PM
+-- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.2.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -31,7 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `accesstoken` (
   `id` varchar(255) NOT NULL,
   `ttl` int(11) DEFAULT NULL,
-  `scopes` text,
+  `scopes` text DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `userId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -329,7 +329,7 @@ INSERT INTO `media` (`id`, `url`, `thumbUrl`, `webThumbUrl`, `type`, `createdAt`
 CREATE TABLE `multiaccesstoken` (
   `id` varchar(255) NOT NULL,
   `ttl` int(11) DEFAULT NULL,
-  `scopes` text,
+  `scopes` text DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `userId` varchar(255) DEFAULT NULL,
   `principalType` varchar(255) DEFAULT NULL
@@ -343,8 +343,55 @@ INSERT INTO `multiaccesstoken` (`id`, `ttl`, `scopes`, `created`, `userId`, `pri
 ('AFZI8TsD5bruYwuBwkBb1HELnNu6Gd2A4LAVqVFQBXVa202m6CyYZmdMr69TCank', 31556926, NULL, '2019-10-01 11:53:17', '2', 'userInstitute'),
 ('b45yBdjkzzwnuQ86mDeu5XTJurEDir0kReCPlfQPvL5fTj1LKEnJSqhr97xzg6Fl', 31556926, NULL, '2019-09-30 11:39:10', '1', 'admin'),
 ('I305GwuYjJv2BuwriOizlxJ1AGpj3qRRSp3Aoji74mpaOkPc5SP6ZxJQIJqdO8e9', 31556926, NULL, '2019-09-30 12:09:51', '2', 'userInstitute'),
+('ULFZNkRAu4jAyH720kjzIGnBXH7FBEYeVv1CyJX2Ji28PEtUUAGWuFK6Dyto97ac', 31556926, NULL, '2019-10-16 08:17:59', '1', 'admin'),
 ('Yh3x0IQXgb92x3Jicvo852DwTvKCvnmYqKSpjo2jIeUCQfSvHVpFpoPdlJ7b5GKj', 31556926, NULL, '2019-09-30 11:40:49', '1', 'admin'),
 ('ZV1f0VL5oKxkR0PIy2SUTQAMsclWTtw1xIgow5Z5yAEWjvsGJG2TnI0XgUV6fpj6', 31556926, NULL, '2019-10-07 11:50:38', '1', 'userInstitute');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notification`
+--
+
+CREATE TABLE `notification` (
+  `id` int(11) NOT NULL,
+  `studentId` int(11) DEFAULT NULL,
+  `teacherId` int(11) DEFAULT NULL,
+  `isSeen` tinyint(1) NOT NULL,
+  `idRead` tinyint(1) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `typeId` int(11) NOT NULL,
+  `sessionId` int(11) DEFAULT NULL,
+  `courseId` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `notification`
+--
+
+INSERT INTO `notification` (`id`, `studentId`, `teacherId`, `isSeen`, `idRead`, `createdAt`, `typeId`, `sessionId`, `courseId`) VALUES
+(3, 1, NULL, 0, 0, '2019-10-14 09:11:44', 1, 1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notificationtype`
+--
+
+CREATE TABLE `notificationtype` (
+  `id` int(11) NOT NULL,
+  `name` varchar(512) NOT NULL,
+  `createdAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `notificationtype`
+--
+
+INSERT INTO `notificationtype` (`id`, `name`, `createdAt`) VALUES
+(1, 'CHANGE_SESSION', '2019-10-13 12:27:20'),
+(2, 'CANCEL_SESSION', '2019-10-13 12:27:20'),
+(3, 'ADD_SESSION', '2019-10-13 12:27:20');
 
 -- --------------------------------------------------------
 
@@ -500,9 +547,9 @@ CREATE TABLE `session` (
 --
 
 INSERT INTO `session` (`id`, `courseId`, `venueId`, `startAt`, `endAt`, `status`, `createdAt`) VALUES
-(1, 2, 1, '2019-11-01 15:00:00', '2019-11-01 16:30:00', 'active', '2019-10-01 13:43:31'),
+(1, 2, 1, '2019-11-03 16:00:00', '2019-11-03 16:00:00', 'active', '2019-10-01 13:43:31'),
 (2, 10, 1, '2019-11-01 16:30:00', '2019-11-01 18:00:00', 'active', '2019-10-01 13:51:28'),
-(3, 2, 1, '2019-11-03 16:00:00', '2019-11-03 16:00:00', 'active', '2019-10-03 09:30:14');
+(3, 2, 1, '2018-11-03 16:00:00', '2018-11-03 16:00:00', 'active', '2019-10-03 09:30:14');
 
 -- --------------------------------------------------------
 
@@ -890,7 +937,8 @@ CREATE TABLE `waitinglist` (
 --
 
 INSERT INTO `waitinglist` (`id`, `titleEn`, `titleAr`, `instituteId`, `subcategoryId`, `inceptionCount`, `count`, `note`, `status`, `createdAt`) VALUES
-(1, 'English course level 4 B', 'كورس انكليزي مستوى رابع B', 1, 5, 4, 1, NULL, 'active', '2019-09-30 13:42:35');
+(1, 'English course level 4 B', 'كورس انكليزي مستوى رابع B', 1, 5, 4, 1, NULL, 'active', '2019-09-30 13:42:35'),
+(2, 'tenth', 'صف عاشر', 1, 2, 4, 1, NULL, 'active', '2019-10-09 08:28:58');
 
 -- --------------------------------------------------------
 
@@ -907,6 +955,13 @@ CREATE TABLE `waitingliststudent` (
   `createdAt` datetime NOT NULL,
   `payment` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `waitingliststudent`
+--
+
+INSERT INTO `waitingliststudent` (`id`, `waitingListId`, `studentId`, `branchId`, `note`, `createdAt`, `payment`) VALUES
+(2, 2, 1, 1, NULL, '2019-10-09 08:36:36', 0);
 
 --
 -- Indexes for dumped tables
@@ -997,6 +1052,18 @@ ALTER TABLE `multiaccesstoken`
   ADD PRIMARY KEY (`id`),
   ADD KEY `userId` (`userId`),
   ADD KEY `principalType` (`principalType`);
+
+--
+-- Indexes for table `notification`
+--
+ALTER TABLE `notification`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `notificationtype`
+--
+ALTER TABLE `notificationtype`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `packagecourse`
@@ -1220,6 +1287,18 @@ ALTER TABLE `media`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `notification`
+--
+ALTER TABLE `notification`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `notificationtype`
+--
+ALTER TABLE `notificationtype`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `packagecourse`
 --
 ALTER TABLE `packagecourse`
@@ -1355,13 +1434,13 @@ ALTER TABLE `verificationcode`
 -- AUTO_INCREMENT for table `waitinglist`
 --
 ALTER TABLE `waitinglist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `waitingliststudent`
 --
 ALTER TABLE `waitingliststudent`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
