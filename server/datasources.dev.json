@@ -1,6 +1,6 @@
 {
   "mainDB": {
-    "host": "http://104.217.253.15",
+    "host": "104.217.253.15",
     "database": "mgmt",
     "username": "root",
     "password": "foxRiver123!@#",
