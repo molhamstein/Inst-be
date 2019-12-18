@@ -21,15 +21,23 @@ module.exports = function (User) {
   }
 
 
-  User.checkUser = function (phonenumber, callback) {
-    User.findOne({
-      "where": {
-        "phonenumber": phonenumber
-      }
-    }, function (err, user) {
-      if (err) return callback(err)
-      return callback(err, user)
-    })
+  User.checkUser = function (key, callback) {
+    let pattern = new RegExp('.*' + key + '.*', "i");
+    User.find({
+        "where": {
+          "or": [{
+              "phonenumber": pattern
+            },
+            {
+              "name": pattern
+            },
+          ]
+        }
+      },
+      function (err, user) {
+        if (err) return callback(err)
+        return callback(err, user)
+      })
   };
 
 

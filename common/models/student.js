@@ -4,7 +4,7 @@ var debug = require('debug')('loopback:user');
 
 module.exports = function (Student) {
 
-  
+
   Student.addNewStudent = async function (instituteId, branchId, phonenumber, name, gender, birthdate, req, callback) {
     try {
       await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
@@ -59,6 +59,8 @@ module.exports = function (Student) {
           "principalId": newStudent.id,
           "roleId": 3
         })
+        var studentId = newStudent.id
+        newStudent = await student.findById(studentId)
         callback(null, newStudent)
       })
     } catch (error) {
@@ -67,7 +69,7 @@ module.exports = function (Student) {
   };
 
 
-  Student.addOldStudent = async function (instituteId, branchId, phonenumber, req, callback) {
+  Student.addOldStudent = async function (instituteId, branchId, phonenumber, sentInvitation, req, callback) {
     try {
       await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
       await Student.app.dataSources.mainDB.transaction(async models => {
@@ -99,7 +101,10 @@ module.exports = function (Student) {
           }
         })
         if (userStudent) {
-          throw Student.app.err.user.userInInstituteAlready()
+          if (sentInvitation)
+            throw Student.app.err.user.userInInstituteAlready()
+          else
+            return callback(null, userStudent)
         }
         var randomPassword = 123456 // generate(6);
         console.log("randomPassword")
@@ -108,19 +113,20 @@ module.exports = function (Student) {
           "userId": userObj.id,
           "instituteId": instituteId,
           "branchId": branchId,
-          "password": randomPassword.toString()
+          "password": randomPassword.toString(),
+          "sentInvitation": sentInvitation
         });
 
-        var randomCode = generate(4)
-        var verificationCodeObject = {
-          "code": randomCode,
-          "typeUser": "student",
-          "userId": newStudent.id,
-          "expiredDate": addHours(new Date(), 2)
+        if (sentInvitation) {
+          var randomCode = generate(4)
+          var verificationCodeObject = {
+            "code": randomCode,
+            "typeUser": "student",
+            "userId": newStudent.id,
+            "expiredDate": addHours(new Date(), 2)
+          }
+          var newVerificationCode = await verificationCode.create(verificationCodeObject);
         }
-
-        var newVerificationCode = await verificationCode.create(verificationCodeObject);
-
         var newRoleMapping = await RoleMapping.create({
           "principalType": "student",
           "principalId": newStudent.id,

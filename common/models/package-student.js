@@ -29,7 +29,7 @@ module.exports = function (Packagestudent) {
         var courseIsFull = await course.cheackFullCourses(coursesId)
         if (courseIsFull.length > 0)
           throw Packagestudent.app.err.course.multiCourseIsFull(courseIsFull)
-
+        console.log(data)
         var newPackage = await packageStudent.create(data);
         var packageCourseData = [];
         coursesId.forEach(element => {
@@ -73,7 +73,6 @@ module.exports = function (Packagestudent) {
         var newPackage = await oldPackage.updateAttribute("totalPayment", newTotalPayment);
         callback(null, newPackage)
       })
-      callback(null, student)
     } catch (error) {
       callback(error)
     }

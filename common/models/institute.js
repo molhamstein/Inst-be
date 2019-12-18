@@ -373,6 +373,39 @@ module.exports = function (Institute) {
     }
   };
 
+  Institute.getCourse = async function (id, filter, req, callback) {
+    try {
+      var institute = await Institute.findById(id)
+      if (institute == null) {
+        throw Institute.app.err.global.notFound()
+      }
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      if (filter == null) {
+        filter = {
+          "where": {
+            "instituteId": id
+          }
+        }
+      } else if (filter.where == null) {
+        filter.where = {
+          "instituteId": id
+        }
+      } else if (filter.where.and != null) {
+        filter.where.and.push({
+          "instituteId": id
+        })
+      } else {
+        filter.where.instituteId = id
+      }
+      console.log("JSON.stringify(filter)")
+      console.log(JSON.stringify(filter))
+      var courses = await Institute.app.models.Course.find(filter)
+      callback(null, courses)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
 
   Institute.getBranchCount = async function (id, where, req, callback) {
     try {

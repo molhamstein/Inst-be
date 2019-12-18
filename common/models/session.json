@@ -9,6 +9,9 @@
     "include": [
       {
         "relation": "course"
+      },
+      {
+        "relation": "venue"
       }
     ]
   },
@@ -46,6 +49,14 @@
       "type": "belongsTo",
       "model": "course",
       "foreignKey": "courseId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "venue": {
+      "type": "belongsTo",
+      "model": "venue",
+      "foreignKey": "venueId",
       "options": {
         "nestRemoting": true
       }

@@ -48,13 +48,10 @@
     "checkUser": {
       "accepts": [
         {
-          "arg": "phonenumber",
+          "arg": "key",
           "type": "string",
           "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
+          "description": ""
         }
       ],
       "returns": [
@@ -68,7 +65,7 @@
       "description": "",
       "http": [
         {
-          "path": "/:phonenumber/checkuser",
+          "path": "/checkuser",
           "verb": "get"
         }
       ]
