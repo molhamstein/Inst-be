@@ -141,7 +141,7 @@ module.exports = function (Course) {
   };
 
 
-  Course.addSessionToCourse = async function (id, venueId, startAt, duration, req, callback) {
+  Course.addSessionToCourse = async function (id, sessions, req, callback) {
     try {
       var mainCourse = await Course.findById(id)
       if (mainCourse == null)
@@ -158,29 +158,33 @@ module.exports = function (Course) {
           studentCourse
         } = models
         var sessionData = []
-        sessionData.push({
-          "venueId": venueId,
-          "startAt": new Date(startAt),
-          "endAt": addMinutes(new Date(startAt), duration),
-          "courseId": id,
-          "duration": duration
-        })
+        sessions.forEach(element => {
+          sessionData.push({
+            "venueId": element.venueId,
+            "startAt": new Date(element.startAt),
+            "endAt": addMinutes(new Date(element.startAt), element.duration),
+            "courseId": id,
+            "duration": element.duration
+          })
+        });
         var sessionHasError = await session.checkSession(sessionData);
         if (sessionHasError.length > 0) {
           throw Course.app.err.course.sessionHasError(sessionHasError);
         }
-        var newSession = await session.create(sessionData[0])
+        var newSessions = await session.create(sessionData)
         var studentInCourse = await studentCourse.find({
           "where": {
             "courseId": id
           }
         })
         var newSessionStudentData = []
-        studentInCourse.forEach(element => {
-          newSessionStudentData.push({
-            "sessionId": newSession.id,
-            "studentId": element.studentId,
-          })
+        newSessions.forEach(oneSession => {
+          studentInCourse.forEach(element => {
+            newSessionStudentData.push({
+              "sessionId": oneSession.id,
+              "studentId": element.studentId,
+            })
+          });
         });
         await studentSession.create(newSessionStudentData)
         callback(null, mainCourse)
