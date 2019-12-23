@@ -58,6 +58,12 @@
       "property": "activeProperty"
     },
     {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "super-admin",
+      "permission": "ALLOW"
+    },
+    {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "super-admin",

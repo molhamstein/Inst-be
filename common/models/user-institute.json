@@ -60,6 +60,13 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "updateUserInstitue"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getAllBranch"
     }
   ],
   "methods": {
@@ -148,6 +155,35 @@
           "verb": "put"
         }
       ]
+    },
+    "getAllBranch": {
+      "accepts": [
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "array",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/getAllBranch",
+          "verb": "get"
+        }
+      ]
     }
+
   }
 }
