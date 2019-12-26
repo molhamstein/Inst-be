@@ -31,15 +31,17 @@ module.exports = function (app) {
   var waitingList = app.models.waitingList;
   var waitingListStudent = app.models.waitingListStudent;
   var course = app.models.course;
+  var supply = app.models.supply;
+  
   var courseImages = app.models.courseImages;
   var session = app.models.session;
   var teacherCourse = app.models.teacherCourse;
   var teacherCoursePayment = app.models.teacherCoursePayment;
   var studentCourse = app.models.studentCourse;
-  var packageStudent = app.models.packageStudent;
-  var packageCourse = app.models.packageCourse;
+  // var packageStudent = app.models.packageStudent;
+  // var packageCourse = app.models.packageCourse;
   var studentSession = app.models.studentSession;
-  var packageStudentPayment = app.models.packageStudentPayment;
+  // var packageStudentPayment = app.models.packageStudentPayment;
   var notification = app.models.notification;
   var notificationType = app.models.notificationType;
 
@@ -289,15 +291,16 @@ module.exports = function (app) {
     await customdAutoUpload(waitingList, 'waitingList', []);
     await customdAutoUpload(waitingListStudent, 'waitingListStudent', []);
     await customdAutoUpload(course, 'course', []);
+    await customdAutoUpload(supply, 'supply', []);
     await customdAutoUpload(courseImages, 'courseImages', []);
     await customdAutoUpload(session, 'session', []);
     await customdAutoUpload(teacherCourse, 'teacherCourse', []);
     await customdAutoUpload(teacherCoursePayment, 'teacherCoursePayment', []);
     await customdAutoUpload(studentCourse, 'studentCourse', []);
-    await customdAutoUpload(packageStudent, 'packageStudent', []);
-    await customdAutoUpload(packageCourse, 'packageCourse', []);
+    // await customdAutoUpload(packageStudent, 'packageStudent', []);
+    // await customdAutoUpload(packageCourse, 'packageCourse', []);
     await customdAutoUpload(studentSession, 'studentSession', []);
-    await customdAutoUpload(packageStudentPayment, 'packageStudentPayment', []);
+    // await customdAutoUpload(packageStudentPayment, 'packageStudentPayment', []);
     await customdAutoUpload(notification, 'notification', []);
     await customdAutoUpload(notificationType, 'notificationType', notificationTypeData);
 
@@ -342,10 +345,10 @@ module.exports = function (app) {
     await customdAutoUpload(teacherCourse, 'teacherCourse', []);
     await customdAutoUpload(teacherCoursePayment, 'teacherCoursePayment', []);
     await customdAutoUpload(studentCourse, 'studentCourse', []);
-    await customdAutoUpload(packageStudent, 'packageStudent', []);
-    await customdAutoUpload(packageCourse, 'packageCourse', []);
+    // await customdAutoUpload(packageStudent, 'packageStudent', []);
+    // await customdAutoUpload(packageCourse, 'packageCourse', []);
     await customdAutoUpload(studentSession, 'studentSession', []);
-    await customdAutoUpload(packageStudentPayment, 'packageStudentPayment', []);
+    // await customdAutoUpload(packageStudentPayment, 'packageStudentPayment', []);
     await customdAutoUpload(notification, 'notification', []);
     await customdAutoUpload(notificationType, 'notificationType', []);
   }

@@ -346,5 +346,13 @@
   "notificationType": {
     "dataSource": "mainDB",
     "public": true
+  },
+  "transaction": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "supply": {
+    "dataSource": "mainDB",
+    "public": true
   }
 }

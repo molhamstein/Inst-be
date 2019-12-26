@@ -32,6 +32,10 @@
       "type": "date",
       "required": true
     },
+    "cost": {
+      "type": "number",
+      "required": false
+    },
     "status": {
       "type": "string",
       "required": true,

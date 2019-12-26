@@ -3,8 +3,16 @@ var async = require("async");
 
 module.exports = function (Course) {
 
+  Course.validatesInclusionOf('typeCost', {
+    in: ['course', 'perSession']
+  });
 
-  Course.createNewCourse = async function (data, sessions, imagesId = [], req, callback) {
+  Course.validatesInclusionOf('status', {
+    in: ['active', 'pendding', 'deactivate']
+  });
+
+
+  Course.createNewCourse = async function (data, supplies = [], imagesId = [], req, callback) {
     try {
       await Course.app.models.user.checkRoleBranchAdmin(data.instituteId, data.branchId, req)
       await Course.app.dataSources.mainDB.transaction(async models => {
@@ -17,7 +25,17 @@ module.exports = function (Course) {
         const {
           session
         } = models
+        const {
+          supply
+        } = models
         var sessionData = []
+        var costSupplies = 0;
+        if (supplies.length > 0) {
+          for (let index = 0; index < supplies.length; index++) {
+            costSupplies += supplies[index].cost
+          }
+        }
+        data.costSupplies = costSupplies
         var newCourse = await course.create(data)
         if (imagesId.length != 0) {
           var imageData = []
@@ -29,20 +47,26 @@ module.exports = function (Course) {
           });
           await courseImages.create(imageData)
         }
-        sessions.forEach(element => {
-          sessionData.push({
-            "venueId": element.venueId,
-            "startAt": new Date(element.start),
-            "endAt": addMinutes(new Date(element.start), element.duration),
-            "courseId": newCourse.id,
-            "duration": element.duration
-          })
-        });
-        var sessionHasError = await session.checkSession(sessionData);
-        if (sessionHasError.length > 0) {
-          throw Course.app.err.course.sessionHasError(sessionHasError);
+        // sessions.forEach(element => {
+        //   sessionData.push({
+        //     "venueId": element.venueId,
+        //     "startAt": new Date(element.start),
+        //     "endAt": addMinutes(new Date(element.start), element.duration),
+        //     "courseId": newCourse.id,
+        //     "duration": element.duration
+        //   })
+        // });
+        // var sessionHasError = await session.checkSession(sessionData);
+        // if (sessionHasError.length > 0) {
+        //   throw Course.app.err.course.sessionHasError(sessionHasError);
+        // }
+        // await session.create(sessionData)
+        if (supplies.length > 0) {
+          for (let index = 0; index < supplies.length; index++) {
+            supplies[index]['courseId'] = newCourse.id
+          }
+          await supply.create(supplies)
         }
-        await session.create(sessionData)
         newCourse = await course.findById(newCourse.id)
         callback(null, newCourse)
       })
@@ -164,6 +188,7 @@ module.exports = function (Course) {
             "startAt": new Date(element.startAt),
             "endAt": addMinutes(new Date(element.startAt), element.duration),
             "courseId": id,
+            "cost": element.cost,
             "duration": element.duration
           })
         });
@@ -186,6 +211,7 @@ module.exports = function (Course) {
             })
           });
         });
+        await mainCourse.updateAttribute("hasSession", true)
         await studentSession.create(newSessionStudentData)
         callback(null, mainCourse)
       })
@@ -233,6 +259,27 @@ module.exports = function (Course) {
     }
   };
 
+  Course.getSessionInCourse = async function (id, filter = {
+    "where": {}
+  }, req, callback) {
+    try {
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['courseId'] = id
+      if (filter["limit"] == null)
+        filter['limit'] = 10
+      if (filter["skip"] == null)
+        filter['skip'] = 0
+      var mainCourse = await Course.findById(id)
+      if (mainCourse == null)
+        throw Course.app.err.notFound.courseNotFound()
+      await Course.app.models.user.checkRoleBranchAdmin(mainCourse.instituteId, mainCourse.branchId, req)
+      var sessionInCourse = await Course.app.models.session.find(filter)
+      callback(null, sessionInCourse)
+    } catch (error) {
+      callback(error)
+    }
+  }
 
   Course.getStudentInCourse = async function (id, filter = {
     "where": {}

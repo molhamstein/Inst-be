@@ -69,10 +69,14 @@ module.exports = function (Studentcourse) {
       if (err) return callback(err)
       Studentcourse.app.models.Course.findById(courseId, function (err, oneCourse) {
         if (err) return callback(err)
+        var cost;
+        if (oneCourse.typeCost == "course")
+          cost = oneCourse.cost
         Studentcourse.create({
           "courseId": courseId,
           "studentId": studentId,
-          "isInQueue": false
+          "isInQueue": false,
+          "cost": cost
         }, function (err, data) {
           if (err) return callback(err)
           var count = oneCourse.countStudent + 1
@@ -81,7 +85,8 @@ module.exports = function (Studentcourse) {
             async.forEachOf(sessions, function (element, index, seccallback) {
               Studentcourse.app.models.studentSession.create({
                 "sessionId": element.id,
-                "studentId": studentId
+                "studentId": studentId,
+                "cost": element.cost
               }, function (err, newSession) {
                 if (err) return callback(err)
                 seccallback()

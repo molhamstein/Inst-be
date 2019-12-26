@@ -63,18 +63,38 @@ module.exports = function (Userinstitute) {
       var user = await Userinstitute.findById(mainUserId);
 
       var allUserBranch = []
+      var objectBranch = [];
       var userInstitute = await Userinstitute.app.models.instituteAdmin.find({
         "where": {
           "userInstituteId": user.id
         }
       })
+      userInstitute.forEach(element => {
+        objectBranch.push({
+          "key": "instituteId",
+          "value": element.instituteId
+        })
+      });
+      var userBranch = await Userinstitute.app.models.branchAdmin.find({
+        "where": {
+          "userInstituteId": user.id
+        }
+      })
 
-      for (let index = 0; index < userInstitute.length; index++) {
-        const element = userInstitute[index];
+      userBranch.forEach(element => {
+        objectBranch.push({
+          "key": "branchId",
+          "value": element.branchId
+        })
+      });
+      // callback(null, objectBranch.length)
+
+      for (let index = 0; index < objectBranch.length; index++) {
+        const element = objectBranch[index];
+        var whereObject = {}
+        whereObject[element.key] = element.value
         const brnach = await Userinstitute.app.models.Branch.find({
-          "where": {
-            "instituteId": element.instituteId
-          }
+          "where": whereObject
         })
         allUserBranch = allUserBranch.concat(brnach)
         if (index + 1 == userInstitute.length) {

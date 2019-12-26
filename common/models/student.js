@@ -321,6 +321,54 @@ module.exports = function (Student) {
 
   };
 
+  Student.addToCourses = async function (studentId, courses, req, callback) {
+    try {
+      var student = await Student.findById(studentId);
+      if (student == null) {
+        throw Student.app.err.notFound.studentNotFound()
+      }
+      await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
+      await Student.app.dataSources.mainDB.transaction(async models => {
+        const {
+          packageStudent
+        } = models
+        const {
+          packageCourse
+        } = models
+        const {
+          studentCourse
+        } = models
+        const {
+          course
+        } = models
+        var coursesId = []
+        courses.forEach(element => {
+          coursesId.push(element.id)
+        });
+        var studenInCourse = await studentCourse.cheackStudentInCourses(studentId, coursesId)
+        if (studenInCourse.length > 0)
+          throw Student.app.err.course.studentAlreadyInMultiCourse(studenInCourse)
+        var courseIsFull = await course.cheackFullCourses(coursesId)
+        if (courseIsFull.length > 0)
+          throw Student.app.err.course.multiCourseIsFull(courseIsFull)
+        // console.log(data)
+        // var newPackage = await packageStudent.create(data);
+        // var packageCourseData = [];
+        // coursesId.forEach(element => {
+        //   packageCourseData.push({
+        //     "courseId": element,
+        //     "packageId": newPackage.id
+        //   })
+        // });
+        // await packageCourse.create(packageCourseData)
+        await studentCourse.addStudentToCourses(studentId, coursesId)
+        // callback(null, newPackage);
+      })
+    } catch (error) {
+      callback(error)
+    }
+  };
+
 
   function generate(n) {
     var add = 1,

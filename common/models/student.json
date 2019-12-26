@@ -11,9 +11,6 @@
     "include": [
       {
         "relation": "user"
-      },
-      {
-        "relation": "packageStudents"
       }
     ]
   },
@@ -50,6 +47,11 @@
       "type": "Boolean",
       "required": true,
       "default": true
+    },
+    "balance": {
+      "type": "number",
+      "required": true,
+      "default": 0
     },
     "createdAt": {
       "type": "date",
@@ -99,6 +101,13 @@
       "principalType": "ROLE",
       "principalId": "super-admin",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "addToCourses"
     },
     {
       "accessType": "EXECUTE",
@@ -361,6 +370,49 @@
         {
           "path": "/:id/getPackage",
           "verb": "get"
+        }
+      ]
+    },
+    "addToCourses": {
+      "accepts": [
+        {
+          "arg": "studentId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "courses",
+          "type": "array",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/:studentId/addToCourses",
+          "verb": "post"
         }
       ]
     }

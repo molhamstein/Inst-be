@@ -76,6 +76,8 @@ module.exports = function (User) {
       var branchAdminModel = User.app.models.branchAdmin;
       var principalType = req.accessToken.principalType
       var userId = req.accessToken.mainUserId
+      console.log("principalType")
+      console.log(principalType)
       if (principalType == "admin") {
         resolve()
       } else if (instituteId == null) {
