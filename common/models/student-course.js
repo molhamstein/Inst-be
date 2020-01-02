@@ -76,7 +76,8 @@ module.exports = function (Studentcourse) {
           "courseId": courseId,
           "studentId": studentId,
           "isInQueue": false,
-          "cost": cost
+          "cost": cost,
+          "isBuySupplies": oneCourse.hasSpplies ? false : true
         }, function (err, data) {
           if (err) return callback(err)
           var count = oneCourse.countStudent + 1
@@ -209,6 +210,7 @@ module.exports = function (Studentcourse) {
     }
   };
 
+
   Studentcourse.submitStudentCourseInOldPackage = async function (id, packageId, newCost, req, callback) {
     try {
       var mainStudentcourse = await Studentcourse.findById(id)
@@ -284,4 +286,52 @@ module.exports = function (Studentcourse) {
       callback(error)
     }
   };
+
+
+  Studentcourse.buySupplies = async function (id, req, callback) {
+    try {
+      var mainStudentcourse = await Studentcourse.findById(id)
+      if (mainStudentcourse == null) {
+        throw Studentcourse.app.err.global.notFound()
+      }
+      var mainCourse = mainStudentcourse.course()
+      await Studentcourse.app.models.user.checkRoleBranchAdmin(mainCourse.instituteId, mainCourse.branchId, req)
+      if (mainCourse.hasSpplies == false)
+        return callback(null, mainStudentcourse)
+      await Studentcourse.app.dataSources.mainDB.transaction(async models => {
+        const {
+          transaction
+        } = models
+        const {
+          student
+        } = models
+        const {
+          studentCourse
+        } = models
+        var modelStudentCourse = await studentCourse.findById(id)
+        var modelStudent = await student.findById(modelStudentCourse.studentId)
+        if (modelStudentCourse.isBuySupplies == true)
+          return callback(null, modelStudent)
+        var balance = mainCourse.costSupplies + modelStudent.balance;
+        var frozenBalance = modelStudent.frozenBalance - mainCourse.costSupplies;
+        await modelStudent.updateAttributes({
+          "frozenBalance": frozenBalance,
+          "balance": balance
+        })
+        modelStudentCourse.updateAttribute("isBuySupplies", true)
+        await transaction.create({
+          "instituteId": mainCourse.instituteId,
+          "branchId": mainCourse.branchId,
+          "courseId": mainCourse.id,
+          "studentId": modelStudent.id,
+          "value": mainCourse.costSupplies,
+          "type": "receiveCourseSupplies"
+        })
+        callback(null, modelStudent)
+      })
+    } catch (error) {
+      callback(error)
+    }
+  }
+
 };

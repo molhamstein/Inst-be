@@ -75,6 +75,12 @@ module.exports.waitingList = {
   },
 }
 
+module.exports.student = {
+
+  studentDoesnotHaveBalance: function () {
+    return new cError(470, 'student does not have balance', 470);
+  }
+}
 module.exports.course = {
 
   sessionHasError: function (data) {
@@ -94,6 +100,12 @@ module.exports.course = {
   },
   studentNotInQueue: function () {
     return new cError(466, 'student not in queue', 466);
+  },
+  courseIsStarted: function () {
+    return new cError(469, 'course is started', 469);
+  },
+  courseDoesnotHaveBalance: function () {
+    return new cError(471, 'course does not have balance', 471);
   }
 
 }

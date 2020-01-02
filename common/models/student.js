@@ -321,9 +321,135 @@ module.exports = function (Student) {
 
   };
 
+
+  Student.addPaymentToStudent = async function (studentId, value, date, note, courseId, req, callback) {
+    try {
+      var student = await Student.findById(studentId);
+      if (student == null) {
+        throw Student.app.err.notFound.studentNotFound()
+      }
+      await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
+      await Student.app.dataSources.mainDB.transaction(async models => {
+        const {
+          studentPayment
+        } = models
+        const {
+          student
+        } = models
+        const {
+          course
+        } = models
+        const {
+          studentCourse
+        } = models
+        const {
+          transaction
+        } = models
+        var mainStudent = await student.findById(studentId);
+        await studentPayment.create({
+          "value": value,
+          "studentId": studentId,
+          "date": date,
+          "courseId": courseId,
+          "note": note
+        })
+        var frozenBalance = value + mainStudent.frozenBalance
+        if (courseId != null) {
+          var mainStudentCourse = await studentCourse.findOne({
+            "where": {
+              "courseId": courseId,
+              "studentId": studentId
+            }
+          })
+          var mainCourse = await course.findById(courseId)
+          if (mainStudentCourse.frozenBalance < 0) {
+            let debtValue = mainStudentCourse.frozenBalance * -1;
+            if (debtValue > value) {
+              debtValue = value
+            }
+            await transaction.create({
+              "instituteId": mainCourse.instituteId,
+              "branchId": mainCourse.branchId,
+              "courseId": mainCourse.id,
+              "studentId": studentId,
+              "value": debtValue,
+              "type": "debtInCourse"
+            })
+            let balanceCourse = mainStudentCourse.balance + debtValue
+            await mainStudentCourse.updateAttribute("balance", balanceCourse)
+            var balance = debtValue + mainStudent.balance
+            await mainStudent.updateAttribute("balance", balance)
+            frozenBalance -= debtValue;
+          }
+          await mainStudent.updateAttribute("frozenBalance", frozenBalance)
+          let frozenBalanceCourse = mainStudentCourse.frozenBalance + value
+          await mainStudentCourse.updateAttribute("frozenBalance", frozenBalanceCourse)
+        }
+        callback(null, mainStudent)
+      })
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+  Student.receivePaymentToStudent = async function (studentId, value, date, note, courseId, req, callback) {
+    try {
+      var student = await Student.findById(studentId);
+      if (student == null) {
+        throw Student.app.err.notFound.studentNotFound()
+      }
+      await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
+      await Student.app.dataSources.mainDB.transaction(async models => {
+        value = value * -1;
+        const {
+          studentPayment
+        } = models
+        const {
+          student
+        } = models
+        const {
+          studentCourse
+        } = models
+        var mainStudent = await student.findById(studentId);
+        var frozenBalance = value + mainStudent.frozenBalance
+        if (frozenBalance < 0) {
+          throw Student.app.err.student.studentDoesnotHaveBalance()
+        }
+
+        if (courseId != null) {
+          var mainStudentCourse = await studentCourse.find({
+            "where": {
+              "courseId": courseId,
+              "studentId": studentId
+            }
+          })
+          let frozenBalanceCourse = mainStudentCourse.frozenBalance + value
+          if (frozenBalanceCourse < 0) {
+            throw Student.app.err.course.courseDoesnotHaveBalance()
+          }
+          await mainStudentCourse.updateAttribute("frozenBalance", frozenBalanceCourse)
+        }
+
+        await studentPayment.create({
+          "value": value,
+          "studentId": studentId,
+          "date": date,
+          "note": note,
+          "courseId": courseId
+        })
+        await mainStudent.updateAttribute("frozenBalance", frozenBalance)
+        callback(null, mainStudent)
+      })
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+
   Student.addToCourses = async function (studentId, courses, req, callback) {
     try {
       var student = await Student.findById(studentId);
+      console.log("SSSS");
       if (student == null) {
         throw Student.app.err.notFound.studentNotFound()
       }
@@ -368,6 +494,22 @@ module.exports = function (Student) {
       callback(error)
     }
   };
+
+
+  Student.makeStudentTransaction = function (studentId, type, value, date, note, fromId, toId, req, callback) {
+    console.log(date)
+    Student.receivePaymentToStudent(studentId, value, date, note, fromId, req, function (err, data) {
+      if (err) {
+        return callback(err)
+      }
+      Student.addPaymentToStudent(studentId, value, date, note, toId, req, function (err, data) {
+        if (err) {
+          return callback(err)
+        }
+        return callback(null, data)
+      })
+    })
+  }
 
 
   function generate(n) {

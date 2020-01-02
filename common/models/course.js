@@ -89,6 +89,64 @@ module.exports = function (Course) {
   };
 
 
+  Course.startCourse = async function (id, req, callback) {
+    try {
+      var mainCourse = await Course.findById(id)
+      if (mainCourse == null)
+        throw Course.app.err.notFound.courseNotFound()
+      await Course.app.models.user.checkRoleBranchAdmin(mainCourse.instituteId, mainCourse.branchId, req)
+      if (mainCourse.isStarted)
+        throw Course.app.err.notFound.courseIsStarted()
+      if (mainCourse.typeCost == 'course') {
+        let studentInCourse = await Course.app.models.studentCourse.find({
+          "where": {
+            "courseId": id,
+            "isInQueue": false,
+          }
+        })
+        await Promise.all(studentInCourse.map(async (element, index) => {
+          let student = element.student()
+          let newStudentFrozenBalance = element.frozenBalance - element.cost;
+          let newFrozenBalance = 0;
+          let newBalance = 0;
+          let newStudentBalance = 0;
+          if (element.frozenBalance >= element.cost) {
+            newFrozenBalance = student.frozenBalance - element.cost
+            newBalance = student.balance + element.cost
+            newStudentBalance = element.cost
+          } else {
+            newFrozenBalance = student.frozenBalance - element.frozenBalance
+            newBalance = student.balance + element.frozenBalance
+            newStudentBalance = element.frozenBalance
+          }
+
+          await Course.app.models.transaction.create({
+            "instituteId": mainCourse.instituteId,
+            "branchId": mainCourse.branchId,
+            "courseId": mainCourse.id,
+            "studentId": student.id,
+            "value": newStudentBalance,
+            "type": "receiveCourse"
+          })
+          await element.updateAttributes({
+            "balance": newStudentBalance,
+            "frozenBalance": newStudentFrozenBalance
+          })
+          await student.updateAttributes({
+            "balance": newBalance,
+            "frozenBalance": newFrozenBalance
+          })
+
+        }))
+      }
+      console.log("tttttt")
+      await mainCourse.updateAttribute("isStarted", true)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
   Course.editCourse = async function (id, data, imagesId, req, callback) {
     try {
       var mainCourse = await Course.findById(id)

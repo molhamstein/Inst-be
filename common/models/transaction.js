@@ -1,5 +1,9 @@
 'use strict';
 
-module.exports = function(Transaction) {
+module.exports = function (Transaction) {
+  Transaction.validatesInclusionOf('type', {
+    in: ['receiveCourseSupplies','receiveCourse','debtInCourse']
+  });
 
+  
 };

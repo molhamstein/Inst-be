@@ -1,0 +1,31 @@
+{
+  "name": "restriction",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "instituteId": {
+      "type": "number",
+      "required": true
+    },
+    "titleEn": {
+      "type": "string",
+      "required": true
+    },
+    "titleAr": {
+      "type": "string",
+      "required": true
+    },
+    "createdAt": {
+      "type": "date",
+      "required": true,
+      "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

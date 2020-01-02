@@ -15,6 +15,8 @@ module.exports = function (app) {
   var userInstitute = app.models.userInstitute;
   var Media = app.models.Media;
   var Institute = app.models.Institute;
+  var restriction = app.models.restriction;
+
   var InstitutesImages = app.models.InstitutesImages;
   var instituteAdmin = app.models.instituteAdmin;
   var Branch = app.models.Branch;
@@ -26,13 +28,15 @@ module.exports = function (app) {
   var venueImages = app.models.venueImages;
   var student = app.models.student;
   var verificationCode = app.models.verificationCode;
+  var studentPayment = app.models.studentPayment;
+
   var teacher = app.models.teacher;
   var teacherSubcategory = app.models.teacherSubcategory;
   var waitingList = app.models.waitingList;
   var waitingListStudent = app.models.waitingListStudent;
   var course = app.models.course;
   var supply = app.models.supply;
-  
+
   var courseImages = app.models.courseImages;
   var session = app.models.session;
   var teacherCourse = app.models.teacherCourse;
@@ -45,7 +49,7 @@ module.exports = function (app) {
   var notification = app.models.notification;
   var notificationType = app.models.notificationType;
 
-
+  var transaction = app.models.transaction
 
 
 
@@ -276,6 +280,7 @@ module.exports = function (app) {
     await customdAutoUpload(userInstitute, 'userInstitute', []);
     await customdAutoUpload(Media, 'media', []);
     await customdAutoUpload(Institute, 'institute', []);
+    await customdAutoUpload(restriction, 'restriction', []);
     await customdAutoUpload(InstitutesImages, 'institutesImages', []);
     await customdAutoUpload(instituteAdmin, 'instituteAdmin', []);
     await customdAutoUpload(Branch, 'branch', []);
@@ -286,6 +291,7 @@ module.exports = function (app) {
     await customdAutoUpload(venueImages, 'venueImages', []);
     await customdAutoUpload(student, 'student', []);
     await customdAutoUpload(verificationCode, 'verificationCode', []);
+    await customdAutoUpload(studentPayment, 'studentPayment', []);
     await customdAutoUpload(teacher, 'teacher', []);
     await customdAutoUpload(teacherSubcategory, 'teacherSubcategory', []);
     await customdAutoUpload(waitingList, 'waitingList', []);
@@ -303,6 +309,8 @@ module.exports = function (app) {
     // await customdAutoUpload(packageStudentPayment, 'packageStudentPayment', []);
     await customdAutoUpload(notification, 'notification', []);
     await customdAutoUpload(notificationType, 'notificationType', notificationTypeData);
+    await customdAutoUpload(transaction, 'transaction', []);
+
 
   }
 

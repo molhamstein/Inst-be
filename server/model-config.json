@@ -354,5 +354,13 @@
   "supply": {
     "dataSource": "mainDB",
     "public": true
+  },
+  "restriction": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "studentPayment": {
+    "dataSource": "mainDB",
+    "public": true
   }
 }

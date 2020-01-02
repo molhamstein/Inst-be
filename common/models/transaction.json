@@ -7,13 +7,46 @@
     "validateUpsert": true
   },
   "properties": {
+    "instituteId": {
+      "type": "number",
+      "required": true
+    },
+    "branchId": {
+      "type": "number",
+      "required": false
+    },
+    "courseId": {
+      "type": "number",
+      "required": false
+    },
+    "sessionId": {
+      "type": "number",
+      "required": false
+    },
+    "studentId": {
+      "type": "number",
+      "required": false
+    },
+    "teacherId": {
+      "type": "number",
+      "required": false
+    },
     "value": {
       "type": "number",
       "required": true
     },
     "date": {
       "type": "date",
+      "required": true,
+      "defaultFn": "now"
+    },
+    "type": {
+      "type": "string",
       "required": true
+    },
+    "restrictionId": {
+      "type": "number",
+      "required": false
     },
     "createdAt": {
       "type": "date",

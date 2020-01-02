@@ -1,0 +1,39 @@
+{
+  "name": "studentPayment",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "studentId": {
+      "type": "number",
+      "required": true
+    },
+    "value": {
+      "type": "number",
+      "required": true
+    },
+    "courseId": {
+      "type": "number",
+      "required": false
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "note": {
+      "type": "string",
+      "required": false
+    },
+    "createdAt": {
+      "type": "date",
+      "required": true,
+      "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

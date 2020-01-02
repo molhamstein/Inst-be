@@ -6,11 +6,11 @@
     "validateUpsert": true
   },
   "scope": {
-    "include": [
-      {
-        "relation": "course"
-      }
-    ]
+    "include": [{
+      "relation": "course"
+    }, {
+      "relation": "student"
+    }]
   },
   "properties": {
     "studentId": {
@@ -25,6 +25,16 @@
       "type": "number",
       "required": false
     },
+    "frozenBalance": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "balance": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
     "isInQueue": {
       "type": "boolean",
       "required": true
@@ -32,6 +42,10 @@
     "order": {
       "type": "number",
       "required": false
+    },
+    "isBuySupplies": {
+      "type": "number",
+      "required": true
     },
     "createdAt": {
       "type": "date",
@@ -48,10 +62,17 @@
       "options": {
         "nestRemoting": true
       }
+    },
+    "student": {
+      "type": "belongsTo",
+      "model": "student",
+      "foreignKey": "studentId",
+      "options": {
+        "nestRemoting": true
+      }
     }
   },
-  "acls": [
-    {
+  "acls": [{
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -83,12 +104,18 @@
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "submitStudentCourseInOldPackage"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "buySupplies"
     }
   ],
   "methods": {
     "addStudentToCourse": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "courseId",
           "type": "number",
           "required": true,
@@ -116,25 +143,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/addStudentToCourse",
-          "verb": "post"
-        }
-      ]
+      "http": [{
+        "path": "/addStudentToCourse",
+        "verb": "post"
+      }]
     },
     "submitStudentCourseInNewPackage": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -159,25 +181,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/submitStudentCourseInNewPackage",
-          "verb": "put"
-        }
-      ]
+      "http": [{
+        "path": "/:id/submitStudentCourseInNewPackage",
+        "verb": "put"
+      }]
     },
     "submitStudentCourseInOldPackage": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -208,21 +225,49 @@
           }
         }
       ],
-      "returns": [
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:id/submitStudentCourseInoldPackage",
+        "verb": "put"
+      }]
+    },
+    "buySupplies": {
+      "accepts": [{
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
         {
-          "arg": "object",
+          "arg": "req",
           "type": "object",
-          "root": true,
-          "description": ""
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
         }
       ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/submitStudentCourseInoldPackage",
-          "verb": "put"
-        }
-      ]
+      "http": [{
+        "path": "/:id/buySupplies",
+        "verb": "put"
+      }]
     }
   }
 }
