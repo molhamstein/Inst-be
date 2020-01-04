@@ -366,6 +366,6 @@ module.exports = function (app) {
   if (process.env.NODE_ENV == 'test') {
     initTest()
   } else {
-    // init()
+    init()
   }
 };

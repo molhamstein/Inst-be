@@ -392,6 +392,7 @@ module.exports = function (Student) {
     }
   }
 
+
   Student.receivePaymentToStudent = async function (studentId, value, date, note, courseId, req, callback) {
     try {
       var student = await Student.findById(studentId);
@@ -497,7 +498,6 @@ module.exports = function (Student) {
 
 
   Student.makeStudentTransaction = function (studentId, type, value, date, note, fromId, toId, req, callback) {
-    console.log(date)
     Student.receivePaymentToStudent(studentId, value, date, note, fromId, req, function (err, data) {
       if (err) {
         return callback(err)
@@ -511,6 +511,45 @@ module.exports = function (Student) {
     })
   }
 
+
+
+  Student.getStudentCourse = async function (studentId, filter = {
+    "where": {}
+  }, req, callback) {
+    try {
+      var student = await Student.findById(studentId);
+      if (student == null) {
+        throw Student.app.err.notFound.studentNotFound()
+      }
+      await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['studentId'] = studentId
+      var courses = await Student.app.models.studentCourse.find(filter)
+      callback(null, courses)
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+  Student.getStudentPayments = async function (studentId, filter = {
+    "where": {}
+  }, req, callback) {
+    try {
+      var student = await Student.findById(studentId);
+      if (student == null) {
+        throw Student.app.err.notFound.studentNotFound()
+      }
+      await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['studentId'] = studentId
+      var payments = await Student.app.models.studentPayment.find(filter)
+      callback(null, payments)
+    } catch (error) {
+      callback(error)
+    }
+  }
 
   function generate(n) {
     var add = 1,

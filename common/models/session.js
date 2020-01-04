@@ -125,6 +125,128 @@ module.exports = function (Session) {
     }
   };
 
+
+  Session.getSession = async function (id, req, callback) {
+    try {
+      var mainSession = await Session.findById(id)
+      if (mainSession == null)
+        throw Session.app.err.global.notFound()
+      await Session.app.models.user.checkRoleInstituteUser(mainSession.course().instituteId, req)
+      callback(null, mainSession)
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+  Session.getStudentInSession = async function (id, req, callback) {
+    try {
+      var mainSession = await Session.findById(id)
+      if (mainSession == null)
+        throw Session.app.err.global.notFound()
+      await Session.app.models.user.checkRoleInstituteUser(mainSession.course().instituteId, req)
+      var student = await Session.app.models.studentSession.find({
+        "where": {
+          "sessionId": id
+        }
+      })
+      callback(null, student)
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+
+  Session.attendStudent = async function (id, studentId, req, callback) {
+    try {
+      await Session.app.dataSources.mainDB.transaction(async models => {
+        const {
+          session
+        } = models
+        const {
+          student
+        } = models
+        const {
+          studentSession
+        } = models
+        const {
+          studentCourse
+        } = models
+        const {
+          transaction
+        } = models
+        var mainSession = await session.findById(id)
+        if (mainSession == null)
+          throw Session.app.err.global.notFound()
+        var mainStudent = await student.findById(studentId)
+        if (mainStudent == null)
+          throw Session.app.err.notFound.studentNotFound()
+
+        var mainCourse = mainSession.course()
+        await Session.app.models.user.checkRoleInstituteUser(mainSession.course().instituteId, req)
+        var mainStudentSession = await studentSession.findOne({
+          "where": {
+            "sessionId": id,
+            "studentId": studentId,
+          }
+        })
+        if (mainStudentSession == null)
+          throw Session.app.err.global.notFound()
+
+        if (mainStudentSession.isAttend) {
+          throw Session.app.err.session.alreadyAttendSession()
+        }
+        await mainStudentSession.updateAttributes({
+          "isAttend": true,
+          "dateAttend": new Date()
+        })
+        if (mainCourse.typeCost == 'perSession') {
+          var mainStudentCourse = await studentCourse.findOne({
+            "where": {
+              "studentId": studentId,
+              "courseId": mainCourse.id
+            }
+          })
+          var balance = 0;
+          var attend = 0
+          if (mainStudentCourse.frozenBalance >= mainStudentSession.cost) {
+            balance = mainStudentSession.cost
+          } else if (mainStudentCourse.frozenBalance >= 0) {
+            balance = mainStudentCourse.frozenBalance
+            attend = mainStudentSession.cost - mainStudentCourse.frozenBalance
+          } else {
+            attend = mainStudentSession.cost
+          }
+
+          await mainStudentSession.updateAttribute("balance", balance);
+          var mainStudentCourseFrozen = mainStudentCourse.frozenBalance - mainStudentSession.cost
+          var mainStudentCourseBralance = mainStudentCourse.balance + balance
+          await mainStudentCourse.updateAttributes({
+            "balance": mainStudentCourseBralance,
+            "frozenBalance": mainStudentCourseFrozen
+          })
+
+          await transaction.create({
+            "instituteId": mainCourse.instituteId,
+            "branchId": mainCourse.branchId,
+            "courseId": mainCourse.id,
+            "sessionId":id,
+            "studentId": studentId,
+            "value": balance,
+            "type": "receiveSession"
+
+          })
+
+        }
+
+        callback(null, mainStudentSession)
+      })
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+
+
   function addMinutes(date, m) {
     date.setTime(date.getTime() + (m * 60 * 1000));
     return date;

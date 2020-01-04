@@ -2,8 +2,8 @@
 
 module.exports = function (Transaction) {
   Transaction.validatesInclusionOf('type', {
-    in: ['receiveCourseSupplies','receiveCourse','debtInCourse']
+    in: ['receiveCourseSupplies', 'receiveCourse', 'receiveSession', 'debtInCourse']
   });
 
-  
+
 };

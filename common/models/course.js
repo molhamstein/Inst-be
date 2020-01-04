@@ -266,6 +266,7 @@ module.exports = function (Course) {
             newSessionStudentData.push({
               "sessionId": oneSession.id,
               "studentId": element.studentId,
+              "cost":oneSession.cost
             })
           });
         });
@@ -294,7 +295,7 @@ module.exports = function (Course) {
       if (mainCourse == null)
         throw Course.app.err.notFound.courseNotFound()
       await Course.app.models.user.checkRoleBranchAdmin(mainCourse.instituteId, mainCourse.branchId, req)
-      var teacherInCourse = await Course.app.query.threeLevel(Course.app, "teachercourse", "teacher", "user", "teacherId", "id", "userId", "id", filter, false)
+      var teacherInCourse = await Course.app.query.threeLevel(Course.app, "teacherCourse", "teacher", "user", "teacherId", "id", "userId", "id", filter, false)
 
       callback(null, teacherInCourse);
     } catch (error) {
@@ -310,7 +311,7 @@ module.exports = function (Course) {
       if (mainCourse == null)
         throw Course.app.err.notFound.courseNotFound()
       await Course.app.models.user.checkRoleBranchAdmin(mainCourse.instituteId, mainCourse.branchId, req)
-      var teacherInCourse = await Course.app.query.threeLevel(Course.app, "teachercourse", "teacher", "user", "teacherId", "id", "userId", "id", where, true)
+      var teacherInCourse = await Course.app.query.threeLevel(Course.app, "teacherCourse", "teacher", "user", "teacherId", "id", "userId", "id", where, true)
       callback(null, teacherInCourse);
     } catch (error) {
       callback(error)
@@ -354,7 +355,7 @@ module.exports = function (Course) {
       if (mainCourse == null)
         throw Course.app.err.notFound.courseNotFound()
       await Course.app.models.user.checkRoleBranchAdmin(mainCourse.instituteId, mainCourse.branchId, req)
-      var studentInCourse = await Course.app.query.threeLevel(Course.app, "studentcourse", "student", "user", "studentId", "id", "userId", "id", filter, false)
+      var studentInCourse = await Course.app.query.threeLevel(Course.app, "studentCourse", "student", "user", "studentId", "id", "userId", "id", filter, false)
       callback(null, studentInCourse);
     } catch (error) {
       callback(error)
@@ -369,7 +370,7 @@ module.exports = function (Course) {
       if (mainCourse == null)
         throw Course.app.err.notFound.courseNotFound()
       await Course.app.models.user.checkRoleBranchAdmin(mainCourse.instituteId, mainCourse.branchId, req)
-      var studentInCourse = await Course.app.query.threeLevel(Course.app, "studentcourse", "student", "user", "studentId", "id", "userId", "id", where, true)
+      var studentInCourse = await Course.app.query.threeLevel(Course.app, "studentCourse", "student", "user", "studentId", "id", "userId", "id", where, true)
       callback(null, studentInCourse);
     } catch (error) {
       callback(error)

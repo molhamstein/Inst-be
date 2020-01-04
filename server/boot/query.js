@@ -8,8 +8,8 @@ const fields = {
   student: ["userId", "instituteId", "branchId", "createdAt", "id","status","balance","frozenBalance"],
   teacher: ["userId", "instituteId", "createdAt", "id"],
   user: ["gender", "birthdate", "name", "phonenumber", "id"],
-  teachercourse: ["id", "courseId", "teacherId", "typePaid", "value", "totalPayment", "createdAt"],
-  studentcourse: ["id", "courseId", "studentId", "isInQueue", "order", "createdAt"]
+  teacherCourse: ["id", "courseId", "teacherId", "typePaid", "value", "totalPayment", "createdAt"],
+  studentCourse: ["id", "courseId", "studentId", "isInQueue", "order", "createdAt"]
 }
 
 const relationName = {

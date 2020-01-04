@@ -166,6 +166,20 @@
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "makeStudentTransaction"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getStudentCourse"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getStudentPayments"
     }
   ],
   "methods": {
@@ -583,6 +597,80 @@
       "http": [{
         "path": "/:studentId/makeStudentTransaction",
         "verb": "post"
+      }]
+    },
+    "getStudentCourse": {
+      "accepts": [{
+          "arg": "studentId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "filter",
+          "type": "object",
+          "required": false
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:studentId/getStudentCourse",
+        "verb": "get"
+      }]
+    },
+    "getStudentPayments": {
+      "accepts": [{
+          "arg": "studentId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "filter",
+          "type": "object",
+          "required": false
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:studentId/getStudentPayments",
+        "verb": "get"
       }]
     }
   }

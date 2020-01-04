@@ -81,6 +81,12 @@ module.exports.student = {
     return new cError(470, 'student does not have balance', 470);
   }
 }
+
+module.exports.session = {
+  alreadyAttendSession: function () {
+    return new cError(472, 'already attend session', 472);
+  },
+}
 module.exports.course = {
 
   sessionHasError: function (data) {
