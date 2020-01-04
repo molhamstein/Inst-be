@@ -5,11 +5,11 @@ const fields = {
   userinstitute: ["gender", "birthdate", "name", "email", "id"],
   branchadmin: ["id", "userInstituteId", "branchId", "createdAt"],
   waitingliststudent: ["id", "waitingListId", "studentId", "branchId", "note", "payment", "createdAt"],
-  student: ["userId", "instituteId", "branchId", "createdAt", "id","status","balance","frozenBalance"],
+  student: ["userId", "instituteId", "branchId", "createdAt", "id", "status", "balance", "frozenBalance"],
   teacher: ["userId", "instituteId", "createdAt", "id"],
   user: ["gender", "birthdate", "name", "phonenumber", "id"],
   teacherCourse: ["id", "courseId", "teacherId", "typePaid", "value", "totalPayment", "createdAt"],
-  studentCourse: ["id", "courseId", "studentId", "isInQueue", "order", "createdAt"]
+  studentCourse: ["id", "courseId", "studentId", "isInQueue", "order", "frozenBalance", "balance", "isBuySupplies", "cost", "createdAt"]
 }
 
 const relationName = {
