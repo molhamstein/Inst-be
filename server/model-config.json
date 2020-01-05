@@ -284,6 +284,10 @@
     "dataSource": "mainDB",
     "public": true
   },
+  "teacherPayment": {
+    "dataSource": "mainDB",
+    "public": true
+  },
   "studentCourse": {
     "dataSource": "mainDB",
     "public": true,

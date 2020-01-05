@@ -41,6 +41,8 @@ module.exports = function (app) {
   var session = app.models.session;
   var teacherCourse = app.models.teacherCourse;
   var teacherCoursePayment = app.models.teacherCoursePayment;
+  var teacherPayment = app.models.teacherPayment;
+
   var studentCourse = app.models.studentCourse;
   // var packageStudent = app.models.packageStudent;
   // var packageCourse = app.models.packageCourse;
@@ -302,6 +304,7 @@ module.exports = function (app) {
     await customdAutoUpload(session, 'session', []);
     await customdAutoUpload(teacherCourse, 'teacherCourse', []);
     await customdAutoUpload(teacherCoursePayment, 'teacherCoursePayment', []);
+    await customdAutoUpload(teacherPayment, 'teacherPayment', []);
     await customdAutoUpload(studentCourse, 'studentCourse', []);
     // await customdAutoUpload(packageStudent, 'packageStudent', []);
     // await customdAutoUpload(packageCourse, 'packageCourse', []);
@@ -366,6 +369,6 @@ module.exports = function (app) {
   if (process.env.NODE_ENV == 'test') {
     initTest()
   } else {
-    init()
+    // init()
   }
 };

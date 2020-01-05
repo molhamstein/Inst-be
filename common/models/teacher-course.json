@@ -6,11 +6,9 @@
     "validateUpsert": true
   },
   "scope": {
-    "include": [
-      {
-        "relation": "teacher"
-      }
-    ]
+    "include": [{
+      "relation": "teacher"
+    }]
   },
   "properties": {
     "courseId": {
@@ -29,7 +27,7 @@
       "type": "number",
       "required": true
     },
-    "totalPayment": {
+    "balance": {
       "type": "number",
       "required": true,
       "default": 0
@@ -59,8 +57,7 @@
       }
     }
   },
-  "acls": [
-    {
+  "acls": [{
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -77,69 +74,12 @@
       "principalType": "ROLE",
       "principalId": "user-institute",
       "permission": "ALLOW",
-      "property": "addPaymentToTeacher"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
       "property": "getPaymentsForTeacher"
     }
   ],
   "methods": {
-    "addPaymentToTeacher": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "value",
-          "type": "number",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "note",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/addPaymentToTeacher",
-          "verb": "post"
-        }
-      ]
-    },
     "getPaymentsForTeacher": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -158,21 +98,17 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "array",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "result",
+        "type": "array",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/getPaymentsForTeacher",
-          "verb": "get"
-        }
-      ]
+      "http": [{
+        "path": "/:id/getPaymentsForTeacher",
+        "verb": "get"
+      }]
     }
   }
 }

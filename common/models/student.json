@@ -33,6 +33,10 @@
       "type": "number",
       "required": true
     },
+    "code": {
+      "type": "number",
+      "required": false
+    },
     "email": {
       "type": "string"
     },
@@ -221,6 +225,12 @@
           "description": ""
         },
         {
+          "arg": "code",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
           "arg": "req",
           "type": "object",
           "required": true,
@@ -265,6 +275,12 @@
           "arg": "sentInvitation",
           "type": "Boolean",
           "required": true,
+          "description": ""
+        },
+        {
+          "arg": "code",
+          "type": "string",
+          "required": false,
           "description": ""
         },
         {

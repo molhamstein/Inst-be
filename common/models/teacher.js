@@ -253,4 +253,88 @@ module.exports = function (Teacher) {
       callback(error)
     }
   };
+
+  Teacher.getTeacherPayments = async function (teacherId, filter = {
+    "where": {}
+  }, req, callback) {
+    try {
+      var teacher = await Teacher.findById(teacherId);
+      if (teacher == null) {
+        throw Teacher.app.err.notFound.teacherNotFound()
+      }
+      await Teacher.app.models.user.checkRoleInstituteUser(teacher.instituteId, req)
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['teacherId'] = teacherId
+      var payments = await Teacher.app.models.teacherPayment.find(filter)
+      callback(null, payments)
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+
+  Teacher.addPaymentToTeacher = async function (id, value, courseId, sessionId, note, req, callback) {
+    try {
+      await Teacher.app.dataSources.mainDB.transaction(async models => {
+        const {
+          teacher
+        } = models
+        const {
+          teacherPayment
+        } = models
+        const {
+          teacherCourse
+        } = models
+        const {
+          course
+        } = models
+        const {
+          transaction
+        } = models
+
+
+        var mainTeacher = await teacher.findById(id)
+        if (mainTeacher == null)
+          throw Teacher.app.err.notFound.teacherNotFound()
+        var mainCourse = await course.findById(courseId)
+        if (mainCourse == null)
+          throw Teacher.app.err.notFound.courseNotFound()
+        await Teacher.app.models.user.checkRoleBranchAdmin(mainCourse.instituteId, mainCourse.branchId, req)
+
+        var newTeacherPayment = await teacherPayment.create({
+          "teacherId": id,
+          "courseId": courseId,
+          "sessionId": sessionId,
+          "value": value,
+          "note": note
+        })
+        var oldTeacherCourse = await teacherCourse.findOne({
+          "where": {
+            "courseId": courseId,
+            "teacherId": id
+          }
+        })
+        var newBalance = oldTeacherCourse.balance + value
+        var newTeacherCourse = await oldTeacherCourse.updateAttribute("balance", newBalance)
+        var newTeacherBalance = mainTeacher.balance + value
+        var newTeacher = await mainTeacher.updateAttribute("balance", newTeacherBalance)
+
+        await transaction.create({
+          "instituteId": mainCourse.instituteId,
+          "branchId": mainCourse.branchId,
+          "courseId": mainCourse.id,
+          "sessionId": sessionId,
+          "teacherId": id,
+          "value": value * -1,
+          "type": "paidTeacherCourse"
+        })
+        callback(null, newTeacher)
+      })
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
 };

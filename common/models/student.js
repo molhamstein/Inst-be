@@ -5,7 +5,7 @@ var debug = require('debug')('loopback:user');
 module.exports = function (Student) {
 
 
-  Student.addNewStudent = async function (instituteId, branchId, phonenumber, name, gender, birthdate, req, callback) {
+  Student.addNewStudent = async function (instituteId, branchId, phonenumber, name, gender, birthdate, code, req, callback) {
     try {
       await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
       await Student.app.dataSources.mainDB.transaction(async models => {
@@ -42,6 +42,7 @@ module.exports = function (Student) {
           "userId": userObj.id,
           "instituteId": instituteId,
           "branchId": branchId,
+          "code": code,
           "password": randomPassword.toString()
         });
         var randomCode = generate(4)
@@ -69,7 +70,7 @@ module.exports = function (Student) {
   };
 
 
-  Student.addOldStudent = async function (instituteId, branchId, phonenumber, sentInvitation, req, callback) {
+  Student.addOldStudent = async function (instituteId, branchId, phonenumber, sentInvitation, code, req, callback) {
     try {
       await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
       await Student.app.dataSources.mainDB.transaction(async models => {
@@ -114,6 +115,7 @@ module.exports = function (Student) {
           "instituteId": instituteId,
           "branchId": branchId,
           "password": randomPassword.toString(),
+          "code": code,
           "sentInvitation": sentInvitation
         });
 

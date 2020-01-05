@@ -334,4 +334,39 @@ module.exports = function (Branch) {
     }
   };
 
+  Branch.getSessionBranch = async function (id, filter = {
+    "where": {}
+  }, req, callback) {
+    try {
+      var branch = await Branch.findById(id);
+      if (branch == null)
+        throw Branch.app.err.global.authorization()
+      await Branch.app.models.user.checkRoleBranchAdmin(branch.instituteId, id, req)
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['course.branchId'] = id
+
+      // var studentInCourse = await Branch.app.query.towLevel(Branch.app, "session", "course", "courseId", "id", filter, false)
+      var studentInCourse = await Branch.app.query.multiTowLevel(Branch.app, ["session", "course", "venue"], [{
+          "fromTable": 1,
+          "fromId": "id",
+          "mainTable": 0,
+          "mainId": "courseId",
+          "relationName": "course"
+        },
+        {
+          "fromTable": 2,
+          "fromId": "id",
+          "mainTable": 0,
+          "mainId": "venueId",
+          "relationName": "venue"
+        }
+      ], filter) // "session", "course", "courseId", "id", filter, false)
+      // var studentInCourse = await Course.app.query.towLevel(Branch.app,)
+      callback(null, studentInCourse)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
 };

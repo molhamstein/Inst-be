@@ -8,11 +8,9 @@
   },
   "ownerRelations": true,
   "scope": {
-    "include": [
-      {
-        "relation": "user"
-      }
-    ]
+    "include": [{
+      "relation": "user"
+    }]
   },
   "hidden": [
     "password",
@@ -38,6 +36,11 @@
       "type": "string",
       "required": true,
       "default": "active"
+    },
+    "balance": {
+      "type": "number",
+      "required": true,
+      "default": 0
     },
     "createdAt": {
       "type": "date",
@@ -77,8 +80,7 @@
       "keyThrough": "subcategoryId"
     }
   },
-  "acls": [
-    {
+  "acls": [{
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -117,12 +119,25 @@
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "getTeacher"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "addPaymentToTeacher"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getTeacherPayments"
     }
   ],
   "methods": {
     "addNewTeacher": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "instituteId",
           "type": "number",
           "required": true,
@@ -168,25 +183,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/addNewTeacher",
-          "verb": "post"
-        }
-      ]
+      "http": [{
+        "path": "/addNewTeacher",
+        "verb": "post"
+      }]
     },
     "addOldTeacher": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "instituteId",
           "type": "number",
           "required": true,
@@ -214,25 +224,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "student",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "student",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/addOldTeacher",
-          "verb": "post"
-        }
-      ]
+      "http": [{
+        "path": "/addOldTeacher",
+        "verb": "post"
+      }]
     },
     "changeSubcategory": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -257,25 +262,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/changeSubcategory",
-          "verb": "put"
-        }
-      ]
+      "http": [{
+        "path": "/:id/changeSubcategory",
+        "verb": "put"
+      }]
     },
     "getTeacher": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -294,21 +294,110 @@
           }
         }
       ],
-      "returns": [
+      "returns": [{
+        "arg": "teacher",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:id/getTeacher",
+        "verb": "get"
+      }]
+    },
+    "addPaymentToTeacher": {
+      "accepts": [{
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
         {
-          "arg": "teacher",
-          "type": "object",
-          "root": true,
+          "arg": "value",
+          "type": "number",
+          "required": true,
           "description": ""
+        },
+        {
+          "arg": "courseId",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "sessionId",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "note",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
         }
       ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
+      "http": [{
+        "path": "/:id/addPaymentToTeacher",
+        "verb": "post"
+      }]
+    },
+    "getTeacherPayments": {
+      "accepts": [{
+          "arg": "teacherId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
         {
-          "path": "/:id/getTeacher",
-          "verb": "get"
+          "arg": "filter",
+          "type": "object",
+          "required": false
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
         }
-      ]
+      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:teacherId/getTeacherPayments",
+        "verb": "get"
+      }]
     }
   }
 }

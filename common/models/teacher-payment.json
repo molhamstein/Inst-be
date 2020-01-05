@@ -1,0 +1,38 @@
+{
+  "name": "teacherPayment",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "teacherId": {
+      "type": "number",
+      "required": true
+    },
+    "value": {
+      "type": "number",
+      "required": true
+    },
+    "courseId": {
+      "type": "number",
+      "required": true
+    },
+    "sessionId": {
+      "type": "number",
+      "required": false
+    },
+    "note": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "date",
+      "required": true,
+      "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

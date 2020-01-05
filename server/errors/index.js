@@ -26,8 +26,14 @@ module.exports.notFound = {
   courseNotFound: function () {
     return new cError(492, 'course not found', 492);
   },
+  sessionNotFound: function () {
+    return new cError(494, 'session not found', 494);
+  },
   studentNotFound: function () {
     return new cError(493, 'student not found', 493);
+  },
+  teacherNotFound: function () {
+    return new cError(495, 'teacher not found', 495);
   }
 }
 module.exports.user = {
