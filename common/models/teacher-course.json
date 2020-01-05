@@ -8,6 +8,8 @@
   "scope": {
     "include": [{
       "relation": "teacher"
+    },{
+      "relation": "course"
     }]
   },
   "properties": {
