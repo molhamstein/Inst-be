@@ -350,7 +350,7 @@ module.exports = function (Teacher) {
       if (filter["where"] == null)
         filter['where'] = {}
       filter['where']['teacherId'] = teacherId
-      var courses = await Student.app.models.teacherCourse.find(filter)
+      var courses = await Teacher.app.models.teacherCourse.find(filter)
       callback(null, courses)
     } catch (error) {
       callback(error)
