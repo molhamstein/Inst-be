@@ -8,7 +8,7 @@ const fields = {
   student: ["userId", "instituteId", "branchId", "createdAt", "id", "status", "balance", "frozenBalance"],
   teacher: ["userId", "instituteId", "createdAt", "id"],
   user: ["gender", "birthdate", "name", "phonenumber", "id"],
-  teacherCourse: ["id", "courseId", "teacherId", "typePaid", "value", "totalPayment", "createdAt"],
+  teacherCourse: ["id", "courseId", "teacherId", "typePaid", "value", "balance", "createdAt"],
   studentCourse: ["id", "courseId", "studentId", "isInQueue", "order", "frozenBalance", "balance", "isBuySupplies", "cost", "createdAt"],
   session: ["id", "courseId", "venueId", "startAt", "endAt", "cost", "status", "createdAt"],
   course: ["id", "instituteId", "branchId", "venueId", "subcategoryId", "cost", "costSupplies", "typeCost", "sessionsNumber", "nameEn", "nameAr", "descriptionEn", "descriptionAr", "startAt", "maxCountStudent", "countStudent", "countStudentInQueue", "sessionAvgDuration", "waitingListId", "hasSession", "hasSpplies", "isStarted", "status", "createdAt"],

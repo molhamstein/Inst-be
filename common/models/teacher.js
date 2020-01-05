@@ -254,6 +254,7 @@ module.exports = function (Teacher) {
     }
   };
 
+
   Teacher.getTeacherPayments = async function (teacherId, filter = {
     "where": {}
   }, req, callback) {
