@@ -133,7 +133,15 @@
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "getTeacherPayments"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getTeacherCourse"
     }
+
   ],
   "methods": {
     "addNewTeacher": {
@@ -396,6 +404,43 @@
       "description": "",
       "http": [{
         "path": "/:teacherId/getTeacherPayments",
+        "verb": "get"
+      }]
+    },
+    "getTeacherCourse": {
+      "accepts": [{
+          "arg": "teacherId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "filter",
+          "type": "object",
+          "required": false
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:teacherId/getTeacherCourse",
         "verb": "get"
       }]
     }

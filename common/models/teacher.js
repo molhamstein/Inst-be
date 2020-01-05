@@ -338,4 +338,24 @@ module.exports = function (Teacher) {
   };
 
 
+  Teacher.getTeacherCourse = async function (teacherId, filter = {
+    "where": {}
+  }, req, callback) {
+    try {
+      var teacher = await Teacher.findById(teacherId);
+      if (teacher == null) {
+        throw Teacher.app.err.notFound.studentNotFound()
+      }
+      await Teacher.app.models.user.checkRoleInstituteUser(teacher.instituteId, req)
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['teacherId'] = teacherId
+      var courses = await Student.app.models.teacherCourse.find(filter)
+      callback(null, courses)
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+
 };
