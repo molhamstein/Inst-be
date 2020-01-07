@@ -10,7 +10,7 @@ const fields = {
   user: ["gender", "birthdate", "name", "phonenumber", "id"],
   teacherCourse: ["id", "courseId", "teacherId", "typePaid", "value", "balance", "createdAt"],
   studentCourse: ["id", "courseId", "studentId", "isInQueue", "order", "frozenBalance", "balance", "isBuySupplies", "cost", "createdAt"],
-  session: ["id", "courseId", "venueId", "startAt", "endAt", "cost", "status", "createdAt"],
+  session: ["id", "courseId", "venueId", "startAt", "endAt", "cost", "name", "status", "createdAt"],
   course: ["id", "instituteId", "branchId", "venueId", "subcategoryId", "cost", "costSupplies", "typeCost", "sessionsNumber", "nameEn", "nameAr", "descriptionEn", "descriptionAr", "startAt", "maxCountStudent", "countStudent", "countStudentInQueue", "sessionAvgDuration", "waitingListId", "hasSession", "hasSpplies", "isStarted", "status", "createdAt"],
   venue: ["id", "instituteId", "branchId", "nameEn", "nameAr", "type", "status", "createdAt"]
 }
