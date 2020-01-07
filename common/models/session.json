@@ -309,7 +309,13 @@
         {
           "arg": "studentId",
           "type": "number",
-          "required": true,
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "code",
+          "type": "string",
+          "required": false,
           "description": ""
         },
         {

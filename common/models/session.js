@@ -156,7 +156,7 @@ module.exports = function (Session) {
   }
 
 
-  Session.attendStudent = async function (id, studentId, req, callback) {
+  Session.attendStudent = async function (id, studentId, code, req, callback) {
     try {
       await Session.app.dataSources.mainDB.transaction(async models => {
         const {
@@ -177,12 +177,24 @@ module.exports = function (Session) {
         var mainSession = await session.findById(id)
         if (mainSession == null)
           throw Session.app.err.global.notFound()
-        var mainStudent = await student.findById(studentId)
-        if (mainStudent == null)
-          throw Session.app.err.notFound.studentNotFound()
 
         var mainCourse = mainSession.course()
         await Session.app.models.user.checkRoleInstituteUser(mainSession.course().instituteId, req)
+        var mainStudent
+        if (studentId == null && code != null) {
+          mainStudent = await student.findOne({
+            "where": {
+              "instituteId": mainCourse.instituteId,
+              "code": code
+            }
+          })
+          studentId = mainStudent.id
+        } else {
+          mainStudent = await student.findById(studentId)
+        }
+        if (mainStudent == null)
+          throw Session.app.err.notFound.studentNotFound()
+
         var mainStudentSession = await studentSession.findOne({
           "where": {
             "sessionId": id,
@@ -229,7 +241,7 @@ module.exports = function (Session) {
             "instituteId": mainCourse.instituteId,
             "branchId": mainCourse.branchId,
             "courseId": mainCourse.id,
-            "sessionId":id,
+            "sessionId": id,
             "studentId": studentId,
             "value": balance,
             "type": "receiveSession"

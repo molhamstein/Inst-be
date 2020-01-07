@@ -405,6 +405,11 @@ module.exports = {
       var arraywhereObject = []
       console.log(filter.where)
       if (filter.where) {
+        for (let index = 0; index < arrayOfTable.length; index++) {
+          const element = arrayOfTable[index];
+          arraywhereObject[index] = {}
+        }
+
         for (var key in filter.where) {
           var object = {}
           if (filter.where.hasOwnProperty(key)) {
@@ -446,11 +451,6 @@ module.exports = {
                 }
               }
             }
-            for (let index = 0; index < arrayOfTable.length; index++) {
-              const element = arrayOfTable[index];
-              arraywhereObject[index] = {}
-            }
-
             if (n == -1) {
               arraywhereObject[0][object['key']] = object['value']
             } else {
@@ -480,7 +480,7 @@ module.exports = {
       var query = sqlSelect
         .from(arrayOfTable[0])
         .select(fields[arrayOfTable[0]])
-        .where(arraywhereObject[0])
+        .where(arrayOfTable[0], arraywhereObject[0])
       for (let index = 0; index < arrayRelation.length; index++) {
         const element = arrayRelation[index];
         query = query
