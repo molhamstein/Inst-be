@@ -184,6 +184,7 @@ module.exports = function (Course) {
           "descriptionEn": data.descriptionEn,
           "descriptionAr": data.descriptionAr,
           "startAt": data.startAt,
+          "status": data.status,
           "maxCountStudent": data.maxCountStudent,
           "sessionAvgDuration": data.sessionAvgDuration
         }
