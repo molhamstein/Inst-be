@@ -246,6 +246,7 @@ module.exports = function (Course) {
             "startAt": new Date(element.startAt),
             "endAt": addMinutes(new Date(element.startAt), element.duration),
             "courseId": id,
+            "name": name,
             "cost": element.cost,
             "duration": element.duration
           })
@@ -266,7 +267,7 @@ module.exports = function (Course) {
             newSessionStudentData.push({
               "sessionId": oneSession.id,
               "studentId": element.studentId,
-              "cost":oneSession.cost
+              "cost": oneSession.cost
             })
           });
         });

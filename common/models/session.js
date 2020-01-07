@@ -77,7 +77,7 @@ module.exports = function (Session) {
   };
 
 
-  Session.changeSession = async function (id, startAt, duration, venueId, req, callback) {
+  Session.changeSession = async function (id, startAt, duration, venueId, name, req, callback) {
     try {
       var mainSession = await Session.findById(id)
       if (mainSession == null)
@@ -110,6 +110,7 @@ module.exports = function (Session) {
       await mainSession.updateAttributes({
         "startAt": startAt,
         "endAt": endAt,
+        "name": name,
         "venueId": venueId
       })
 
