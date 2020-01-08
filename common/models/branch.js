@@ -344,8 +344,11 @@ module.exports = function (Branch) {
       await Branch.app.models.user.checkRoleBranchAdmin(branch.instituteId, id, req)
       if (filter["where"] == null)
         filter['where'] = {}
-      filter['where']['course.branchId'] = id
-
+      if (filter["where"]["and"] == null)
+        filter["where"]["and"] = []
+      filter['where']["and"].push({
+        'course.branchId': id
+      })
       // var studentInCourse = await Branch.app.query.towLevel(Branch.app, "session", "course", "courseId", "id", filter, false)
       var studentInCourse = await Branch.app.query.multiTowLevel(Branch.app, ["session", "course", "venue"], [{
           "fromTable": 1,

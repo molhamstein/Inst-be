@@ -403,65 +403,77 @@ module.exports = {
       var sqlQuery = sql.Query();
       var sqlSelect = sqlQuery.select();
       var arraywhereObject = []
-      console.log(filter.where)
-      if (filter.where) {
+      console.log(filter.where.and)
+      if (filter.where && filter.where.and) {
         for (let index = 0; index < arrayOfTable.length; index++) {
           const element = arrayOfTable[index];
-          arraywhereObject[index] = {}
+          arraywhereObject[index] = []
         }
+        for (let index = 0; index < filter.where.and.length; index++) {
+          const element = filter.where.and[index];
+          console.log("element")
+          console.log(element)
 
-        for (var key in filter.where) {
-          var object = {}
-          if (filter.where.hasOwnProperty(key)) {
-            var n = key.lastIndexOf('.');
-            var mainKey = key.substring(n + 1);
-            var value = filter.where[key]
-            console.log("mainKey")
-            console.log(mainKey)
-            if (typeof value !== 'object') {
-              object = {
-                "key": mainKey,
-                "value": value
+          for (var key in element) {
+            console.log("key")
+            console.log(key)
+            var object = {}
+            if (element.hasOwnProperty(key)) {
+              var n = key.lastIndexOf('.');
+              var mainKey = key.substring(n + 1);
+              var value = element[key]
+              console.log("mainKey")
+              console.log(mainKey)
+              if (typeof value !== 'object') {
+                object = {
+                  "key": mainKey,
+                  "value": value
+                }
+              } else {
+                if (value['like'] != null) {
+                  object = {
+                    "key": mainKey,
+                    "value": sql.like("%" + value['like'] + "%")
+                  }
+                } else if (value['gte'] != null) {
+                  object = {
+                    "key": mainKey,
+                    "value": sql.gte(value['gte'])
+                  }
+                } else if (value['gt'] != null) {
+                  object = {
+                    "key": mainKey,
+                    "value": sql.gt(value['gt'])
+                  }
+                } else if (value['lte'] != null) {
+                  object = {
+                    "key": mainKey,
+                    "value": sql.lte(value['lte'])
+                  }
+                } else if (value['lt'] != null) {
+                  object = {
+                    "key": mainKey,
+                    "value": sql.lt(value['lt'])
+                  }
+                }
               }
-            } else {
-              if (value['like'] != null) {
-                object = {
-                  "key": mainKey,
-                  "value": sql.like("%" + value['like'] + "%")
-                }
-              } else if (value['gte'] != null) {
-                object = {
-                  "key": mainKey,
-                  "value": sql.gte(value['gte'])
-                }
-              } else if (value['gt'] != null) {
-                object = {
-                  "key": mainKey,
-                  "value": sql.gt(value['gt'])
-                }
-              } else if (value['lte'] != null) {
-                object = {
-                  "key": mainKey,
-                  "value": sql.lte(value['lte'])
-                }
-              } else if (value['lt'] != null) {
-                object = {
-                  "key": mainKey,
-                  "value": sql.lt(value['lt'])
-                }
-              }
-            }
-            if (n == -1) {
-              arraywhereObject[0][object['key']] = object['value']
-            } else {
-              for (let index = 1; index < arrayOfTable.length; index++) {
-                const element = arrayOfTable[index];
-                if (key.lastIndexOf(element + '.') != -1) {
-                  arraywhereObject[index][object['key']] = object['value']
+              if (n == -1) {
+                arraywhereObject[0].push({
+                  [object['key']]: object['value']
+                })
+              } else {
+                for (let index = 1; index < arrayOfTable.length; index++) {
+                  const element = arrayOfTable[index];
+                  if (key.lastIndexOf(element + '.') != -1) {
+                    arraywhereObject[index].push({
+                      [object['key']]: object['value']
+                    })
+                  }
                 }
               }
             }
           }
+
         }
       }
       if (filter.limit) {
@@ -480,12 +492,22 @@ module.exports = {
       var query = sqlSelect
         .from(arrayOfTable[0])
         .select(fields[arrayOfTable[0]])
-        .where(arrayOfTable[0], arraywhereObject[0])
+      for (let index = 0; index < arraywhereObject[0].length; index++) {
+        const whereElement = arraywhereObject[0][index];
+        query = query
+          .where(arrayOfTable[0], whereElement)
+      }
       for (let index = 0; index < arrayRelation.length; index++) {
         const element = arrayRelation[index];
         query = query
           .from(arrayOfTable[element.fromTable], element['fromId'], arrayOfTable[element.mainTable], element['mainId'])
-          .where(arrayOfTable[element.fromTable], arraywhereObject[element.fromTable])
+        // .where( arraywhereObject[element.fromTable])
+        for (let whereIndex = 0; whereIndex < arraywhereObject[element.fromTable].length; whereIndex++) {
+          const whereElement = arraywhereObject[element.fromTable][whereIndex];
+          query = query
+            .where(arrayOfTable[element.fromTable], whereElement)
+        }
+
       }
       query = query.build()
       var selectIndex = query.indexOf('SELECT') + 6
