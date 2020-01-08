@@ -307,6 +307,7 @@ module.exports = function (Teacher) {
           "teacherId": id,
           "courseId": courseId,
           "sessionId": sessionId,
+          "date":date,
           "value": value,
           "note": note
         })
