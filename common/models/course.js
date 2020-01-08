@@ -247,7 +247,7 @@ module.exports = function (Course) {
             "startAt": new Date(element.startAt),
             "endAt": addMinutes(new Date(element.startAt), element.duration),
             "courseId": id,
-            "name": name,
+            "name": element.name,
             "cost": element.cost,
             "duration": element.duration
           })
