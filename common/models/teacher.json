@@ -349,6 +349,12 @@
           "description": ""
         },
         {
+          "arg": "date",
+          "type": "date",
+          "required": false,
+          "description": ""
+        },
+        {
           "arg": "req",
           "type": "object",
           "required": true,

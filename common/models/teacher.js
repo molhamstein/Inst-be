@@ -275,7 +275,7 @@ module.exports = function (Teacher) {
   }
 
 
-  Teacher.addPaymentToTeacher = async function (id, value, courseId, sessionId, note, req, callback) {
+  Teacher.addPaymentToTeacher = async function (id, value, courseId, sessionId, note, date, req, callback) {
     try {
       await Teacher.app.dataSources.mainDB.transaction(async models => {
         const {

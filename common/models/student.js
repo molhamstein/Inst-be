@@ -326,11 +326,6 @@ module.exports = function (Student) {
 
   Student.addPaymentToStudent = async function (studentId, value, date, note, courseId, req, callback) {
     try {
-      var student = await Student.findById(studentId);
-      if (student == null) {
-        throw Student.app.err.notFound.studentNotFound()
-      }
-      await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
       await Student.app.dataSources.mainDB.transaction(async models => {
         const {
           studentPayment
@@ -348,6 +343,10 @@ module.exports = function (Student) {
           transaction
         } = models
         var mainStudent = await student.findById(studentId);
+        if (mainStudent == null) {
+          throw Student.app.err.notFound.studentNotFound()
+        }
+        await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
         await studentPayment.create({
           "value": value,
           "studentId": studentId,
@@ -386,6 +385,8 @@ module.exports = function (Student) {
           await mainStudent.updateAttribute("frozenBalance", frozenBalance)
           let frozenBalanceCourse = mainStudentCourse.frozenBalance + value
           await mainStudentCourse.updateAttribute("frozenBalance", frozenBalanceCourse)
+        } else {
+          await mainStudent.updateAttribute("frozenBalance", frozenBalance)
         }
         callback(null, mainStudent)
       })
