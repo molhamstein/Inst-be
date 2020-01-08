@@ -421,7 +421,7 @@ module.exports = function (Student) {
         }
 
         if (courseId != null) {
-          var mainStudentCourse = await studentCourse.find({
+          var mainStudentCourse = await studentCourse.findOne({
             "where": {
               "courseId": courseId,
               "studentId": studentId
