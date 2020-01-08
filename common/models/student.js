@@ -346,7 +346,7 @@ module.exports = function (Student) {
         if (mainStudent == null) {
           throw Student.app.err.notFound.studentNotFound()
         }
-        await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
+        await Student.app.models.user.checkRoleInstituteUser(mainStudent.instituteId, req)
         await studentPayment.create({
           "value": value,
           "studentId": studentId,
