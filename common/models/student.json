@@ -34,7 +34,7 @@
       "required": true
     },
     "code": {
-      "type": "number",
+      "type": "string",
       "required": false
     },
     "email": {
