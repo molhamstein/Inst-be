@@ -189,12 +189,13 @@ module.exports = function (Session) {
               "code": code
             }
           })
-          studentId = mainStudent.id
         } else {
           mainStudent = await student.findById(studentId)
         }
         if (mainStudent == null)
           throw Session.app.err.notFound.studentNotFound()
+
+        studentId = mainStudent.id
 
         var mainStudentSession = await studentSession.findOne({
           "where": {
