@@ -184,6 +184,13 @@
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "getStudentPayments"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "updateStudent"
     }
   ],
   "methods": {
@@ -688,6 +695,49 @@
         "path": "/:studentId/getStudentPayments",
         "verb": "get"
       }]
+    },
+    "updateStudent": {
+      "accepts": [{
+          "arg": "studentId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "code",
+          "type": "string",
+          "required": true
+        },
+        {
+          "arg": "status",
+          "type": "string",
+          "required": true
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:studentId/updateStudent",
+        "verb": "put"
+      }]
     }
+    
   }
 }

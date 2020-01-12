@@ -6,6 +6,16 @@
   "options": {
     "validateUpsert": true
   },
+  "scope": {
+    "include": [
+      "institute",
+      "branch",
+      "course",
+      "session",
+      "teacher",
+      "student"
+    ]
+  },
   "properties": {
     "instituteId": {
       "type": "number",
@@ -95,7 +105,15 @@
       "options": {
         "nestRemoting": true
       }
-    }
+    },
+    "student": {
+      "type": "belongsTo",
+      "model": "student",
+      "foreignKey": "studentId",
+      "options": {
+        "nestRemoting": true
+      }
+    }    
   },
   "acls": [{
       "accessType": "*",

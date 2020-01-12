@@ -210,6 +210,39 @@ module.exports = function (Institute) {
   };
 
 
+  Institute.getTransactions = async function (id, filter = {
+    "where": {}
+  }, req, callback) {
+    try {
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['instituteId'] = id
+      if (filter["limit"] == null)
+        filter['limit'] = 10
+      if (filter["skip"] == null)
+        filter['skip'] = 0
+
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      var transactions = await Institute.app.models.Transaction.find(filter) //.query.towLevel(Institute.app, "student", "user", "userId", "id", filter, false)
+
+      callback(null, transactions)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+  Institute.getTransactionsCount = async function (id, where = {}, req, callback) {
+    try {
+      where['instituteId'] = id
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      var transactionCount = await Institute.app.models.Transaction.count(where)
+      callback(null, transactionCount)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
   Institute.getTeachers = async function (id, filter = {
     "where": {}
   }, req, callback) {
@@ -368,6 +401,23 @@ module.exports = function (Institute) {
       }
       var branches = await Institute.app.models.Branch.find(filter)
       callback(null, branches)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+  Institute.getCourseCount = async function (id, where = {}, req, callback) {
+    try {
+      var institute = await Institute.findById(id)
+      if (institute == null) {
+        throw Institute.app.err.global.notFound()
+      }
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+
+      where.instituteId = id
+
+      var coursesCount = await Institute.app.models.Course.count(where)
+      callback(null, coursesCount)
     } catch (error) {
       callback(error)
     }

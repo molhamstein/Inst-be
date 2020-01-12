@@ -7,8 +7,7 @@
   },
   "replaceOnPUT": false,
   "scope": {
-    "include": [
-      {
+    "include": [{
         "relation": "logo"
       },
       {
@@ -78,8 +77,7 @@
       "keyThrough": "imageId"
     }
   },
-  "acls": [
-    {
+  "acls": [{
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -139,6 +137,20 @@
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "getStudentsCount"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getTransactions"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getTransactionsCount"
     },
     {
       "accessType": "EXECUTE",
@@ -208,13 +220,19 @@
       "principalType": "ROLE",
       "principalId": "user-institute",
       "permission": "ALLOW",
+      "property": "getCourseCount"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
       "property": "getBranchCount"
     }
   ],
   "methods": {
     "createNewInstitute": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "instituteData",
           "type": "object",
           "required": true,
@@ -233,25 +251,20 @@
           "description": ""
         }
       ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "result",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/createNewInstitute",
-          "verb": "post"
-        }
-      ]
+      "http": [{
+        "path": "/createNewInstitute",
+        "verb": "post"
+      }]
     },
     "updateInstitue": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -282,81 +295,64 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "result",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/updateInstitue",
-          "verb": "put"
-        }
-      ]
+      "http": [{
+        "path": "/:id/updateInstitue",
+        "verb": "put"
+      }]
     },
     "activeInstitute": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "string",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
+      "accepts": [{
+        "arg": "id",
+        "type": "string",
+        "required": true,
+        "description": "",
+        "http": {
+          "source": "path"
         }
-      ],
-      "returns": [
-        {
-          "arg": "category",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      }],
+      "returns": [{
+        "arg": "category",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/activeInstitute",
-          "verb": "put"
-        }
-      ]
+      "http": [{
+        "path": "/:id/activeInstitute",
+        "verb": "put"
+      }]
     },
     "deactiveInstitute": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "string",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
+      "accepts": [{
+        "arg": "id",
+        "type": "string",
+        "required": true,
+        "description": "",
+        "http": {
+          "source": "path"
         }
-      ],
-      "returns": [
-        {
-          "arg": "category",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      }],
+      "returns": [{
+        "arg": "category",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/deactiveInstitute",
-          "verb": "put"
-        }
-      ]
+      "http": [{
+        "path": "/:id/deactiveInstitute",
+        "verb": "put"
+      }]
     },
     "addAdmin": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -411,25 +407,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/addAdmin",
-          "verb": "post"
-        }
-      ]
+      "http": [{
+        "path": "/:id/addAdmin",
+        "verb": "post"
+      }]
     },
     "getStudents": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -454,25 +445,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "array",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "result",
+        "type": "array",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/getStudents",
-          "verb": "get"
-        }
-      ]
+      "http": [{
+        "path": "/:id/getStudents",
+        "verb": "get"
+      }]
     },
     "getStudentsCount": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -497,25 +483,97 @@
           }
         }
       ],
-      "returns": [
+      "returns": [{
+        "arg": "result",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:id/getStudentsCount",
+        "verb": "get"
+      }]
+    },
+
+    "getTransactions": {
+      "accepts": [{
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
         {
-          "arg": "result",
+          "arg": "filter",
           "type": "object",
-          "root": true,
+          "required": false,
           "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
         }
       ],
+      "returns": [{
+        "arg": "result",
+        "type": "array",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
+      "http": [{
+        "path": "/:id/getTransactions",
+        "verb": "get"
+      }]
+    },
+    "getTransactionsCount": {
+      "accepts": [{
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
         {
-          "path": "/:id/getStudentsCount",
-          "verb": "get"
+          "arg": "where",
+          "type": "object",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
         }
-      ]
+      ],
+      "returns": [{
+        "arg": "result",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:id/getTransactionsCount",
+        "verb": "get"
+      }]
     },
     "getTeachers": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -540,25 +598,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "array",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "result",
+        "type": "array",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/getTeachers",
-          "verb": "get"
-        }
-      ]
+      "http": [{
+        "path": "/:id/getTeachers",
+        "verb": "get"
+      }]
     },
     "getTeachersCount": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -583,25 +636,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "result",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/getTeachersCount",
-          "verb": "get"
-        }
-      ]
+      "http": [{
+        "path": "/:id/getTeachersCount",
+        "verb": "get"
+      }]
     },
     "getAdmins": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -626,25 +674,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "array",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "result",
+        "type": "array",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/getAdmins",
-          "verb": "get"
-        }
-      ]
+      "http": [{
+        "path": "/:id/getAdmins",
+        "verb": "get"
+      }]
     },
     "getAdminsCount": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -669,25 +712,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "result",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/getAdminsCount",
-          "verb": "get"
-        }
-      ]
+      "http": [{
+        "path": "/:id/getAdminsCount",
+        "verb": "get"
+      }]
     },
     "createWaitingList": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -742,25 +780,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/createWaitingList",
-          "verb": "post"
-        }
-      ]
+      "http": [{
+        "path": "/:id/createWaitingList",
+        "verb": "post"
+      }]
     },
     "getWaitingList": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -785,25 +818,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "array",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "object",
+        "type": "array",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/getWaitingList",
-          "verb": "get"
-        }
-      ]
+      "http": [{
+        "path": "/:id/getWaitingList",
+        "verb": "get"
+      }]
     },
     "getWaitingListCount": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -828,25 +856,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/getWaitingListCount",
-          "verb": "get"
-        }
-      ]
+      "http": [{
+        "path": "/:id/getWaitingListCount",
+        "verb": "get"
+      }]
     },
     "getBranch": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -871,25 +894,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "array",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "result",
+        "type": "array",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/getBranch",
-          "verb": "get"
-        }
-      ]
+      "http": [{
+        "path": "/:id/getBranch",
+        "verb": "get"
+      }]
     },
     "getBranchCount": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -914,25 +932,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "result",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/getBranchCount",
-          "verb": "get"
-        }
-      ]
+      "http": [{
+        "path": "/:id/getBranchCount",
+        "verb": "get"
+      }]
     },
     "getCourse": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -957,21 +970,56 @@
           }
         }
       ],
-      "returns": [
+      "returns": [{
+        "arg": "result",
+        "type": "array",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:id/getCourse",
+        "verb": "get"
+      }]
+    },
+    "getCourseCount": {
+      "accepts": [{
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
         {
-          "arg": "result",
-          "type": "array",
-          "root": true,
+          "arg": "where",
+          "type": "object",
+          "required": false,
           "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
         }
       ],
+      "returns": [{
+        "arg": "result",
+        "type": "array",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/getCourse",
-          "verb": "get"
-        }
-      ]
+      "http": [{
+        "path": "/:id/getCourseCount",
+        "verb": "get"
+      }]
     }
+
   }
 }

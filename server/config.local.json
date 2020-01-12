@@ -1,6 +1,6 @@
 {
     "restApiRoot": "/api",
-    "host": "192.168.1.6",
+    "host": "192.168.1.7",
     "domain": "http://localhost:3000",
     "siteDomain": "http://localhost:3000",
     "thumbUrl": "C:/FFmpeg/bin/",

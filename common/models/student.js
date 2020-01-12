@@ -4,6 +4,9 @@ var debug = require('debug')('loopback:user');
 
 module.exports = function (Student) {
 
+  Student.validatesInclusionOf('status', {
+    in: ['active', 'pending', 'deactivate']
+  });
 
   Student.addNewStudent = async function (instituteId, branchId, phonenumber, name, gender, birthdate, code, req, callback) {
     try {
@@ -553,6 +556,24 @@ module.exports = function (Student) {
       callback(error)
     }
   }
+
+  Student.updateStudent = async function (studentId, code, status, req, callback) {
+    try {
+      var student = await Student.findById(studentId);
+      if (student == null) {
+        throw Student.app.err.notFound.studentNotFound()
+      }
+      await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
+      await student.updateAttributes({
+        "code": code,
+        "status": status
+      })
+      callback(null,student)
+    } catch (error) {
+      callback(error)
+    }
+  }
+
 
   function generate(n) {
     var add = 1,

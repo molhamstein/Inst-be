@@ -8,7 +8,7 @@ module.exports = function (Course) {
   });
 
   Course.validatesInclusionOf('status', {
-    in: ['active', 'pendding', 'deactivate']
+    in: ['active', 'pending', 'deactivate']
   });
 
 
