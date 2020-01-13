@@ -156,6 +156,54 @@ module.exports = function (Session) {
     }
   }
 
+  Session.getTeacherInSession = async function (id, req, callback) {
+    try {
+      var mainSession = await Session.findById(id)
+      if (mainSession == null)
+        throw Session.app.err.global.notFound()
+      await Session.app.models.user.checkRoleInstituteUser(mainSession.course().instituteId, req)
+
+
+      var totalFromSession = await Session.app.query.getSum(Session.app, {
+        "sessionId": id,
+        "type": "receiveSession"
+      })
+      var filter = {
+        "where": {
+          "courseId": mainSession.courseId
+        }
+      }
+      var teacherInCourse = await Session.app.query.threeLevel(Session.app, "teacherCourse", "teacher", "user", "teacherId", "id", "userId", "id", filter, false)
+      var data = await getTeachersInSession(teacherInCourse, Session, id, totalFromSession)
+      callback(null, data)
+
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+
+  function getTeachersInSession(teacherInCourse, Session, sessionId, totalFromSession) {
+    return new Promise(function (resolve, reject) {
+      async.forEachOf(teacherInCourse, function (element, index, callback) {
+        Session.app.query.getSum(Session.app, {
+          "sessionId": sessionId,
+          "teacherId": element.id,
+          "type": "paidTeacherCourse"
+        }, function (err, data) {
+          console.log("data")
+          console.log(data)
+          teacherInCourse[index]["totalFromSession"] = totalFromSession
+          teacherInCourse[index]["totalPaid"] = data * -1
+          callback()
+        })
+      }, function () {
+        console.log("Finish loop")
+        resolve(teacherInCourse)
+      })
+
+    })
+  }
 
   Session.attendStudent = async function (id, studentId, code, req, callback) {
     try {

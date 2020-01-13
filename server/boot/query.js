@@ -26,6 +26,43 @@ const relationName = {
 
 module.exports = {
 
+  getSum: function (app, where, callback) {
+    return new Promise(function (resolve, reject) {
+      var sql = require('sql-query');
+      var sqlQuery = sql.Query();
+      var sqlSelect = sqlQuery.select();
+      var query = sqlSelect
+        .from('transaction')
+        .where(where)
+        .fun('SUM', 'value', "value")
+        .build();
+      const connector = app.dataSources.mainDB.connector;
+      console.log(query)
+      connector.execute(query, null, (err, resultObjects) => {
+        if (!err) {
+          console.log(resultObjects[0]['value'])
+          if (resultObjects[0]['value'] == null) {
+
+            if (callback != undefined) {
+              callback(null, 0)
+            } else
+              resolve(0)
+          } else {
+            if (callback != undefined) {
+              callback(null, resultObjects[0]['value'])
+            } else {
+              resolve(resultObjects[0]['value'])
+            }
+          }
+        } else
+        if (callback) {
+          callback(err)
+        } else
+          reject(err)
+      })
+    })
+  },
+
   towLevel: function (app, firstTable, secondTable, firstFieldRelation, secondFieldRelation, filter, isCount) {
     return new Promise(function (resolve, reject) {
       var sql = require('sql-query');

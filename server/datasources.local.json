@@ -3,7 +3,7 @@
     "host": "127.0.0.1",
     "database": "mgmt",
     "username": "root",
-    "password": "123456",
+    "password": "",
     "name": "mainDB",
     "connector": "mysql",
     "allowExtendedOperators": true
@@ -12,6 +12,6 @@
     "name": "files",
     "connector": "loopback-component-storage",
     "provider": "filesystem",
-    "root": "../MGMTImage/uploadFiles"
+    "root": "P:/MGMT/API/MGMTImage/uploadFiles"
   }
 }
