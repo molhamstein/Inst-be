@@ -3,7 +3,7 @@
     "host": "127.0.0.1",
     "database": "mgmt",
     "username": "root",
-    "password": "123456",
+    "password": "Agend@zH0ost",
     "name": "mainDB",
     "connector": "mysql",
     "allowExtendedOperators": true
