@@ -1,22 +1,28 @@
 {
   "restApiRoot": "/api",
   "host": "0.0.0.0",
+  "domain": "http://167.71.52.241:3000",
+  "siteDomain": "http://167.71.52.241:3000",
+  "programFFmpegName": [
+      "ffmpeg.exe",
+      "ffprobe.exe"
+  ],
   "port": 3000,
   "remoting": {
-    "context": false,
-    "rest": {
-      "handleErrors": false,
-      "normalizeHttpPath": false,
-      "xml": false
-    },
-    "json": {
-      "strict": false,
-      "limit": "100kb"
-    },
-    "urlencoded": {
-      "extended": true,
-      "limit": "100kb"
-    },
-    "cors": false
+      "context": false,
+      "rest": {
+          "handleErrors": false,
+          "normalizeHttpPath": false,
+          "xml": false
+      },
+      "json": {
+          "strict": false,
+          "limit": "100kb"
+      },
+      "urlencoded": {
+          "extended": true,
+          "limit": "100kb"
+      },
+      "cors": false
   }
 }
