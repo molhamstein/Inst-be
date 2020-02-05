@@ -1,0 +1,35 @@
+{
+  "name": "institutePayment",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "instituteId": {
+      "type": "number",
+      "required": true
+    },
+    "value": {
+      "type": "number",
+      "required": true
+    },
+    "date": {
+      "type": "date",
+      "required": true,
+      "defaultFn": "now"
+    },
+    "note": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "date",
+      "required": true,
+      "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

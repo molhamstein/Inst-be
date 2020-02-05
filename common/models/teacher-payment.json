@@ -5,6 +5,15 @@
   "options": {
     "validateUpsert": true
   },
+  "scope": {
+    "include": [{
+        "relation": "course"
+      },
+      {
+        "relation": "session"
+      }
+    ]
+  },
   "properties": {
     "teacherId": {
       "type": "number",
@@ -37,7 +46,24 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "course": {
+      "type": "belongsTo",
+      "model": "course",
+      "foreignKey": "courseId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "session": {
+      "type": "belongsTo",
+      "model": "session",
+      "foreignKey": "sessionId",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
   "acls": [],
   "methods": {}
 }

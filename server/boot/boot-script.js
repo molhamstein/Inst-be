@@ -52,6 +52,8 @@ module.exports = function (app) {
   var notificationType = app.models.notificationType;
 
   var transaction = app.models.transaction
+  var messageLog = app.models.messageLog
+  var institutePayment = app.models.institutePayment
 
 
 
@@ -313,6 +315,9 @@ module.exports = function (app) {
     await customdAutoUpload(notification, 'notification', []);
     await customdAutoUpload(notificationType, 'notificationType', notificationTypeData);
     await customdAutoUpload(transaction, 'transaction', []);
+    await customdAutoUpload(messageLog, 'messageLog', []);
+    await customdAutoUpload(institutePayment, 'institutePayment', []);
+
 
 
   }

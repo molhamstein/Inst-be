@@ -210,6 +210,42 @@ module.exports = function (Institute) {
   };
 
 
+  Institute.getInstitutePayment = async function (id, filter = {
+    "where": {}
+  }, req, callback) {
+    try {
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['instituteId'] = id
+      if (filter["limit"] == null)
+        filter['limit'] = 10
+      if (filter["skip"] == null)
+        filter['skip'] = 0
+
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      var payments = await Institute.app.models.institutePayment.find(filter)
+
+      callback(null, payments)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+  Institute.getInstitutePaymentCount = async function (id, where = {}, req, callback) {
+    try {
+      // callback(null, filter)
+
+      where['instituteId'] = id
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      var paymentsCount = await Institute.app.models.institutePayment.count(where)
+
+      callback(null, paymentsCount)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
   Institute.getTransactions = async function (id, filter = {
     "where": {}
   }, req, callback) {
@@ -479,5 +515,34 @@ module.exports = function (Institute) {
       callback(error)
     }
   };
+
+  Institute.addInstitutePayment = async function (instituteId, value, date, note, req, callback) {
+    try {
+      await Institute.app.dataSources.mainDB.transaction(async models => {
+        const {
+          institutePayment
+        } = models
+        const {
+          institute
+        } = models
+        var mainInstitute = await institute.findById(instituteId);
+        if (mainInstitute == null) {
+          throw Institute.app.err.notFound.instituteNotFound()
+        }
+        await institutePayment.create({
+          "value": value,
+          "instituteId": instituteId,
+          "date": date,
+          "note": note
+        })
+        var frozenBalance = value + mainInstitute.frozenBalance
+        await mainInstitute.updateAttribute("frozenBalance", frozenBalance)
+        callback(null, mainInstitute)
+      })
+    } catch (error) {
+      callback(error)
+    }
+  }
+
 
 };

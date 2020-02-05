@@ -139,8 +139,8 @@ module.exports = function (Course) {
 
         }))
       }
-      console.log("tttttt")
       await mainCourse.updateAttribute("isStarted", true)
+      callback(null, mainCourse)
     } catch (error) {
       callback(error)
     }
@@ -217,7 +217,8 @@ module.exports = function (Course) {
         "value": value,
         "courseId": id
       })
-      callback(null, teacherCourse)
+      var newTeacherCourse = await Course.app.models.teacherCourse.findById(teacherCourse.id)
+      callback(null, newTeacherCourse)
     } catch (error) {
       callback(error)
     }
@@ -327,10 +328,10 @@ module.exports = function (Course) {
       if (filter["where"] == null)
         filter['where'] = {}
       filter['where']['courseId'] = id
-      if (filter["limit"] == null)
-        filter['limit'] = 10
-      if (filter["skip"] == null)
-        filter['skip'] = 0
+      // if (filter["limit"] == null)
+      //   filter['limit'] = 10
+      // if (filter["skip"] == null)
+      //   filter['skip'] = 0
       var mainCourse = await Course.findById(id)
       if (mainCourse == null)
         throw Course.app.err.notFound.courseNotFound()

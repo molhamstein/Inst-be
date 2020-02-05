@@ -5,6 +5,11 @@
   "options": {
     "validateUpsert": true
   },
+  "scope": {
+    "include": [{
+      "relation": "subcategory"
+    }]
+  },
   "properties": {
     "titleEn": {
       "type": "string",
@@ -47,9 +52,17 @@
     }
   },
   "validations": [],
-  "relations": {},
-  "acls": [
-    {
+  "relations": {
+    "subcategory": {
+      "type": "belongsTo",
+      "model": "subCategory",
+      "foreignKey": "subcategoryId",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
+  "acls": [{
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -81,12 +94,18 @@
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "getStudentForwaitingListCount"
-    }
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getOneWaitingList"
+    }    
   ],
   "methods": {
     "addStudentToWaitingList": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -123,25 +142,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/addStudentToWaitingList",
-          "verb": "post"
-        }
-      ]
+      "http": [{
+        "path": "/:id/addStudentToWaitingList",
+        "verb": "post"
+      }]
     },
     "getStudentForwaitingList": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -166,25 +180,20 @@
           }
         }
       ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "array",
-          "root": true,
-          "description": ""
-        }
-      ],
+      "returns": [{
+        "arg": "result",
+        "type": "array",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/getStudentForwaitingList",
-          "verb": "get"
-        }
-      ]
+      "http": [{
+        "path": "/:id/getStudentForwaitingList",
+        "verb": "get"
+      }]
     },
     "getStudentForwaitingListCount": {
-      "accepts": [
-        {
+      "accepts": [{
           "arg": "id",
           "type": "number",
           "required": true,
@@ -209,21 +218,49 @@
           }
         }
       ],
-      "returns": [
+      "returns": [{
+        "arg": "result",
+        "type": "array",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:id/getStudentForwaitingListCount",
+        "verb": "get"
+      }]
+    },
+    "getOneWaitingList": {
+      "accepts": [{
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
         {
-          "arg": "result",
-          "type": "array",
-          "root": true,
-          "description": ""
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
         }
       ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
       "description": "",
-      "http": [
-        {
-          "path": "/:id/getStudentForwaitingListCount",
-          "verb": "get"
-        }
-      ]
+      "http": [{
+        "path": "/:id/getOneWaitingList",
+        "verb": "get"
+      }]
     }
   }
 }

@@ -50,6 +50,16 @@
       "required": true,
       "default": "active"
     },
+    "messagesBalance": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "frozenBalance": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
     "createdAt": {
       "type": "date",
       "required": true,
@@ -99,6 +109,13 @@
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
+      "principalId": "super-admin",
+      "permission": "ALLOW",
+      "property": "addInstitutePayment"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "updateInstitue"
@@ -123,6 +140,20 @@
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "addAdmin"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getInstitutePaymentCount"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getInstitutePayment"
     },
     {
       "accessType": "EXECUTE",
@@ -419,6 +450,56 @@
         "verb": "post"
       }]
     },
+    "addInstitutePayment": {
+      "accepts": [{
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "value",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "date",
+          "type": "date",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "note",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:id/addInstitutePayment",
+        "verb": "post"
+      }]
+    },
     "getStudents": {
       "accepts": [{
           "arg": "id",
@@ -495,7 +576,82 @@
         "verb": "get"
       }]
     },
-
+    "getInstitutePayment": {
+      "accepts": [{
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "filter",
+          "type": "object",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "result",
+        "type": "array",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:id/getInstitutePayment",
+        "verb": "get"
+      }]
+    },
+    "getInstitutePaymentCount": {
+      "accepts": [{
+          "arg": "id",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "where",
+          "type": "object",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "result",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:id/getInstitutePaymentCount",
+        "verb": "get"
+      }]
+    },
     "getTransactions": {
       "accepts": [{
           "arg": "id",

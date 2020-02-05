@@ -68,6 +68,9 @@ module.exports.institute = {
   },
   instituteIdIsRequired: function () {
     return new cError(457, 'institute id is required', 457);
+  },
+  instituteDoesNotHasBalance: function () {
+    return new cError(473, 'institute does not has balance', 473);
   }
 };
 

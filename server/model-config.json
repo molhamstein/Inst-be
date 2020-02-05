@@ -366,5 +366,13 @@
   "studentPayment": {
     "dataSource": "mainDB",
     "public": true
+  },
+  "messageLog": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "institutePayment": {
+    "dataSource": "mainDB",
+    "public": true
   }
 }

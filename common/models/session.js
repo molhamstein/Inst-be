@@ -120,7 +120,7 @@ module.exports = function (Session) {
         }
       })
       Session.app.models.notification.createNotifications(studentSessionArray, 'studentId', 'student', 1, 'sessionId', mainSession.id)
-      callback(null, mainSession.course())
+      callback(null, mainSession)
     } catch (error) {
       callback(error)
     }
@@ -310,8 +310,9 @@ module.exports = function (Session) {
 
 
   function addMinutes(date, m) {
-    date.setTime(date.getTime() + (m * 60 * 1000));
-    return date;
+    var newDate = new Date(date)
+    newDate.setTime(newDate.getTime() + (m * 60 * 1000));
+    return newDate;
   }
 
   function checkOneSession(session, callback) {

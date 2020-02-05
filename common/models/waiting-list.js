@@ -86,4 +86,17 @@ module.exports = function (Waitinglist) {
     }
   };
 
+  Waitinglist.getOneWaitingList = async function (id, req, callback) {
+    try {
+      var waitinglist = await Waitinglist.findById(id);
+      if (waitinglist == null)
+        throw Waitinglist.app.err.global.notFound()
+      await Waitinglist.app.models.user.checkRoleBranchAdmin(waitinglist.instituteId, waitinglist.branchId, req)
+      callback(null, waitinglist)
+    } catch (error) {
+      return callback(error)
+    }
+  };
+
+
 };

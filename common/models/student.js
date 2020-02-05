@@ -456,7 +456,6 @@ module.exports = function (Student) {
   Student.addToCourses = async function (studentId, courses, req, callback) {
     try {
       var student = await Student.findById(studentId);
-      console.log("SSSS");
       if (student == null) {
         throw Student.app.err.notFound.studentNotFound()
       }
@@ -495,7 +494,7 @@ module.exports = function (Student) {
         // });
         // await packageCourse.create(packageCourseData)
         await studentCourse.addStudentToCourses(studentId, coursesId)
-        // callback(null, newPackage);
+        callback(null, student);
       })
     } catch (error) {
       callback(error)
@@ -568,7 +567,7 @@ module.exports = function (Student) {
         "code": code,
         "status": status
       })
-      callback(null,student)
+      callback(null, student)
     } catch (error) {
       callback(error)
     }

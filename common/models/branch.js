@@ -302,6 +302,10 @@ module.exports = function (Branch) {
         filter.where = {
           "branchId": id
         }
+      } else if (filter.where == null && filter.where.and != null) {
+        filter.where.and.push({
+          "branchId": id
+        })
       } else {
         filter.where.branchId = id
       }
