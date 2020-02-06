@@ -307,7 +307,7 @@ module.exports = function (Teacher) {
           "teacherId": id,
           "courseId": courseId,
           "sessionId": sessionId,
-          "date":date,
+          "date": date,
           "value": value,
           "note": note
         })
@@ -345,7 +345,7 @@ module.exports = function (Teacher) {
     try {
       var teacher = await Teacher.findById(teacherId);
       if (teacher == null) {
-        throw Teacher.app.err.notFound.studentNotFound()
+        throw Teacher.app.err.notFound.teacherNotFound()
       }
       await Teacher.app.models.user.checkRoleInstituteUser(teacher.instituteId, req)
       if (filter["where"] == null)
@@ -353,6 +353,61 @@ module.exports = function (Teacher) {
       filter['where']['teacherId'] = teacherId
       var courses = await Teacher.app.models.teacherCourse.find(filter)
       callback(null, courses)
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+
+
+  Teacher.getTeacherNotes = async function (teacherId, filter = {
+    "where": {}
+  }, req, callback) {
+    try {
+      var teacher = await Teacher.findById(teacherId);
+      if (teacher == null) {
+        throw Teacher.app.err.notFound.teacherNotFound()
+      }
+      await Teacher.app.models.user.checkRoleInstituteUser(teacher.instituteId, req)
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['teacherId'] = teacherId
+      var notes = await Teacher.app.models.teacherNote.find(filter)
+      callback(null, notes)
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+
+
+  Teacher.getTeacherNotesCount = async function (teacherId, where = {}, req, callback) {
+    try {
+      var teacher = await Teacher.findById(teacherId);
+      if (teacher == null) {
+        throw Teacher.app.err.notFound.teacherNotFound()
+      }
+      await Teacher.app.models.user.checkRoleInstituteUser(teacher.instituteId, req)
+      where['teacherId'] = teacherId
+      var countNotes = await Teacher.app.models.teacherNote.count(where)
+      callback(null, {
+        "count": countNotes
+      })
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+  Teacher.addNoteToTeacher = async function (teacherId, data, req, callback) {
+    try {
+      var teacher = await Teacher.findById(teacherId);
+      if (teacher == null) {
+        throw Teacher.app.err.notFound.teacherNotFound()
+      }
+      await Teacher.app.models.user.checkRoleInstituteUser(teacher.instituteId, req)
+      data['teacherId'] = teacherId
+      var note = await Teacher.app.models.teacherNote.create(data)
+      callback(null, note)
     } catch (error) {
       callback(error)
     }

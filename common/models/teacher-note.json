@@ -1,0 +1,88 @@
+{
+  "name": "teacherNote",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "scope": {
+    "include": [{
+        "relation": "course"
+      },
+      {
+        "relation": "teacher"
+      },
+      {
+        "relation": "userInstitute"
+      }
+    ]
+  },
+  "properties": {
+    "note": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "teacherId": {
+      "type": "number",
+      "required": true
+    },
+    "userInstituteId": {
+      "type": "number",
+      "required": true
+    },
+    "courseId": {
+      "type": "number",
+      "required": false
+    },
+    "createdAt": {
+      "type": "date",
+      "required": true,
+      "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "course": {
+      "type": "belongsTo",
+      "model": "course",
+      "foreignKey": "courseId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "teacher": {
+      "type": "belongsTo",
+      "model": "teacher",
+      "foreignKey": "teacherId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "userInstitute": {
+      "type": "belongsTo",
+      "model": "userInstitute",
+      "foreignKey": "userInstituteId",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
+  "acls": [{
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "super-admin",
+      "permission": "ALLOW"
+    }
+  ],
+  "methods": {}
+}

@@ -10,6 +10,8 @@
   "scope": {
     "include": [{
       "relation": "user"
+    }, {
+      "relation": "tags"
     }]
   },
   "hidden": [
@@ -94,6 +96,16 @@
       "options": {
         "nestRemoting": true
       }
+    },
+    "tags": {
+      "type": "hasMany",
+      "model": "tag",
+      "foreignKey": "studentId",
+      "options": {
+        "nestRemoting": true
+      },
+      "through": "studentTag",
+      "keyThrough": "tagId"
     }
   },
   "acls": [{
@@ -183,6 +195,13 @@
       "principalType": "ROLE",
       "principalId": "user-institute",
       "permission": "ALLOW",
+      "property": "getStudentCourseCount"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
       "property": "getStudentPayments"
     },
     {
@@ -191,7 +210,29 @@
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "updateStudent"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "addNoteToStudent"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getStudentNotes"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getStudentNotesCount"
     }
+
   ],
   "methods": {
     "addNewStudent": {
@@ -659,6 +700,43 @@
         "verb": "get"
       }]
     },
+    "getStudentCourseCount": {
+      "accepts": [{
+          "arg": "studentId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "where",
+          "type": "object",
+          "required": false
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:studentId/getStudentCourseCount",
+        "verb": "get"
+      }]
+    },
     "getStudentPayments": {
       "accepts": [{
           "arg": "studentId",
@@ -696,6 +774,80 @@
         "verb": "get"
       }]
     },
+    "getStudentNotes": {
+      "accepts": [{
+          "arg": "studentId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "filter",
+          "type": "object",
+          "required": false
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:studentId/getStudentNotes",
+        "verb": "get"
+      }]
+    },
+    "getStudentNotesCount": {
+      "accepts": [{
+          "arg": "studentId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "where",
+          "type": "object",
+          "required": false
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:studentId/getStudentNotesCount",
+        "verb": "get"
+      }]
+    },
     "updateStudent": {
       "accepts": [{
           "arg": "studentId",
@@ -715,6 +867,11 @@
           "arg": "status",
           "type": "string",
           "required": true
+        },
+        {
+          "arg": "tags",
+          "type": ["number"],
+          "required": false
         },
         {
           "arg": "req",
@@ -737,7 +894,43 @@
         "path": "/:studentId/updateStudent",
         "verb": "put"
       }]
+    },
+    "addNoteToStudent": {
+      "accepts": [{
+          "arg": "studentId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "data",
+          "type": "object",
+          "required": true
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:studentId/addNoteToStudent",
+        "verb": "post"
+      }]
     }
-    
   }
 }

@@ -327,7 +327,7 @@ module.exports = function (Studentcourse) {
           "value": mainCourse.costSupplies,
           "type": "receiveCourseSupplies"
         })
-        callback(null, modelStudent)
+        callback(null, modelStudentCourse)
       })
     } catch (error) {
       callback(error)

@@ -29,8 +29,10 @@ module.exports = function (app) {
   var student = app.models.student;
   var verificationCode = app.models.verificationCode;
   var studentPayment = app.models.studentPayment;
+  var studentNote = app.models.studentNote;
 
   var teacher = app.models.teacher;
+  var teacherNote = app.models.teacherNote;
   var teacherSubcategory = app.models.teacherSubcategory;
   var waitingList = app.models.waitingList;
   var waitingListStudent = app.models.waitingListStudent;
@@ -54,6 +56,9 @@ module.exports = function (app) {
   var transaction = app.models.transaction
   var messageLog = app.models.messageLog
   var institutePayment = app.models.institutePayment
+  var tag = app.models.tag
+  var studentTag = app.models.studentTag
+  
 
 
 
@@ -296,7 +301,9 @@ module.exports = function (app) {
     await customdAutoUpload(student, 'student', []);
     await customdAutoUpload(verificationCode, 'verificationCode', []);
     await customdAutoUpload(studentPayment, 'studentPayment', []);
+    await customdAutoUpload(studentNote, 'studentNote', []);
     await customdAutoUpload(teacher, 'teacher', []);
+    await customdAutoUpload(teacherNote, 'teacherNote', []);    
     await customdAutoUpload(teacherSubcategory, 'teacherSubcategory', []);
     await customdAutoUpload(waitingList, 'waitingList', []);
     await customdAutoUpload(waitingListStudent, 'waitingListStudent', []);
@@ -317,6 +324,8 @@ module.exports = function (app) {
     await customdAutoUpload(transaction, 'transaction', []);
     await customdAutoUpload(messageLog, 'messageLog', []);
     await customdAutoUpload(institutePayment, 'institutePayment', []);
+    await customdAutoUpload(tag, 'tag', []);
+    await customdAutoUpload(studentTag, 'studentTag', []);
 
 
 

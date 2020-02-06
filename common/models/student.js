@@ -517,7 +517,6 @@ module.exports = function (Student) {
   }
 
 
-
   Student.getStudentCourse = async function (studentId, filter = {
     "where": {}
   }, req, callback) {
@@ -536,6 +535,26 @@ module.exports = function (Student) {
       callback(error)
     }
   }
+
+
+  Student.getStudentCourseCount = async function (studentId, where = {}, req, callback) {
+    try {
+      var student = await Student.findById(studentId);
+      if (student == null) {
+        throw Student.app.err.notFound.studentNotFound()
+      }
+      await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
+
+      where['studentId'] = studentId
+      var coursesCount = await Student.app.models.studentCourse.count(where)
+      callback(null, {
+        "count": coursesCount
+      })
+    } catch (error) {
+      callback(error)
+    }
+  }
+
 
   Student.getStudentPayments = async function (studentId, filter = {
     "where": {}
@@ -556,13 +575,66 @@ module.exports = function (Student) {
     }
   }
 
-  Student.updateStudent = async function (studentId, code, status, req, callback) {
+
+
+  Student.getStudentNotes = async function (studentId, filter = {
+    "where": {}
+  }, req, callback) {
     try {
       var student = await Student.findById(studentId);
       if (student == null) {
         throw Student.app.err.notFound.studentNotFound()
       }
       await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
+      if (filter["where"] == null)
+        filter['where'] = {}
+      filter['where']['studentId'] = studentId
+      var notes = await Student.app.models.studentNote.find(filter)
+      callback(null, notes)
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+
+
+  Student.getStudentNotesCount = async function (studentId, where = {}, req, callback) {
+    try {
+      var student = await Student.findById(studentId);
+      if (student == null) {
+        throw Student.app.err.notFound.studentNotFound()
+      }
+      await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
+      where['studentId'] = studentId
+      var countNotes = await Student.app.models.studentNote.count(where)
+      callback(null, {
+        "count": countNotes
+      })
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+
+  Student.updateStudent = async function (studentId, code, status, tags = [], req, callback) {
+    try {
+      var student = await Student.findById(studentId);
+      if (student == null) {
+        throw Student.app.err.notFound.studentNotFound()
+      }
+      await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
+      await Student.app.models.studentTag.destroyAll({
+        "studentId": studentId
+      })
+      var tagsArray = []
+      tags.forEach(element => {
+        tagsArray.push({
+          "tagId": element,
+          "studentId": studentId
+        })
+      });
+      if (tagsArray.length != 0)
+        await Student.app.models.studentTag.create(tagsArray)
       await student.updateAttributes({
         "code": code,
         "status": status
@@ -572,6 +644,22 @@ module.exports = function (Student) {
       callback(error)
     }
   }
+
+  Student.addNoteToStudent = async function (studentId, data, req, callback) {
+    try {
+      var student = await Student.findById(studentId);
+      if (student == null) {
+        throw Student.app.err.notFound.studentNotFound()
+      }
+      await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
+      data['studentId'] = studentId
+      var note = await Student.app.models.studentNote.create(data)
+      callback(null, note)
+    } catch (error) {
+      callback(error)
+    }
+  }
+
 
 
   function generate(n) {
@@ -592,8 +680,9 @@ module.exports = function (Student) {
 
 
   function addHours(date, h) {
-    date.setTime(date.getTime() + (h * 60 * 60 * 1000));
-    return date;
+    var newDate = new Date(date)
+    newDate.setTime(newDate.getTime() + (h * 60 * 60 * 1000));
+    return newDate;
   }
 
 };

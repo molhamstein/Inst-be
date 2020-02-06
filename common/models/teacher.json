@@ -140,6 +140,27 @@
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "getTeacherCourse"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "addNoteToTeacher"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getTeacherNotes"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "user-institute",
+      "permission": "ALLOW",
+      "property": "getTeacherNotesCount"
     }
 
   ],
@@ -448,6 +469,117 @@
       "http": [{
         "path": "/:teacherId/getTeacherCourse",
         "verb": "get"
+      }]
+    },
+    "getTeacherNotes": {
+      "accepts": [{
+          "arg": "teacherId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "filter",
+          "type": "object",
+          "required": false
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:teacherId/getTeacherNotes",
+        "verb": "get"
+      }]
+    },
+    "getTeacherNotesCount": {
+      "accepts": [{
+          "arg": "teacherId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "where",
+          "type": "object",
+          "required": false
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:teacherId/getTeacherNotesCount",
+        "verb": "get"
+      }]
+    },
+    "addNoteToTeacher": {
+      "accepts": [{
+          "arg": "teacherId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "data",
+          "type": "object",
+          "required": true
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [{
+        "arg": "object",
+        "type": "object",
+        "root": true,
+        "description": ""
+      }],
+      "description": "",
+      "http": [{
+        "path": "/:teacherId/addNoteToTeacher",
+        "verb": "post"
       }]
     }
   }

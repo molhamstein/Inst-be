@@ -367,11 +367,27 @@
     "dataSource": "mainDB",
     "public": true
   },
+  "studentNote": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "teacherNote": {
+    "dataSource": "mainDB",
+    "public": true
+  },
   "messageLog": {
     "dataSource": "mainDB",
     "public": true
   },
   "institutePayment": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "tag": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "studentTag": {
     "dataSource": "mainDB",
     "public": true
   }
