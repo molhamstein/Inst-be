@@ -544,5 +544,38 @@ module.exports = function (Institute) {
     }
   }
 
+  Institute.getAllStaf = async function (instituteId, filter = {
+    "where": {}
+  }, req, callback) {
+    try {
+      var institute = await Institute.findById(instituteId)
+      if (institute == null) {
+        throw Institute.app.err.global.notFound()
+      }
+      await Institute.app.models.user.checkRoleInstituteUser(instituteId, req)
+      if (filter.where == null) {
+        filter.where = {
+          "instituteId": instituteId
+        }
+      } else {
+        filter.instituteId = instituteId
+      }
+      let data = []
+      var admins = await Institute.app.models.instituteAdmin.find(filter)
+      var adminsBranch = await Institute.app.models.branchAdmin.find(filter)
+      admins.forEach(element => {
+        data.push(element.userInstitute())
+      });
+      adminsBranch.forEach(element => {
+        data.push(element.userInstitute())
+      });
+      callback(null, data)
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+
+
 
 };

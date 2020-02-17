@@ -38,7 +38,7 @@ module.exports = function (Messagelog) {
       await Messagelog.app.models.user.checkRoleInstituteUser(instituteId, req)
       var mainInstitute = await Messagelog.app.models.Institute.findById(instituteId);
       if (mainInstitute.frozenBalance < users.length * messageCost) {
-        throw Institute.app.err.notFound.instituteNotFound()
+        throw Messagelog.app.err.notFound.instituteNotFound()
       }
       await Promise.all(users.map(async (element) => {
         console.log("element")
