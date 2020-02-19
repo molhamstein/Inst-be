@@ -4,7 +4,7 @@ const fields = {
   instituteadmin: ["id", "userInstituteId", "instituteId", "createdAt"],
   userinstitute: ["gender", "birthdate", "name", "email", "id"],
   branchadmin: ["id", "userInstituteId", "branchId", "createdAt"],
-  waitingliststudent: ["id", "waitingListId", "studentId", "branchId", "note", "payment", "createdAt"],
+  waitingListStudent: ["id", "waitingListId", "studentId", "branchId", "note", "payment", "createdAt"],
   student: ["userId", "instituteId", "branchId", "createdAt", "id", "status", "balance", "frozenBalance"],
   teacher: ["userId", "instituteId", "createdAt", "balance", "status", "id"],
   user: ["gender", "birthdate", "name", "phonenumber", "id"],

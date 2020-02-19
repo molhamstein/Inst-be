@@ -65,7 +65,7 @@ module.exports = function (Waitinglist) {
       if (waitingList == null)
         throw Waitinglist.app.err.global.notFound()
       await Waitinglist.app.models.user.checkRoleInstituteUser(waitingList.instituteId, req)
-      var students = await Waitinglist.app.query.threeLevel(Waitinglist.app, "waitingliststudent", "student", "user", "studentId", "id", "userId", "id", filter, false)
+      var students = await Waitinglist.app.query.threeLevel(Waitinglist.app, "waitingListStudent", "student", "user", "studentId", "id", "userId", "id", filter, false)
 
       callback(null, students)
     } catch (error) {
