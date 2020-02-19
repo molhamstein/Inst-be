@@ -517,19 +517,14 @@ module.exports = function (Student) {
   }
 
 
-  Student.getStudentCourse = async function (studentId, filter = {
-    "where": {}
-  }, req, callback) {
+  Student.getStudentCourse = async function (studentId, searchKey = "", limit, skip, req, callback) {
     try {
       var student = await Student.findById(studentId);
       if (student == null) {
         throw Student.app.err.notFound.studentNotFound()
       }
       await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
-      if (filter["where"] == null)
-        filter['where'] = {}
-      filter['where']['studentId'] = studentId
-      var courses = await Student.app.models.studentCourse.find(filter)
+      var courses = await Student.app.query.getStudentCourse(Student.app, false, searchKey, studentId, limit, skip)
       callback(null, courses)
     } catch (error) {
       callback(error)
@@ -537,7 +532,7 @@ module.exports = function (Student) {
   }
 
 
-  Student.getStudentCourseCount = async function (studentId, where = {}, req, callback) {
+  Student.getStudentCourseCount = async function (studentId, searchKey = "", req, callback) {
     try {
       var student = await Student.findById(studentId);
       if (student == null) {
@@ -545,11 +540,9 @@ module.exports = function (Student) {
       }
       await Student.app.models.user.checkRoleInstituteUser(student.instituteId, req)
 
-      where['studentId'] = studentId
-      var coursesCount = await Student.app.models.studentCourse.count(where)
-      callback(null, {
-        "count": coursesCount
-      })
+      var coursesCount = await Student.app.query.getStudentCourse(Student.app, true, searchKey, studentId)
+
+      callback(null, coursesCount)
     } catch (error) {
       callback(error)
     }
@@ -635,11 +628,13 @@ module.exports = function (Student) {
       });
       if (tagsArray.length != 0)
         await Student.app.models.studentTag.create(tagsArray)
-      await student.updateAttributes({
-        "code": code,
+      let updateObje = {
         "status": status
-      })
-      callback(null, student)
+      }
+      if (code != null)
+        updateObje['code'] = code;
+      var newStudent = await student.updateAttributes(updateObje)
+      callback(null, newStudent)
     } catch (error) {
       callback(error)
     }

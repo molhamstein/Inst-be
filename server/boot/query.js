@@ -55,10 +55,10 @@ module.exports = {
             }
           }
         } else
-        if (callback) {
-          callback(err)
-        } else
-          reject(err)
+          if (callback) {
+            callback(err)
+          } else
+            reject(err)
       })
     })
   },
@@ -440,6 +440,11 @@ module.exports = {
       var sqlQuery = sql.Query();
       var sqlSelect = sqlQuery.select();
       var arraywhereObject = []
+      var limit = 10;
+      var skip = 0;
+      var orderKey = "id";
+      var orderType = "Z"
+
       console.log(filter.where.and)
       if (filter.where && filter.where.and) {
         for (let index = 0; index < arrayOfTable.length; index++) {
@@ -546,7 +551,10 @@ module.exports = {
         }
 
       }
-      query = query.build()
+      query = query
+        .order(orderKey, orderType)
+        .limit(skip + "," + limit)
+        .build()
       var selectIndex = query.indexOf('SELECT') + 6
       for (let index = 0; index < arrayRelation.length; index++) {
         const relationelement = arrayRelation[index];
@@ -575,8 +583,37 @@ module.exports = {
 
       // })
     })
+  },
+
+
+  getStudentCourse: function (app, isCount, searchKey, studentId, limit = 10, skip = 0) {
+    return new Promise(function (resolve, reject) {
+
+      if (!isCount)
+        var query = 'SELECT JSON_OBJECT("gender",t4.gender,"birthdate",t4.birthdate,"name",t4.name,"phonenumber",t4.phonenumber,"id",t4.id) AS user ,  JSON_OBJECT("userId",t3.userId,"instituteId",t3.instituteId,"branchId",t3.branchId,"createdAt",t3.createdAt,"id",t3.id,"status",t3.status,"balance",t3.balance,"frozenBalance",t3.frozenBalance) AS student ,  JSON_OBJECT("id",t2.id,"instituteId",t2.instituteId,"branchId",t2.branchId,"venueId",t2.venueId,"subcategoryId",t2.subcategoryId,"cost",t2.cost,"costSupplies",t2.costSupplies,"typeCost",t2.typeCost,"sessionsNumber",t2.sessionsNumber,"nameEn",t2.nameEn,"nameAr",t2.nameAr,"descriptionEn",t2.descriptionEn,"descriptionAr",t2.descriptionAr,"startAt",t2.startAt,"maxCountStudent",t2.maxCountStudent,"countStudent",t2.countStudent,"countStudentInQueue",t2.countStudentInQueue,"sessionAvgDuration",t2.sessionAvgDuration,"waitingListId",t2.waitingListId,"hasSession",t2.hasSession,"hasSpplies",t2.hasSpplies,"isStarted",t2.isStarted,"status",t2.status,"createdAt",t2.createdAt) AS course ,  `t1`.`id`, `t1`.`courseId`, `t1`.`studentId`, `t1`.`isInQueue`, `t1`.`order`, `t1`.`frozenBalance`, `t1`.`balance`, `t1`.`isBuySupplies`, `t1`.`cost`, `t1`.`createdAt` FROM (( `studentCourse` `t1` JOIN `course` `t2` ON `t2`.`id` = `t1`.`courseId` ) JOIN `student` `t3` ON `t3`.`id` = `t1`.`studentId` ) JOIN `user` `t4` ON `t4`.`id` = `t3`.`userId` WHERE (`t1`.`studentId` = ' + studentId + ' AND (`t2`.`nameEn` LIKE \'%' + searchKey + '%\' OR `t2`.`nameAr` LIKE \'' + searchKey + '\')) ORDER BY `id` DESC LIMIT' + skip + ',' + limit
+      else
+        var query = 'SELECT COUNT(*) AS count, JSON_OBJECT("gender",t4.gender,"birthdate",t4.birthdate,"name",t4.name,"phonenumber",t4.phonenumber,"id",t4.id) AS user ,  JSON_OBJECT("userId",t3.userId,"instituteId",t3.instituteId,"branchId",t3.branchId,"createdAt",t3.createdAt,"id",t3.id,"status",t3.status,"balance",t3.balance,"frozenBalance",t3.frozenBalance) AS student ,  JSON_OBJECT("id",t2.id,"instituteId",t2.instituteId,"branchId",t2.branchId,"venueId",t2.venueId,"subcategoryId",t2.subcategoryId,"cost",t2.cost,"costSupplies",t2.costSupplies,"typeCost",t2.typeCost,"sessionsNumber",t2.sessionsNumber,"nameEn",t2.nameEn,"nameAr",t2.nameAr,"descriptionEn",t2.descriptionEn,"descriptionAr",t2.descriptionAr,"startAt",t2.startAt,"maxCountStudent",t2.maxCountStudent,"countStudent",t2.countStudent,"countStudentInQueue",t2.countStudentInQueue,"sessionAvgDuration",t2.sessionAvgDuration,"waitingListId",t2.waitingListId,"hasSession",t2.hasSession,"hasSpplies",t2.hasSpplies,"isStarted",t2.isStarted,"status",t2.status,"createdAt",t2.createdAt) AS course ,  `t1`.`id`, `t1`.`courseId`, `t1`.`studentId`, `t1`.`isInQueue`, `t1`.`order`, `t1`.`frozenBalance`, `t1`.`balance`, `t1`.`isBuySupplies`, `t1`.`cost`, `t1`.`createdAt` FROM (( `studentCourse` `t1` JOIN `course` `t2` ON `t2`.`id` = `t1`.`courseId` ) JOIN `student` `t3` ON `t3`.`id` = `t1`.`studentId` ) JOIN `user` `t4` ON `t4`.`id` = `t3`.`userId` WHERE (`t1`.`studentId` = ' + studentId + ' AND (`t2`.`nameEn` LIKE \'%' + searchKey + '%\' OR `t2`.`nameAr` LIKE \'' + searchKey + '\'))'
+      const connector = app.dataSources.mainDB.connector;
+      console.log(query)
+      connector.execute(query, null, (err, resultObjects) => {
+        if (!err) {
+          if (isCount)
+            resolve({ "count": resultObjects[0]["count"] })
+          else {
+            for (let index = 0; index < resultObjects.length; index++) {
+              const element = resultObjects[index];
+              resultObjects[index]['user'] = JSON.parse(element['user'])
+              resultObjects[index]['student'] = JSON.parse(element['student'])
+              resultObjects[index]['course'] = JSON.parse(element['course'])
+            }
+            resolve(resultObjects)
+          }
+        }
+        else
+          reject(err)
+      })
+    }
+    )
   }
-
-  // SELECT JSON_OBJECT("id",t2.id,"instituteId",t2.instituteId,"branchId",t2.branchId,"venueId",t2.venueId,"subcategoryId",t2.subcategoryId,"cost",t2.cost,"costSupplies",t2.costSupplies,"typeCost",t2.typeCost,"sessionsNumber",t2.sessionsNumber,"nameEn",t2.nameEn,"nameAr",t2.nameAr,"descriptionEn",t2.descriptionEn,"descriptionAr",t2.descriptionAr,"startAt",t2.startAt,"maxCountStudent",t2.maxCountStudent,"countStudent",t2.countStudent,"countStudentInQueue",t2.countStudentInQueue,"sessionAvgDuration",t2.sessionAvgDuration,"waitingListId",t2.waitingListId,"hasSession",t2.hasSession,"hasSpplies",t2.hasSpplies,"isStarted",t2.isStarted,"status",t2.status,"createdAt",t2.createdAt) AS course ,  `t1`.`id`, `t1`.`courseId`, `t1`.`venueId`, `t1`.`startAt`, `t1`.`endAt`, `t1`.`cost`, `t1`.`status`, `t1`.`createdAt` FROM `session` `t1` JOIN `course` `t2` ON `t2`.`id` = `t1`.`courseId` WHERE `branchId` = 1 ORDER BY `id` DESC LIMIT 0,10
-
 }
+

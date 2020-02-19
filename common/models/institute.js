@@ -493,6 +493,78 @@ module.exports = function (Institute) {
   };
 
 
+  Institute.getStudentDebtCount = async function (id, where = {}, req, callback) {
+    try {
+      var institute = await Institute.findById(id)
+      if (institute == null) {
+        throw Institute.app.err.global.notFound()
+      }
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      where['course.instituteId'] = id
+      where['frozenBalance'] = { "lt": 0 }
+
+
+      var studentDebtCount = await Institute.app.query.towLevel(Institute.app, "studentCourse", "course", "courseId", "id", where, true)
+
+      callback(null, studentDebtCount)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+  Institute.getStudentDebt = async function (id, filter = { "where": {} }, req, callback) {
+    try {
+      var institute = await Institute.findById(id)
+      if (institute == null) {
+        throw Institute.app.err.global.notFound()
+      }
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      if (filter.where == null) {
+        filter.where = {}
+      }
+      if (filter.where.and == null) {
+        filter.where.and = []
+      }
+      if (filter.where.and != null) {
+        filter.where.and.push({
+          "course.instituteId": id
+        }, {
+          "frozenBalance": { "lt": 0 }
+        })
+      }
+      var studentInCourse = await Institute.app.query.multiTowLevel(Institute.app, ["studentCourse", "course", "student", "user"], [{
+        "fromTable": 1,
+        "fromId": "id",
+        "mainTable": 0,
+        "mainId": "courseId",
+        "relationName": "course"
+      },
+      {
+        "fromTable": 2,
+        "fromId": "id",
+        "mainTable": 0,
+        "mainId": "studentId",
+        "relationName": "student"
+      },
+      {
+        "fromTable": 3,
+        "fromId": "id",
+        "mainTable": 2,
+        "mainId": "userId",
+        "relationName": "user"
+      }
+      ], filter)
+      for (let index = 0; index < studentInCourse.length; index++) {
+        studentInCourse[index]['student']['user'] = studentInCourse[index]['user'];
+        delete studentInCourse[index]['user'];
+      }
+      callback(null, studentInCourse)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
   Institute.getBranchCount = async function (id, where, req, callback) {
     try {
       var institute = await Institute.findById(id)
@@ -574,6 +646,8 @@ module.exports = function (Institute) {
       callback(error)
     }
   }
+
+
 
 
 

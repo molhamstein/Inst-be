@@ -674,8 +674,18 @@
           }
         },
         {
-          "arg": "filter",
-          "type": "object",
+          "arg": "searchKey",
+          "type": "string",
+          "required": false
+        },
+        {
+          "arg": "limit",
+          "type": "number",
+          "required": false
+        },
+        {
+          "arg": "skip",
+          "type": "number",
           "required": false
         },
         {
@@ -711,8 +721,8 @@
           }
         },
         {
-          "arg": "where",
-          "type": "object",
+          "arg": "searchKey",
+          "type": "string",
           "required": false
         },
         {
@@ -861,7 +871,7 @@
         {
           "arg": "code",
           "type": "string",
-          "required": true
+          "required": false
         },
         {
           "arg": "status",
