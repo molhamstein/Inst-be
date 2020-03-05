@@ -729,7 +729,13 @@ module.exports = function (Institute) {
         "mainTable": 1,
         "mainId": "userId",
         "relationName": "user"
-      }], filter, false)
+      }, {
+        "fromTable": 4,
+        "fromId": "id",
+        "mainTable": 0,
+        "mainId": "courseId",
+        "relationName": "course"
+      },], filter, false)
       for (let index = 0; index < studentPayment.length; index++) {
         // const element = studentPayment[index];
         studentPayment[index]['student']['user'] = studentPayment[index]['user']
