@@ -493,18 +493,41 @@ module.exports = function (Institute) {
   };
 
 
-  Institute.getStudentDebtCount = async function (id, where = {}, req, callback) {
+  Institute.getStudentDebtCount = async function (id, where = { "and": [] }, req, callback) {
     try {
       var institute = await Institute.findById(id)
       if (institute == null) {
         throw Institute.app.err.global.notFound()
       }
       await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
-      where['course.instituteId'] = id
-      where['frozenBalance'] = { "lt": 0 }
+      if (where.and == null)
+        where.and = []
+      where["and"].push({ 'course.instituteId': id })
+      where["and"].push({ 'frozenBalance': { "lt": 0 } })
 
 
-      var studentDebtCount = await Institute.app.query.towLevel(Institute.app, "studentCourse", "course", "courseId", "id", where, true)
+      var studentDebtCount = await Institute.app.query.multiTowLevel(Institute.app, ["studentCourse", "course", "student", "user"], [{
+        "fromTable": 1,
+        "fromId": "id",
+        "mainTable": 0,
+        "mainId": "courseId",
+        "relationName": "course"
+      },
+      {
+        "fromTable": 2,
+        "fromId": "id",
+        "mainTable": 0,
+        "mainId": "studentId",
+        "relationName": "student"
+      },
+      {
+        "fromTable": 3,
+        "fromId": "id",
+        "mainTable": 2,
+        "mainId": "userId",
+        "relationName": "user"
+      }
+      ], { "where": where }, true)
 
       callback(null, studentDebtCount)
     } catch (error) {
@@ -553,7 +576,7 @@ module.exports = function (Institute) {
         "mainId": "userId",
         "relationName": "user"
       }
-      ], filter)
+      ], filter, false)
       for (let index = 0; index < studentInCourse.length; index++) {
         studentInCourse[index]['student']['user'] = studentInCourse[index]['user'];
         delete studentInCourse[index]['user'];
@@ -646,6 +669,74 @@ module.exports = function (Institute) {
       callback(error)
     }
   }
+
+
+  Institute.getStudentPaymentInstituteCount = async function (id, where = { "and": [] }, req, callback) {
+    try {
+      var institute = await Institute.findById(id)
+      if (institute == null) {
+        throw Institute.app.err.global.notFound()
+      }
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      if (where.and == null)
+        where.and = []
+      where['and'].push({ 'student.instituteId': id })
+      var studentPaymentCount = await Institute.app.query.multiTowLevel(Institute.app, ["studentPayment", "student", "user", "course"], [{
+        "fromTable": 1,
+        "fromId": "id",
+        "mainTable": 0,
+        "mainId": "studentId",
+        "relationName": "student"
+      },
+      {
+        "fromTable": 2,
+        "fromId": "id",
+        "mainTable": 1,
+        "mainId": "userId",
+        "relationName": "user"
+      }], { "where": where }, true)
+      callback(null, studentPaymentCount)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
+  Institute.getStudentPaymentInstitute = async function (id, filter = { "where": { "and": [] } }, req, callback) {
+    try {
+      var institute = await Institute.findById(id)
+      if (institute == null) {
+        throw Institute.app.err.global.notFound()
+      }
+      await Institute.app.models.user.checkRoleInstituteAdmin(id, req)
+      if (filter.where == null) {
+        filter.where = {}
+      }
+      if (filter.where.and == null) {
+        filter.where.and = []
+      }
+      filter.where['and'].push({ "student.instituteId": id })
+      var studentPayment = await Institute.app.query.multiTowLevel(Institute.app, ["studentPayment", "student", "user", "course"], [{
+        "fromTable": 1,
+        "fromId": "id",
+        "mainTable": 0,
+        "mainId": "studentId",
+        "relationName": "student"
+      },
+      {
+        "fromTable": 2,
+        "fromId": "id",
+        "mainTable": 1,
+        "mainId": "userId",
+        "relationName": "user"
+      }], filter, false)
+      callback(null, studentPayment)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+
 
 
 

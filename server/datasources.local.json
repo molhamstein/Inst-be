@@ -12,6 +12,6 @@
     "name": "files",
     "connector": "loopback-component-storage",
     "provider": "filesystem",
-    "root": "P:/MGMT/API/MGMTImage/uploadFiles"
+    "root": "P:/agenda/MGMTImage/uploadFiles"
   }
 }

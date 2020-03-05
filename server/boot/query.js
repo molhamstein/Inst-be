@@ -12,7 +12,8 @@ const fields = {
   studentCourse: ["id", "courseId", "studentId", "isInQueue", "order", "frozenBalance", "balance", "isBuySupplies", "cost", "createdAt"],
   session: ["id", "courseId", "venueId", "startAt", "endAt", "cost", "name", "status", "createdAt"],
   course: ["id", "instituteId", "branchId", "venueId", "subcategoryId", "cost", "costSupplies", "typeCost", "sessionsNumber", "nameEn", "nameAr", "descriptionEn", "descriptionAr", "startAt", "maxCountStudent", "countStudent", "countStudentInQueue", "sessionAvgDuration", "waitingListId", "hasSession", "hasSpplies", "isStarted", "status", "createdAt"],
-  venue: ["id", "instituteId", "branchId", "nameEn", "nameAr", "type", "status", "createdAt"]
+  venue: ["id", "instituteId", "branchId", "nameEn", "nameAr", "type", "status", "createdAt"],
+  studentPayment: ["id", "studentId", "value", "date", "note", "courseId", "createdAt"]
 }
 
 const relationName = {
@@ -434,7 +435,7 @@ module.exports = {
   },
 
 
-  multiTowLevel: function (app, arrayOfTable, arrayRelation, filter) {
+  multiTowLevel: function (app, arrayOfTable, arrayRelation, filter, isCount = false) {
     return new Promise(function (resolve, reject) {
       var sql = require('sql-query');
       var sqlQuery = sql.Query();
@@ -518,17 +519,19 @@ module.exports = {
 
         }
       }
-      if (filter.limit) {
-        limit = filter.limit
-      }
-      if (filter.skip) {
-        skip = filter.skip
-      }
-      if (filter.order) {
-        var m = filter.order.lastIndexOf(' ');
-        orderKey = filter.order.substring(0, m);
-        if (filter.order.lastIndexOf('ASC') != -1) {
-          orderType = "a"
+      if (isCount == false) {
+        if (filter.limit) {
+          limit = filter.limit
+        }
+        if (filter.skip) {
+          skip = filter.skip
+        }
+        if (filter.order) {
+          var m = filter.order.lastIndexOf(' ');
+          orderKey = filter.order.substring(0, m);
+          if (filter.order.lastIndexOf('ASC') != -1) {
+            orderType = "a"
+          }
         }
       }
       var query = sqlSelect
@@ -551,10 +554,17 @@ module.exports = {
         }
 
       }
-      query = query
-        .order(orderKey, orderType)
-        .limit(skip + "," + limit)
-        .build()
+      if (isCount == false) {
+        query = query
+          .order(orderKey, orderType)
+          .limit(skip + "," + limit)
+          .build()
+      }
+      else {
+        query = query
+          .count(null, 'count')
+          .build()
+      }
       var selectIndex = query.indexOf('SELECT') + 6
       for (let index = 0; index < arrayRelation.length; index++) {
         const relationelement = arrayRelation[index];
@@ -570,11 +580,15 @@ module.exports = {
       const connector = app.dataSources.mainDB.connector;
       connector.execute(query, null, (err, resultObjects) => {
         if (!err) {
-          for (let index = 0; index < resultObjects.length; index++) {
-            const element = resultObjects[index];
-            arrayRelation.forEach(relationElement => {
-              resultObjects[index][relationName[arrayOfTable[relationElement.fromTable]]] = JSON.parse(element[relationName[arrayOfTable[relationElement.fromTable]]])
-            });
+          if (isCount)
+            resolve({ "count": resultObjects[0]["count"] })
+          else {
+            for (let index = 0; index < resultObjects.length; index++) {
+              const element = resultObjects[index];
+              arrayRelation.forEach(relationElement => {
+                resultObjects[index][relationName[arrayOfTable[relationElement.fromTable]]] = JSON.parse(element[relationName[arrayOfTable[relationElement.fromTable]]])
+              });
+            }
           }
           resolve(resultObjects)
         } else
