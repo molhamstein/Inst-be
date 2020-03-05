@@ -730,7 +730,7 @@ module.exports = function (Institute) {
         "mainId": "userId",
         "relationName": "user"
       }, {
-        "fromTable": 4,
+        "fromTable": 3,
         "fromId": "id",
         "mainTable": 0,
         "mainId": "courseId",
