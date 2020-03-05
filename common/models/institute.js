@@ -730,6 +730,11 @@ module.exports = function (Institute) {
         "mainId": "userId",
         "relationName": "user"
       }], filter, false)
+      for (let index = 0; index < studentPayment.length; index++) {
+        // const element = studentPayment[index];
+        studentPayment[index]['student']['user'] = studentPayment[index]['user']
+        delete studentPayment[index]['user']
+      }
       callback(null, studentPayment)
     } catch (error) {
       callback(error)
