@@ -419,7 +419,7 @@ module.exports = function (app) {
   }
   ]
   var adminData = [{
-    "email": "admin@mgmt.com",
+    "email": "admin@gelp.com",
     "password": "password",
     username: "admin",
     emailVerified: true
