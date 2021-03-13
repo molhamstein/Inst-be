@@ -8,8 +8,10 @@ var ffmpeg = require('fluent-ffmpeg');
 
 module.exports = function (Uploadfile) {
 
-  
+
   Uploadfile.afterRemote('upload', function (context, result, next) {
+    // console.log(context.req.accessToken)
+    let userId = context.req.accessToken.userId
     let files = [];
     var folderName = context.req.params.container;
     let src = path.join(__dirname, '../../../MGMTImage/uploadFiles/');
@@ -26,6 +28,7 @@ module.exports = function (Uploadfile) {
       files.push({
         'url': urlFileRootSave + file.name,
         'type': folderName,
+        "userId": userId,
         'thumb': "", //urlThumbRootSave + file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb." + extension,
         'webThumbUrl': "" //urlWebThumbRootSave + file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb." + extension
       });

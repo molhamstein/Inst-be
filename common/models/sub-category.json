@@ -36,6 +36,15 @@
       "required": true,
       "default": "active"
     },
+    "level": {
+      "type": "number",
+      "required": true,
+      "default": 1
+    },
+    "code": {
+      "type": "number",
+      "required": true
+    },
     "createdAt": {
       "type": "date",
       "required": true,
@@ -92,6 +101,13 @@
       "principalType": "ROLE",
       "principalId": "super-admin",
       "permission": "ALLOW",
+      "property": "addSubcategory"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "super-admin",
+      "permission": "ALLOW",
       "property": "deactiveSubcategory"
     },
     {
@@ -110,6 +126,43 @@
     }
   ],
   "methods": {
+    "addSubcategory": {
+      "accepts": [
+        {
+          "arg": "nameEn",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "nameAr",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "subcategoryId",
+          "type": "number",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/addSubcategory",
+          "verb": "post"
+        }
+      ]
+    },
     "activeSubcategory": {
       "accepts": [
         {
@@ -205,11 +258,8 @@
         {
           "arg": "subcategoryId",
           "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
+          "required": false,
+          "description": ""
         },
         {
           "arg": "filter",
@@ -229,7 +279,7 @@
       "description": "",
       "http": [
         {
-          "path": "/getActiveSubcategoryBySubcategory/:subcategoryId",
+          "path": "/getActiveSubcategoryBySubcategory",
           "verb": "get"
         }
       ]

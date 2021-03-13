@@ -6,7 +6,8 @@
     "validateUpsert": true
   },
   "scope": {
-    "include": [{
+    "include": [
+      {
         "relation": "student"
       },
       {
@@ -86,7 +87,8 @@
       }
     }
   },
-  "acls": [{
+  "acls": [
+    {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",

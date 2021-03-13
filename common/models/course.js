@@ -12,9 +12,10 @@ module.exports = function (Course) {
   });
 
 
-  Course.createNewCourse = async function (data, supplies = [], imagesId = [], req, callback) {
+  Course.createNewPhysicalCourse = async function (data, supplies = [], imagesId = [], req, callback) {
     try {
       await Course.app.models.user.checkRoleBranchAdmin(data.instituteId, data.branchId, req)
+
       await Course.app.dataSources.mainDB.transaction(async models => {
         const {
           course
@@ -36,6 +37,7 @@ module.exports = function (Course) {
           }
         }
         data.costSupplies = costSupplies
+
         var newCourse = await course.create(data)
         if (imagesId.length != 0) {
           var imageData = []
@@ -76,6 +78,92 @@ module.exports = function (Course) {
   };
 
 
+
+  Course.updateOnlineCourse = async function (data, units, req, callback) {
+    try {
+      var youtuberId = req.accessToken.userId;
+      await Course.app.dataSources.mainDB.transaction(async models => {
+        const {
+          course
+        } = models
+        const {
+          unit
+        } = models
+        const {
+          video
+        } = models
+
+        let oldCourse;
+        if (data.id != null) {
+          oldCourse = await course.findById(data.id);
+          console.log(youtuberId)
+          console.log(oldCourse.youtuberId)
+          console.log(oldCourse)
+          if (oldCourse == null || oldCourse.youtuberId != youtuberId) {
+            throw Course.app.err.global.authorization()
+          }
+          let updateData = {
+            "cost": data.cost,
+            "sessionsNumber": data.sessionsNumber,
+            "nameEn": data.nameEn,
+            "nameAr": data.nameEn,
+            "descriptionEn": data.descriptionEn,
+            "descriptionAr": data.descriptionEn
+          }
+          await oldCourse.updateAttributes(updateData);
+        }
+        else {
+          data['youtuberId'] = youtuberId;
+          data['isStarted'] = true
+          data['maxCountStudent'] = Number.MAX_VALUE
+          data['typeCost'] = "course"
+          data['nameAr'] = data.nameEn
+          data['descriptionAr'] = data.descriptionEn,
+            oldCourse = await course.create(data);
+        }
+
+        async.forEachOf(units, async function (element, index, unitCallback) {
+
+          let mainUnit;
+          console.log(element)
+          console.log(element.id)
+          if (element.id != null) {
+            mainUnit = await unit.findById(element.id);
+            await mainUnit.updateAttributes({ "nameEn": element.nameEn, "nameAr": element.nameEn, "videosCount": element.videos ? element.videos.length : 0 })
+          }
+          else {
+            // console.log("SSSSSSs")
+            mainUnit = await unit.create({ "courseId": oldCourse.id, "nameEn": element.nameEn, "nameAr": element.nameEn, "videosCount": element.videos ? element.videos.length : 0 })
+          }
+          // unitCallback()
+
+          async.forEachOf(element.videos, async function (videoElement, index, callback) {
+            let mainVideo
+            if (videoElement.id != null) {
+              mainVideo = await unit.findById(videoElement.id);
+              await mainVideo.updateAttributes({ "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
+            }
+            else {
+              try {
+                mainVideo = await video.create({ "courseId": oldCourse.id, "unitId": mainUnit.id, "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
+              }
+              catch (error) {
+                console.log(error)
+              }
+            }
+          })
+        })
+        // console.log("oldCourse.id")
+        // console.log(oldCourse.id)
+        let mainCourse = await course.findById(oldCourse.id);
+        callback(null, mainCourse)
+      })
+    }
+    catch (err) {
+      callback(err)
+    }
+  }
+
   Course.getOneCourse = async function (id, req, callback) {
     try {
       var mainCourse = await Course.findById(id)
@@ -83,6 +171,42 @@ module.exports = function (Course) {
         throw Course.app.err.notFound.courseNotFound()
       await Course.app.models.user.checkRoleBranchAdmin(mainCourse.instituteId, mainCourse.branchId, req)
       callback(null, mainCourse)
+    } catch (error) {
+      callback(error)
+    }
+  };
+
+  Course.getOneOnlineCourse = async function (id, req, callback) {
+    try {
+      let userId = req.accessToken.userId
+      var mainCourse = await Course.findById(id)
+      if (mainCourse == null || !mainCourse.isOnlineCourse)
+        throw Course.app.err.notFound.courseNotFound()
+
+      let mainYoutuberCourse = await Course.app.models.youtuberCourse.findOne({ "where": { "courseId": id, "youtuberId": userId } })
+      if (mainYoutuberCourse) {
+        mainCourse = JSON.parse(JSON.stringify(mainCourse))
+        mainCourse['isInCourse'] = true;
+        let videosWatch = await Course.app.models.videoWatch.find({ "courseId": id });
+        for (let indexUnit = 0; indexUnit < mainCourse.units.length; indexUnit++) {
+          let videoFinishCount = 0
+          const elementUnit = mainCourse.units[indexUnit];
+          for (let index = 0; index < elementUnit.videos.length; index++) {
+            const element = elementUnit.videos[index];
+            let isWatchVideo = videosWatch.find(function (obj) {
+              return obj.videoId == element.id;
+            });
+            if (isWatchVideo) {
+              mainCourse['units'][indexUnit]['videos'][index]['isWatchVideo'] = true;
+              console.log(mainCourse['units'][indexUnit]['videos'][index])
+              videoFinishCount++;
+            }
+          }
+          mainCourse['units'][indexUnit]['videoFinishCount'] = videoFinishCount
+        }
+      }
+      callback(null, mainCourse)
+
     } catch (error) {
       callback(error)
     }
@@ -147,7 +271,7 @@ module.exports = function (Course) {
   };
 
 
-  Course.editCourse = async function (id, data, imagesId, req, callback) {
+  Course.editPhysicalCourse = async function (id, data, imagesId, req, callback) {
     try {
       var mainCourse = await Course.findById(id)
       if (mainCourse == null)
@@ -398,6 +522,53 @@ module.exports = function (Course) {
         console.log("Finish loop")
         resolve(courseHasError)
       })
+    })
+  }
+
+  Course.rateCourseOnline = async function (id, data, req, callback) {
+    let userId = req.accessToken.userId
+    await Course.app.dataSources.mainDB.transaction(async models => {
+      const { course } = models
+      const { rate } = models
+      let mainCourse = await course.findById(id);
+      if (mainCourse == null) {
+        throw Course.app.err.global.authorization()
+      }
+      let mainRate = await rate.findOne({ "where": { "courseId": id, "youtuberId": userId } })
+      if (mainRate) {
+        throw Course.app.err.global.authorization()
+      }
+      data['courseId'] = id
+      data['youtuberId'] = userId
+      mainRate = await rate.create(data);
+      let updateData = {
+        "rateCount": mainCourse.rateCount + 1,
+        "totalRate": mainCourse.totalRate + data.value,
+        "avgRate": (mainCourse.totalRate + data.value) / (mainCourse.rateCount + 1),
+      }
+
+      switch (data.value) {
+        case 5:
+          updateData['fiveRate'] = mainCourse['fiveRate'] + 1
+          break;
+        case 4:
+          updateData['foureRate'] = mainCourse['foureRate'] + 1
+          break;
+        case 3:
+          updateData['threeRate'] = mainCourse['threeRate'] + 1
+          break;
+        case 2:
+          updateData['towRate'] = mainCourse['towRate'] + 1
+          break;
+        case 1:
+          updateData['oneRate'] = mainCourse['oneRate'] + 1
+          break;
+
+        default:
+          break;
+      }
+      await mainCourse.updateAttributes(updateData)
+      callback(null, mainRate)
     })
   }
 

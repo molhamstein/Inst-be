@@ -1,6 +1,8 @@
 'use strict';
 const errors = require('./errors');
 const query = require('./boot/query.js');
+const service = require('./boot/service.js');
+console.log(service)
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 
@@ -29,6 +31,7 @@ app.use(async function (req, res, next) {
 
 app.query = query;
 app.err = errors;
+app.service = service;
 app.start = function () {
   // start the web server
   return app.listen(function () {

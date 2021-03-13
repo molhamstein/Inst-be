@@ -40,7 +40,8 @@
       }
     }
   },
-  "acls": [{
+  "acls": [
+    {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -68,7 +69,8 @@
   ],
   "methods": {
     "sendMultiMessage": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "instituteId",
           "type": "number",
           "required": true,
@@ -98,17 +100,21 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/sendMultiMessage",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/sendMultiMessage",
+          "verb": "post"
+        }
+      ]
     }
   }
 }

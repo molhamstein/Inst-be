@@ -2,7 +2,7 @@
 
 module.exports = function (Subcategory) {
 
-  
+
   Subcategory.validatesInclusionOf('status', {
     in: ['active', 'deactive']
   });
@@ -84,22 +84,26 @@ module.exports = function (Subcategory) {
 
   Subcategory.getActiveSubcategoryBySubcategory = async function (subcategoryId, filter, callback) {
     try {
-      var subcategory = await Subcategory.checkSubcategory(subcategoryId)
       if (filter == null) {
         filter = {
           "where": {
-            "status": "active",
-            "subcategoryId": subcategoryId
+            "and": [{
+              "status": "active",
+            }]
           }
         }
       } else if (filter.where == null) {
         filter.where = {
-          "status": "active",
-          "subcategoryId": subcategoryId
+          "and": [{
+            "status": "active",
+          }]
         }
       } else {
-        filter.where.status = "active"
-        filter.where.subcategoryId = subcategoryId
+        filter.where.and.push({ "status": "active" })
+      }
+      if (subcategoryId) {
+        var subcategory = await Subcategory.checkSubcategory(subcategoryId)
+        filter.where.and.push({ subcategoryId: subcategoryId })
       }
       var subcategories = await Subcategory.find(filter)
       return subcategories
@@ -108,5 +112,67 @@ module.exports = function (Subcategory) {
     }
   };
 
+
+  Subcategory.addSubcategory = async function (nameEn, nameAr, subcategoryId, callback) {
+    try {
+      await Category.app.dataSources.mainDB.transaction(async models => {
+        const {
+          category
+        } = models
+        let codeLevel = await Category.getNewCodeAndLevel(subcategoryId)
+        let object = Object.assign(codeLevel, { nameAr, nameEn, subcategoryId })
+        let newCategory = await category.create(object)
+        callback(null, newCategory)
+      })
+    } catch (error) {
+      callback(error)
+    }
+  }
+
+  Subcategory.getNewCodeAndLevel = async function (subcategoryId) {
+    return new Promise(async function (resolve, reject) {
+      try {
+        let filter = {};
+        if (subcategoryId) {
+          filter = { "where": { "subcategoryId": subcategoryId }, "order": "createdAt DESC" }
+        } else {
+          filter = { "where": { "level": 1 }, "order": "createdAt DESC" }
+        }
+        let lastChild = await Subcategory.findOne(filter);
+        console.log(lastChild)
+        if (subcategoryId == null) {
+          if (lastChild == null) {
+            resolve({ code: "000", level: 1 })
+          }
+          else {
+            let baseCode = parseInt(lastChild.code.substring(lastChild.code.length - 3));
+            let newCode = leftPad(baseCode + 1, 3).toString()
+            resolve({ code: newCode, level: 1 })
+          }
+        }
+        else {
+          let parent = await Category.findById(subcategoryId)
+          if (lastChild == null) {
+            resolve({ code: parent.code + "000", level: parent.level + 1 })
+          } else {
+            let baseCode = parseInt(lastChild.code.substring(lastChild.code.length - 3));
+            let newCode = parent.code + leftPad(baseCode + 1, 3).toString()
+            resolve({ code: newCode, level: parent.level + 1 })
+          }
+
+
+        }
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+  function leftPad(number, targetLength) {
+    var output = number + '';
+    while (output.length < targetLength) {
+      output = '0' + output;
+    }
+    return output;
+  }
 
 };

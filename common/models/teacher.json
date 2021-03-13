@@ -8,9 +8,11 @@
   },
   "ownerRelations": true,
   "scope": {
-    "include": [{
-      "relation": "user"
-    }]
+    "include": [
+      {
+        "relation": "user"
+      }
+    ]
   },
   "hidden": [
     "password",
@@ -80,7 +82,8 @@
       "keyThrough": "subcategoryId"
     }
   },
-  "acls": [{
+  "acls": [
+    {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -162,11 +165,11 @@
       "permission": "ALLOW",
       "property": "getTeacherNotesCount"
     }
-
   ],
   "methods": {
     "addNewTeacher": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "instituteId",
           "type": "number",
           "required": true,
@@ -212,20 +215,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/addNewTeacher",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/addNewTeacher",
+          "verb": "post"
+        }
+      ]
     },
     "addOldTeacher": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "instituteId",
           "type": "number",
           "required": true,
@@ -253,20 +261,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "student",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "student",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/addOldTeacher",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/addOldTeacher",
+          "verb": "post"
+        }
+      ]
     },
     "changeSubcategory": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -291,20 +304,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/changeSubcategory",
-        "verb": "put"
-      }]
+      "http": [
+        {
+          "path": "/:id/changeSubcategory",
+          "verb": "put"
+        }
+      ]
     },
     "getTeacher": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -323,20 +341,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "teacher",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "teacher",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/getTeacher",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:id/getTeacher",
+          "verb": "get"
+        }
+      ]
     },
     "addPaymentToTeacher": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -385,20 +408,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/addPaymentToTeacher",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/:id/addPaymentToTeacher",
+          "verb": "post"
+        }
+      ]
     },
     "getTeacherPayments": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "teacherId",
           "type": "number",
           "required": true,
@@ -422,20 +450,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:teacherId/getTeacherPayments",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:teacherId/getTeacherPayments",
+          "verb": "get"
+        }
+      ]
     },
     "getTeacherCourse": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "teacherId",
           "type": "number",
           "required": true,
@@ -459,20 +492,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:teacherId/getTeacherCourse",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:teacherId/getTeacherCourse",
+          "verb": "get"
+        }
+      ]
     },
     "getTeacherNotes": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "teacherId",
           "type": "number",
           "required": true,
@@ -496,20 +534,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:teacherId/getTeacherNotes",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:teacherId/getTeacherNotes",
+          "verb": "get"
+        }
+      ]
     },
     "getTeacherNotesCount": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "teacherId",
           "type": "number",
           "required": true,
@@ -533,20 +576,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:teacherId/getTeacherNotesCount",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:teacherId/getTeacherNotesCount",
+          "verb": "get"
+        }
+      ]
     },
     "addNoteToTeacher": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "teacherId",
           "type": "number",
           "required": true,
@@ -570,17 +618,21 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:teacherId/addNoteToTeacher",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/:teacherId/addNoteToTeacher",
+          "verb": "post"
+        }
+      ]
     }
   }
 }

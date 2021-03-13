@@ -6,11 +6,14 @@
     "validateUpsert": true
   },
   "scope": {
-    "include": [{
-      "relation": "teacher"
-    },{
-      "relation": "course"
-    }]
+    "include": [
+      {
+        "relation": "teacher"
+      },
+      {
+        "relation": "course"
+      }
+    ]
   },
   "properties": {
     "courseId": {
@@ -59,7 +62,8 @@
       }
     }
   },
-  "acls": [{
+  "acls": [
+    {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -81,7 +85,8 @@
   ],
   "methods": {
     "getPaymentsForTeacher": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -100,17 +105,21 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "result",
-        "type": "array",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "array",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/getPaymentsForTeacher",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:id/getPaymentsForTeacher",
+          "verb": "get"
+        }
+      ]
     }
   }
 }

@@ -1,0 +1,167 @@
+{
+  "name": "video",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "scope": {
+    "include": [
+      {
+        "relation": "media"
+      }
+    ]
+  },
+  "properties": {
+    "courseId": {
+      "type": "number",
+      "required": false
+    },
+    "unitId": {
+      "type": "number",
+      "required": false
+    },
+    "podcastId": {
+      "type": "number",
+      "required": false
+    },
+    "nameEn": {
+      "type": "string",
+      "required": true
+    },
+    "nameAr": {
+      "type": "string",
+      "required": true
+    },
+    "descriptionEn": {
+      "type": "string",
+      "required": true
+    },
+    "descriptionAr": {
+      "type": "string",
+      "required": true
+    },
+    "mediaId": {
+      "type": "number",
+      "required": true
+    },
+    "reachCount": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "viewCount": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "createAt": {
+      "type": "date",
+      "required": true,
+      "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "media": {
+      "type": "belongsTo",
+      "model": "media",
+      "foreignKey": "mediaId",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
+  "acls": [
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "youtuber",
+      "permission": "ALLOW",
+      "property": "watchVideo"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "youtuber",
+      "permission": "ALLOW",
+      "property": "deleteVideoFromPodcast"
+    }
+  ],
+  "methods": {
+    "watchVideo": {
+      "accepts": [
+        {
+          "arg": "videoId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "student",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/:videoId/watchVideo",
+          "verb": "post"
+        }
+      ]
+    },
+    "deleteVideoFromPodcast": {
+      "accepts": [
+        {
+          "arg": "videoId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "student",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/:videoId/deleteVideoFromPodcast",
+          "verb": "delete"
+        }
+      ]
+    }
+  }
+}

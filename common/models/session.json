@@ -6,7 +6,8 @@
     "validateUpsert": true
   },
   "scope": {
-    "include": [{
+    "include": [
+      {
         "relation": "course"
       },
       {
@@ -69,7 +70,8 @@
       }
     }
   },
-  "acls": [{
+  "acls": [
+    {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -133,7 +135,8 @@
   ],
   "methods": {
     "checkSessions": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "sessions",
           "type": "array",
           "required": true,
@@ -149,20 +152,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "data",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "data",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/checkSessions",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/checkSessions",
+          "verb": "post"
+        }
+      ]
     },
     "cancelSession": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -181,20 +189,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/cancelSession",
-        "verb": "put"
-      }]
+      "http": [
+        {
+          "path": "/:id/cancelSession",
+          "verb": "put"
+        }
+      ]
     },
     "changeSession": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -237,20 +250,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/changeSession",
-        "verb": "put"
-      }]
+      "http": [
+        {
+          "path": "/:id/changeSession",
+          "verb": "put"
+        }
+      ]
     },
     "getSession": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -269,20 +287,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/getSession",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:id/getSession",
+          "verb": "get"
+        }
+      ]
     },
     "getStudentInSession": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -301,20 +324,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/getStudentInSession",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:id/getStudentInSession",
+          "verb": "get"
+        }
+      ]
     },
     "attendStudent": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -345,20 +373,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/attendStudent",
-        "verb": "put"
-      }]
+      "http": [
+        {
+          "path": "/:id/attendStudent",
+          "verb": "put"
+        }
+      ]
     },
     "getTeacherInSession": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -377,17 +410,21 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/getTeacherInSession",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:id/getTeacherInSession",
+          "verb": "get"
+        }
+      ]
     }
   }
 }

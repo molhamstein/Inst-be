@@ -7,7 +7,8 @@
   },
   "replaceOnPUT": false,
   "scope": {
-    "include": [{
+    "include": [
+      {
         "relation": "institute"
       },
       {
@@ -86,7 +87,8 @@
       }
     }
   },
-  "acls": [{
+  "acls": [
+    {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -185,7 +187,8 @@
   ],
   "methods": {
     "createNewBranch": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "data",
           "type": "object",
           "required": true,
@@ -207,20 +210,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/createNewBranch",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/createNewBranch",
+          "verb": "post"
+        }
+      ]
     },
     "updateBranch": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -251,20 +259,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/updateBranch",
-        "verb": "put"
-      }]
+      "http": [
+        {
+          "path": "/:id/updateBranch",
+          "verb": "put"
+        }
+      ]
     },
     "activeBranch": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "string",
           "required": true,
@@ -283,20 +296,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "Branch",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "Branch",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/activeBranch",
-        "verb": "put"
-      }]
+      "http": [
+        {
+          "path": "/:id/activeBranch",
+          "verb": "put"
+        }
+      ]
     },
     "deactiveBranch": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "string",
           "required": true,
@@ -315,20 +333,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "Branch",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "Branch",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/deactiveBranch",
-        "verb": "put"
-      }]
+      "http": [
+        {
+          "path": "/:id/deactiveBranch",
+          "verb": "put"
+        }
+      ]
     },
     "getBranchAdmin": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -353,20 +376,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/getBranchAdmin",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:id/getBranchAdmin",
+          "verb": "get"
+        }
+      ]
     },
     "getBranchAdminCount": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -391,20 +419,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/getBranchAdminCount",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:id/getBranchAdminCount",
+          "verb": "get"
+        }
+      ]
     },
     "getOneBranch": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -423,20 +456,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/getOneBranch",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:id/getOneBranch",
+          "verb": "get"
+        }
+      ]
     },
     "addBranchAdmin": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -491,20 +529,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/addBranchAdmin",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/:id/addBranchAdmin",
+          "verb": "post"
+        }
+      ]
     },
     "createNewVenue": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -541,20 +584,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/createNewVenue",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/:id/createNewVenue",
+          "verb": "post"
+        }
+      ]
     },
     "getVenuesBranch": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -579,20 +627,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "array",
-        "type": "array",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "array",
+          "type": "array",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/getVenuesBranch",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:id/getVenuesBranch",
+          "verb": "get"
+        }
+      ]
     },
     "getVenuesBranchCount": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -617,20 +670,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "array",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "array",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/getVenuesBranchCount",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:id/getVenuesBranchCount",
+          "verb": "get"
+        }
+      ]
     },
     "getSessionBranch": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -655,17 +713,21 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "array",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "array",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/getSessionBranch",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:id/getSessionBranch",
+          "verb": "get"
+        }
+      ]
     }
   }
 }

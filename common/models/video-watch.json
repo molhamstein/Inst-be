@@ -1,16 +1,16 @@
 {
-  "name": "studentTag",
+  "name": "videoWatch",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "studentId": {
+    "videoId": {
       "type": "number",
       "required": true
     },
-    "tagId": {
+    "youtuberId": {
       "type": "number",
       "required": true
     },
@@ -22,13 +22,6 @@
   },
   "validations": [],
   "relations": {},
-  "acls": [
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "DENY"
-    }
-  ],
+  "acls": [],
   "methods": {}
 }

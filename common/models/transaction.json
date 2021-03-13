@@ -113,9 +113,10 @@
       "options": {
         "nestRemoting": true
       }
-    }    
+    }
   },
-  "acls": [{
+  "acls": [
+    {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -158,7 +159,8 @@
   ],
   "methods": {
     "getCourseTransactions": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "courseId",
           "type": "number",
           "required": true,
@@ -183,20 +185,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "result",
-        "type": "array",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "array",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:courseId/getCourseTransactions",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:courseId/getCourseTransactions",
+          "verb": "get"
+        }
+      ]
     },
     "getSessionTransactions": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "sessionId",
           "type": "number",
           "required": true,
@@ -221,20 +228,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "result",
-        "type": "array",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "array",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:sessionId/getSessionTransactions",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:sessionId/getSessionTransactions",
+          "verb": "get"
+        }
+      ]
     },
     "getStudentTransactions": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "studentId",
           "type": "number",
           "required": true,
@@ -259,20 +271,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "result",
-        "type": "array",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "array",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:studentId/getStudentTransactions",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:studentId/getStudentTransactions",
+          "verb": "get"
+        }
+      ]
     },
     "getTeacherTransactions": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "teacherId",
           "type": "number",
           "required": true,
@@ -297,18 +314,21 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "result",
-        "type": "array",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "array",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:teacherId/getTeacherTransactions",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:teacherId/getTeacherTransactions",
+          "verb": "get"
+        }
+      ]
     }
   }
-
 }

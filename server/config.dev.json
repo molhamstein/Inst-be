@@ -1,14 +1,14 @@
 {
     "restApiRoot": "/api",
     "host": "0.0.0.0",
-    "domain": "http://167.71.52.241:3040",
-    "siteDomain": "http://167.71.52.241:3040",
+    "domain": "http://167.71.52.241:3030",
+    "siteDomain": "http://167.71.52.241:3030",
     "thumbUrl": "C:/FFmpeg/bin/",
     "programFFmpegName": [
         "ffmpeg.exe",
         "ffprobe.exe"
     ],
-    "port": 3040,
+    "port": 3030,
     "remoting": {
         "context": false,
         "rest": {

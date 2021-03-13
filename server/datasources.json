@@ -8,6 +8,25 @@
     "connector": "mysql",
     "allowExtendedOperators": true
   },
+  "email": {
+    "name": "email",
+    "connector": "mail",
+    "transports": [
+      {
+        "type": "smtp",
+        "host": "smtp.gmail.com",
+        "secure": true,
+        "port": 465,
+        "tls": {
+          "rejectUnauthorized": false
+        },
+        "auth": {
+          "user": "gelpcourse@gmail.com",
+          "pass": "dxsj?7DA7_EGTku_"
+        }
+      }
+    ]
+  },
   "files": {
     "name": "files",
     "connector": "loopback-component-storage",

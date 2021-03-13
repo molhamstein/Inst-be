@@ -1,5 +1,5 @@
 {
-  "name": "studentPayment",
+  "name": "unit",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -8,30 +8,26 @@
   "scope": {
     "include": [
       {
-        "relation": "course"
+        "relation": "videos"
       }
     ]
   },
   "properties": {
-    "studentId": {
-      "type": "number",
-      "required": true
-    },
-    "value": {
-      "type": "number",
-      "required": true
-    },
     "courseId": {
       "type": "number",
-      "required": false
-    },
-    "date": {
-      "type": "date",
       "required": true
     },
-    "note": {
+    "nameEn": {
       "type": "string",
-      "required": false
+      "required": true
+    },
+    "nameAr": {
+      "type": "string",
+      "required": true
+    },
+    "videosCount": {
+      "type": "number",
+      "required": true
     },
     "createdAt": {
       "type": "date",
@@ -41,10 +37,10 @@
   },
   "validations": [],
   "relations": {
-    "course": {
-      "type": "belongsTo",
-      "model": "course",
-      "foreignKey": "courseId",
+    "videos": {
+      "type": "hasMany",
+      "model": "video",
+      "foreignKey": "unitId",
       "options": {
         "nestRemoting": true
       }

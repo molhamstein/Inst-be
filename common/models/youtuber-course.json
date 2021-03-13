@@ -1,0 +1,70 @@
+{
+  "name": "youtuberCourse",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "youtuberId": {
+      "type": "number",
+      "required": true
+    },
+    "courseId": {
+      "type": "number",
+      "required": true
+    },
+    "cost": {
+      "type": "number",
+      "required": true
+    },
+    "createdAt": {
+      "type": "date",
+      "required": true,
+      "defaultFn": "now"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "youtuber",
+      "permission": "ALLOW",
+      "property": "addToOnlineCourse"
+    }
+  ],
+  "methods": {
+    "addToOnlineCourse": {
+      "accepts": [
+        {
+          "arg": "courseId",
+          "type": "number"
+        },
+        {
+          "arg": "context",
+          "type": "object",
+          "http": {
+            "source": "context"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "get my info",
+      "http": [
+        {
+          "path": "/addToOnlineCourse",
+          "verb": "post"
+        }
+      ]
+    }
+  }
+}

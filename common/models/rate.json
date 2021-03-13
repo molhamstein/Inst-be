@@ -1,16 +1,23 @@
 {
-  "name": "studentTag",
+  "name": "rate",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "studentId": {
+    "courseId": {
       "type": "number",
       "required": true
     },
-    "tagId": {
+    "youtuberId": {
+      "type": "number",
+      "required": true
+    },
+    "comment": {
+      "type": "string"
+    },
+    "value": {
       "type": "number",
       "required": true
     },
@@ -22,13 +29,6 @@
   },
   "validations": [],
   "relations": {},
-  "acls": [
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "DENY"
-    }
-  ],
+  "acls": [],
   "methods": {}
 }

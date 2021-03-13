@@ -1,16 +1,16 @@
 {
-  "name": "studentTag",
+  "name": "podcastSubscribe",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "studentId": {
+    "youtuberId": {
       "type": "number",
       "required": true
     },
-    "tagId": {
+    "podcastId": {
       "type": "number",
       "required": true
     },
@@ -22,13 +22,6 @@
   },
   "validations": [],
   "relations": {},
-  "acls": [
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "DENY"
-    }
-  ],
+  "acls": [],
   "methods": {}
 }

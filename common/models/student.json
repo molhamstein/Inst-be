@@ -8,11 +8,14 @@
   },
   "ownerRelations": true,
   "scope": {
-    "include": [{
-      "relation": "user"
-    }, {
-      "relation": "tags"
-    }]
+    "include": [
+      {
+        "relation": "user"
+      },
+      {
+        "relation": "tags"
+      }
+    ]
   },
   "hidden": [
     "password",
@@ -108,7 +111,8 @@
       "keyThrough": "tagId"
     }
   },
-  "acls": [{
+  "acls": [
+    {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
@@ -232,11 +236,11 @@
       "permission": "ALLOW",
       "property": "getStudentNotesCount"
     }
-
   ],
   "methods": {
     "addNewStudent": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "instituteId",
           "type": "number",
           "required": true,
@@ -288,20 +292,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/addNewStudent",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/addNewStudent",
+          "verb": "post"
+        }
+      ]
     },
     "addOldStudent": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "instituteId",
           "type": "number",
           "required": true,
@@ -341,20 +350,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "student",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "student",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/addOldStudent",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/addOldStudent",
+          "verb": "post"
+        }
+      ]
     },
     "getStudent": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -373,20 +387,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "student",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "student",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/getStudent",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:id/getStudent",
+          "verb": "get"
+        }
+      ]
     },
     "activateStudent": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "phonenumber",
           "type": "string",
           "required": true,
@@ -405,20 +424,25 @@
           "description": ""
         }
       ],
-      "returns": [{
-        "arg": "student",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "student",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/activateStudent",
-        "verb": "put"
-      }]
+      "http": [
+        {
+          "path": "/activateStudent",
+          "verb": "put"
+        }
+      ]
     },
     "getPackage": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "id",
           "type": "number",
           "required": true,
@@ -437,20 +461,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "result",
-        "type": "array",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "array",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:id/getPackage",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:id/getPackage",
+          "verb": "get"
+        }
+      ]
     },
     "addToCourses": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "studentId",
           "type": "number",
           "required": true,
@@ -475,20 +504,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:studentId/addToCourses",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/:studentId/addToCourses",
+          "verb": "post"
+        }
+      ]
     },
     "addPaymentToStudent": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "studentId",
           "type": "number",
           "required": true,
@@ -531,20 +565,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:studentId/addPaymentToStudent",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/:studentId/addPaymentToStudent",
+          "verb": "post"
+        }
+      ]
     },
     "receivePaymentToStudent": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "studentId",
           "type": "number",
           "required": true,
@@ -587,20 +626,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:studentId/receivePaymentToStudent",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/:studentId/receivePaymentToStudent",
+          "verb": "post"
+        }
+      ]
     },
     "makeStudentTransaction": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "studentId",
           "type": "number",
           "required": true,
@@ -651,20 +695,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:studentId/makeStudentTransaction",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/:studentId/makeStudentTransaction",
+          "verb": "post"
+        }
+      ]
     },
     "getStudentCourse": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "studentId",
           "type": "number",
           "required": true,
@@ -698,20 +747,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:studentId/getStudentCourse",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:studentId/getStudentCourse",
+          "verb": "get"
+        }
+      ]
     },
     "getStudentCourseCount": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "studentId",
           "type": "number",
           "required": true,
@@ -735,20 +789,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:studentId/getStudentCourseCount",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:studentId/getStudentCourseCount",
+          "verb": "get"
+        }
+      ]
     },
     "getStudentPayments": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "studentId",
           "type": "number",
           "required": true,
@@ -772,20 +831,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:studentId/getStudentPayments",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:studentId/getStudentPayments",
+          "verb": "get"
+        }
+      ]
     },
     "getStudentNotes": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "studentId",
           "type": "number",
           "required": true,
@@ -809,20 +873,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:studentId/getStudentNotes",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:studentId/getStudentNotes",
+          "verb": "get"
+        }
+      ]
     },
     "getStudentNotesCount": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "studentId",
           "type": "number",
           "required": true,
@@ -846,20 +915,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:studentId/getStudentNotesCount",
-        "verb": "get"
-      }]
+      "http": [
+        {
+          "path": "/:studentId/getStudentNotesCount",
+          "verb": "get"
+        }
+      ]
     },
     "updateStudent": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "studentId",
           "type": "number",
           "required": true,
@@ -880,7 +954,9 @@
         },
         {
           "arg": "tags",
-          "type": ["number"],
+          "type": [
+            "number"
+          ],
           "required": false
         },
         {
@@ -893,20 +969,25 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:studentId/updateStudent",
-        "verb": "put"
-      }]
+      "http": [
+        {
+          "path": "/:studentId/updateStudent",
+          "verb": "put"
+        }
+      ]
     },
     "addNoteToStudent": {
-      "accepts": [{
+      "accepts": [
+        {
           "arg": "studentId",
           "type": "number",
           "required": true,
@@ -930,17 +1011,21 @@
           }
         }
       ],
-      "returns": [{
-        "arg": "object",
-        "type": "object",
-        "root": true,
-        "description": ""
-      }],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
       "description": "",
-      "http": [{
-        "path": "/:studentId/addNoteToStudent",
-        "verb": "post"
-      }]
+      "http": [
+        {
+          "path": "/:studentId/addNoteToStudent",
+          "verb": "post"
+        }
+      ]
     }
   }
 }

@@ -6,6 +6,10 @@
     "validateUpsert": true
   },
   "properties": {
+    "userId": {
+      "type": "number",
+      "required": false
+    },
     "url": {
       "type": "string",
       "required": true

@@ -18,6 +18,14 @@
       "type": "string",
       "required": true
     },
+    "imageId": {
+      "type": "number",
+      "required": false
+    },
+    "ISOCode": {
+      "type": "string",
+      "required": false
+    },
     "birthdate": {
       "type": "date",
       "required": true

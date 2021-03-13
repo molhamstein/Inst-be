@@ -4,25 +4,25 @@
   "domain": "http://167.71.52.241:3040",
   "siteDomain": "http://167.71.52.241:3040",
   "programFFmpegName": [
-      "ffmpeg.exe",
-      "ffprobe.exe"
+    "ffmpeg.exe",
+    "ffprobe.exe"
   ],
   "port": 3040,
   "remoting": {
-      "context": false,
-      "rest": {
-          "handleErrors": false,
-          "normalizeHttpPath": false,
-          "xml": false
-      },
-      "json": {
-          "strict": false,
-          "limit": "100kb"
-      },
-      "urlencoded": {
-          "extended": true,
-          "limit": "100kb"
-      },
-      "cors": false
+    "context": false,
+    "rest": {
+      "handleErrors": false,
+      "normalizeHttpPath": false,
+      "xml": false
+    },
+    "json": {
+      "strict": false,
+      "limit": "100kb"
+    },
+    "urlencoded": {
+      "extended": true,
+      "limit": "100kb"
+    },
+    "cors": false
   }
 }

@@ -1,0 +1,19 @@
+{
+  "ios": {
+    "reviewVersion": "1.11.0",
+    "lastVersion": "1.10.0",
+    "loadVersion": "1.8.0",
+    "link": "https://apps.apple.com/us/app/vibo-%D8%AE%D9%84%D9%8A%D8%AC-%D8%A7%D9%84%D9%81%D9%8A%D8%AF%D9%8A%D9%88/id1407745068"
+  },
+  "android": {
+    "reviewVersion": "1.11.0",
+    "lastVersion": "1.10.0",
+    "loadVersion": "1.8.0",
+    "link": "https://apps.apple.com/us/app/vibo-%D8%AE%D9%84%D9%8A%D8%AC-%D8%A7%D9%84%D9%81%D9%8A%D8%AF%D9%8A%D9%88/id1407745068"
+  },
+  "web": {
+    "reviewVersion": "1.11.0",
+    "lastVersion": "1.10.0",
+    "loadVersion": "1.8.0"
+  }
+}

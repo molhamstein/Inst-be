@@ -32,6 +32,9 @@
       "strictObjectIDCoercion": true
     }
   },
+  "Email": {
+    "dataSource": "email"
+  },
   "Role": {
     "dataSource": "mainDB",
     "public": true
@@ -388,6 +391,42 @@
     "public": true
   },
   "studentTag": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "youtuber": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "country": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "unit": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "video": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "videoWatch": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "youtuberCourse": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "podcast": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "podcastSubscribe": {
+    "dataSource": "mainDB",
+    "public": true
+  },
+  "rate": {
     "dataSource": "mainDB",
     "public": true
   }

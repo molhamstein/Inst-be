@@ -6,9 +6,11 @@
     "validateUpsert": true
   },
   "scope": {
-    "include": [{
-      "relation": "student"
-    }]
+    "include": [
+      {
+        "relation": "student"
+      }
+    ]
   },
   "properties": {
     "sessionId": {
@@ -54,7 +56,8 @@
       }
     }
   },
-  "acls": [{
+  "acls": [
+    {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
