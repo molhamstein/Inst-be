@@ -1,9 +1,9 @@
 {
   "mainDB": {
     "host": "127.0.0.1",
-    "database": "mgmt",
+    "database": "gelp",
     "username": "root",
-    "password": "123456",
+    "password": "g2@eElp3H!32",
     "name": "mainDB",
     "connector": "mysql",
     "allowExtendedOperators": true
