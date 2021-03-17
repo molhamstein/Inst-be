@@ -289,6 +289,12 @@
       "permission": "ALLOW"
     },
     {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "youtuber",
+      "permission": "ALLOW"
+    },
+    {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "user-institute",
