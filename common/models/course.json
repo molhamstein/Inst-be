@@ -391,6 +391,13 @@
       "principalId": "user-institute",
       "permission": "ALLOW",
       "property": "addSessionToCourse"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "homePageCourse"
     }
   ],
   "methods": {
@@ -993,6 +1000,24 @@
         {
           "path": "/:id/startCourse",
           "verb": "put"
+        }
+      ]
+    },
+    "homePageCourse": {
+      "accepts": [],
+      "returns": [
+        {
+          "arg": "object",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/homePageCourse",
+          "verb": "get"
         }
       ]
     }

@@ -588,4 +588,40 @@ module.exports = function (Course) {
     date.setTime(date.getTime() + (m * 60 * 1000));
     return date;
   }
+
+
+  Course.homePageCourse = async function (callback) {
+    try {
+
+
+      let featuredCategories = await Course.app.models.subCategory.find({ "where": { "isFeatured": true } })
+      let featuredCategoriesId = []
+      for (let index = 0; index < featuredCategories.length; index++) {
+        const element = featuredCategories[index];
+        featuredCategoriesId.push(element.id);
+      }
+
+      let allCourse = await Course.find({ "where": { subcategoryId: { inq: featuredCategoriesId } }, "order": "createdAt DESC" })
+
+
+      for (let index = 0; index < allCourse.length; index++) {
+        const element = allCourse[index];
+        let indexCategory = featuredCategories.findIndex(x => x.id == element.subcategoryId);
+        if (featuredCategories[indexCategory]['courses'] == null) {
+          featuredCategories[indexCategory]['courses'] = []
+        }
+        if (featuredCategories[indexCategory]['courses'].length < 10) {
+          featuredCategories[indexCategory]['courses'].push(element);
+        }
+      }
+
+      callback(null, featuredCategories)
+
+
+    } catch (error) {
+      // callback(error)
+    }
+  }
+
+
 };

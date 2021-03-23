@@ -36,6 +36,11 @@
       "required": true,
       "default": "active"
     },
+    "isFeatured": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
     "level": {
       "type": "number",
       "required": true,
