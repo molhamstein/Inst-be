@@ -54,6 +54,42 @@
       "required": true,
       "default": 0
     },
+    "behanceLink": {
+      "type": "string",
+      "required": false
+    },
+    "facebookLink": {
+      "type": "string",
+      "required": false
+    },
+    "githubLink": {
+      "type": "string",
+      "required": false
+    },
+    "twitterLink": {
+      "type": "string",
+      "required": false
+    },
+    "websiteLink": {
+      "type": "string",
+      "required": false
+    },
+    "linkedinLink": {
+      "type": "string",
+      "required": false
+    },
+    "type": {
+      "type": "string",
+      "required": false
+    },
+    "primaryIdentifier": {
+      "type": "string",
+      "required": false
+    },
+    "about": {
+      "type": "string",
+      "required": false
+    },
     "createdAt": {
       "type": "date",
       "required": true,
@@ -164,32 +200,8 @@
           "description": ""
         },
         {
-          "arg": "ISOCode",
-          "type": "string",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "phonenumber",
-          "type": "string",
-          "required": true,
-          "description": ""
-        },
-        {
           "arg": "name",
           "type": "string",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "gender",
-          "type": "string",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "birthdate",
-          "type": "date",
           "required": true,
           "description": ""
         }

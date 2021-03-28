@@ -15,7 +15,7 @@ module.exports = function (Youtuber) {
     in: ['active', 'pending', 'deactivate']
   });
 
-  Youtuber.signUp = async function (email, password, ISOCode, phonenumber, name, gender, birthdate, callback) {
+  Youtuber.signUp = async function (email, password, name, callback) {
     try {
       // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
       await Youtuber.app.dataSources.mainDB.transaction(async models => {
@@ -268,44 +268,44 @@ module.exports = function (Youtuber) {
     var arrayLastVersion = version.lastVersion.toString().split('.');
     var arrayLoadVersion = version.loadVersion.toString().split('.');
     for (let index = 0; index < arrayUserVersion.length; index++) {
-        const element = parseInt(arrayUserVersion[index]);
-        const elementLoadVersion = parseInt(arrayLoadVersion[index]);
-        if (element > elementLoadVersion) {
-            isAfterLoadVersion = true
-            break;
-        }
-        if (element < elementLoadVersion) {
-            isAfterLoadVersion = false
-            break;
-        }
+      const element = parseInt(arrayUserVersion[index]);
+      const elementLoadVersion = parseInt(arrayLoadVersion[index]);
+      if (element > elementLoadVersion) {
+        isAfterLoadVersion = true
+        break;
+      }
+      if (element < elementLoadVersion) {
+        isAfterLoadVersion = false
+        break;
+      }
     }
     if (isAfterLoadVersion == false) {
-        return { "status": "obsolete", "link": version.link }
+      return { "status": "obsolete", "link": version.link }
     }
 
     for (let index = 0; index < arrayUserVersion.length; index++) {
-        const element = parseInt(arrayUserVersion[index]);
-        const elementLastVersion = parseInt(arrayLastVersion[index]);
-        if (element < elementLastVersion) {
-            isBeforLastVersion = true
-            break;
-        }
-        if (element > elementLastVersion) {
-            isBeforLastVersion = false
-            break;
-        }
+      const element = parseInt(arrayUserVersion[index]);
+      const elementLastVersion = parseInt(arrayLastVersion[index]);
+      if (element < elementLastVersion) {
+        isBeforLastVersion = true
+        break;
+      }
+      if (element > elementLastVersion) {
+        isBeforLastVersion = false
+        break;
+      }
     }
 
 
     if (isBeforLastVersion == true) {
-        return { "status": "updateAvailable", "link": version.link }
+      return { "status": "updateAvailable", "link": version.link }
     } else {
-        if (userVersion == version.reviewVersion)
-            return { "status": "inreview" }
-        else
-            return { "status": "uptodate" }
+      if (userVersion == version.reviewVersion)
+        return { "status": "inreview" }
+      else
+        return { "status": "uptodate" }
     }
-}
+  }
 
   Youtuber.activeYoutuber = async function (context, callback) {
     try {

@@ -27,6 +27,9 @@
       },
       {
         "relation": "units"
+      },
+      {
+        "relation": "image"
       }
     ]
   },
@@ -56,6 +59,22 @@
       "required": true
     },
     "cost": {
+      "type": "number",
+      "required": true
+    },
+    "requirements": {
+      "type": "string",
+      "required": false
+    },
+    "courseSegment": {
+      "type": "string",
+      "required": false
+    },
+    "whatWillLearn": {
+      "type": "string",
+      "required": false
+    },
+    "duration": {
       "type": "number",
       "required": true
     },

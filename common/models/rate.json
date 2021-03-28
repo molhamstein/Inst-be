@@ -5,6 +5,11 @@
   "options": {
     "validateUpsert": true
   },
+  "scope": {
+    "include": [
+      "youtuber"
+    ]
+  },
   "properties": {
     "courseId": {
       "type": "number",
@@ -28,7 +33,16 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "youtuber": {
+      "type": "belongsTo",
+      "model": "youtuber",
+      "foreignKey": "youtuberId",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
   "acls": [],
   "methods": {}
 }

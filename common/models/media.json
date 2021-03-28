@@ -14,6 +14,10 @@
       "type": "string",
       "required": true
     },
+    "duration": {
+      "type": "number",
+      "required": false
+    },
     "thumbUrl": {
       "type": "string"
     },

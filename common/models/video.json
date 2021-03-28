@@ -25,6 +25,10 @@
       "type": "number",
       "required": false
     },
+    "duration": {
+      "type": "number",
+      "required": true
+    },
     "nameEn": {
       "type": "string",
       "required": true

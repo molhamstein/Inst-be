@@ -78,6 +78,63 @@ module.exports = function (Course) {
   };
 
 
+  Course.createNewOnlineCourse = async function (data, req, callback) {
+    try {
+      let ownerId = req.accessToken.userId;
+      await Course.app.dataSources.mainDB.transaction(async models => {
+        const {
+          course
+        } = models
+        const {
+          courseImages
+        } = models
+        // const {
+        //   session
+        // } = models
+        // const {
+        //   supply
+        // } = models
+        data['isOnlineCourse'] = true;
+        data['ownerId'] = ownerId;
+        var newCourse = await course.create(data);
+        // if (imagesId.length != 0) {
+        //   var imageData = []
+        //   imagesId.forEach(element => {
+        //     imageData.push({
+        //       "imageId": element,
+        //       "courseId": newCourse.id
+        //     })
+        //   });
+        //   await courseImages.create(imageData)
+        // }
+        // sessions.forEach(element => {
+        //   sessionData.push({
+        //     "venueId": element.venueId,
+        //     "startAt": new Date(element.start),
+        //     "endAt": addMinutes(new Date(element.start), element.duration),
+        //     "courseId": newCourse.id,
+        //     "duration": element.duration
+        //   })
+        // });
+        // var sessionHasError = await session.checkSession(sessionData);
+        // if (sessionHasError.length > 0) {
+        //   throw Course.app.err.course.sessionHasError(sessionHasError);
+        // }
+        // await session.create(sessionData)
+        // if (supplies.length > 0) {
+        //   for (let index = 0; index < supplies.length; index++) {
+        //     supplies[index]['courseId'] = newCourse.id
+        //   }
+        //   await supply.create(supplies)
+        // }
+        newCourse = await course.findById(newCourse.id)
+        callback(null, newCourse)
+      })
+    } catch (error) {
+      callback(error)
+    }
+  };
+
 
   Course.updateOnlineCourse = async function (data, units, req, callback) {
     try {
@@ -91,6 +148,9 @@ module.exports = function (Course) {
         } = models
         const {
           video
+        } = models
+        const {
+          media
         } = models
 
         let oldCourse;
@@ -108,7 +168,11 @@ module.exports = function (Course) {
             "nameEn": data.nameEn,
             "nameAr": data.nameEn,
             "descriptionEn": data.descriptionEn,
-            "descriptionAr": data.descriptionEn
+            "descriptionAr": data.descriptionEn,
+            "whatWillLearn": data.whatWillLearn,
+            "courseSegment": data.courseSegment,
+            "requirements": data.requirements,
+            "duration": element.duration
           }
           await oldCourse.updateAttributes(updateData);
         }
@@ -118,8 +182,13 @@ module.exports = function (Course) {
           data['maxCountStudent'] = Number.MAX_VALUE
           data['typeCost'] = "course"
           data['nameAr'] = data.nameEn
-          data['descriptionAr'] = data.descriptionEn,
-            oldCourse = await course.create(data);
+          data['descriptionAr'] = data.descriptionEn;
+          data["whatWillLearn"] = data.whatWillLearn;
+          data["courseSegment"] = data.courseSegment;
+          data["requirements"] = data.requirements;
+          data["duration"] = data.duration;
+
+          oldCourse = await course.create(data);
         }
 
         async.forEachOf(units, async function (element, index, unitCallback) {
@@ -145,7 +214,8 @@ module.exports = function (Course) {
             }
             else {
               try {
-                mainVideo = await video.create({ "courseId": oldCourse.id, "unitId": mainUnit.id, "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
+                let mainMedia = await media.findById(videoElement.mediaId)
+                mainVideo = await video.create({ "courseId": oldCourse.id, duration: mainMedia.duration, "unitId": mainUnit.id, "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
               }
               catch (error) {
                 console.log(error)
@@ -153,8 +223,6 @@ module.exports = function (Course) {
             }
           })
         })
-        // console.log("oldCourse.id")
-        // console.log(oldCourse.id)
         let mainCourse = await course.findById(oldCourse.id);
         callback(null, mainCourse)
       })
