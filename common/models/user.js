@@ -6,9 +6,9 @@ module.exports = function (User) {
   // User.validatesUniquenessOf('phonenumber', {
   //   message: 'phonenumber is not unique'
   // });
-  User.validatesInclusionOf('gender', {
-    in: ['male', 'female', undefined]
-  });
+  // User.validatesInclusionOf('gender', {
+  //   in: ['male', 'female']
+  // });
 
 
   User.createUser = function (data) {
@@ -24,16 +24,16 @@ module.exports = function (User) {
   User.checkUser = function (key, callback) {
     let pattern = new RegExp('.*' + key + '.*', "i");
     User.find({
-      "where": {
-        "or": [{
-          "phonenumber": pattern
-        },
-        {
-          "name": pattern
-        },
-        ]
-      }
-    },
+        "where": {
+          "or": [{
+              "phonenumber": pattern
+            },
+            {
+              "name": pattern
+            },
+          ]
+        }
+      },
       function (err, user) {
         if (err) return callback(err)
         return callback(err, user)
@@ -49,22 +49,22 @@ module.exports = function (User) {
       if (principalType == "admin") {
         resolve()
       } else
-        if (instituteId == null) {
-          reject(User.app.err.notFound.instituteNotFound())
-        } else {
-          institutesAdminModel.findOne({
-            "where": {
-              "instituteId": instituteId,
-              "userInstituteId": userId
-            }
-          }, function (err, admin) {
-            if (err) reject(err)
-            else if (admin == null) {
-              reject(User.app.err.global.authorization())
-            } else
-              resolve()
-          })
-        }
+      if (instituteId == null) {
+        reject(User.app.err.notFound.instituteNotFound())
+      } else {
+        institutesAdminModel.findOne({
+          "where": {
+            "instituteId": instituteId,
+            "userInstituteId": userId
+          }
+        }, function (err, admin) {
+          if (err) reject(err)
+          else if (admin == null) {
+            reject(User.app.err.global.authorization())
+          } else
+            resolve()
+        })
+      }
     })
   }
 
