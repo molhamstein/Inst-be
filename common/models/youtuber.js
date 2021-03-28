@@ -202,7 +202,7 @@ module.exports = function (Youtuber) {
         self.findOne({
           where: {
             userId: user.userId,
-            instituteId: credentials.instituteId
+            // instituteId: credentials.instituteId
           }
         }, function (err, student) {
           console.log("student//////////")
