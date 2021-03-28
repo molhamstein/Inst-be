@@ -180,7 +180,7 @@ module.exports = function (Course) {
         else {
           data['youtuberId'] = youtuberId;
           data['isStarted'] = true
-          data['maxCountStudent'] = Number.MAX_VALUE
+          data['maxCountStudent'] = 999999999999
           data['typeCost'] = "course"
           data['nameAr'] = data.nameEn
           data['descriptionAr'] = data.descriptionEn;
