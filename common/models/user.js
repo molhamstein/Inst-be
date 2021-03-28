@@ -7,7 +7,7 @@ module.exports = function (User) {
   //   message: 'phonenumber is not unique'
   // });
   User.validatesInclusionOf('gender', {
-    in: ['male', 'female', null]
+    in: ['male', 'female', undefined]
   });
 
 
