@@ -138,6 +138,7 @@ module.exports = function (Course) {
 
   Course.updateOnlineCourse = async function (data, units, req, callback) {
     try {
+      console.log("SSSSS");
       var youtuberId = req.accessToken.userId;
       await Course.app.dataSources.mainDB.transaction(async models => {
         const {
