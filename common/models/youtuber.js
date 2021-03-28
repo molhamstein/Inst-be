@@ -201,7 +201,7 @@ module.exports = function (Youtuber) {
       } else if (user) {
         self.findOne({
           where: {
-            userId: user.userId,
+            userId: user.id,
             // instituteId: credentials.instituteId
           }
         }, function (err, student) {
