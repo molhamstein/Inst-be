@@ -33,17 +33,13 @@ module.exports = function (Youtuber) {
         } = models
         var userObj = await user.findOne({
           "where": {
-            "phonenumber": phonenumber
+            "email": email
           }
         })
         if (userObj == null) {
           userObj = await user.create({
-            "phonenumber": phonenumber,
             "name": name,
-            "gender": gender,
-            "birthdate": birthdate,
-            "email": email,
-            "ISOCode": ISOCode
+            "email": email
           })
         } else {
           throw Youtuber.app.err.user.phonenumberIsAlreadyUsed()

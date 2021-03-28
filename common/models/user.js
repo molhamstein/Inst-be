@@ -3,9 +3,9 @@
 module.exports = function (User) {
 
 
-  User.validatesUniquenessOf('phonenumber', {
-    message: 'phonenumber is not unique'
-  });
+  // User.validatesUniquenessOf('phonenumber', {
+  //   message: 'phonenumber is not unique'
+  // });
   User.validatesInclusionOf('gender', {
     in: ['male', 'female']
   });
