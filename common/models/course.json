@@ -30,6 +30,9 @@
       },
       {
         "relation": "image"
+      },
+      {
+        "relation": "youtuber"
       }
     ]
   },
@@ -285,6 +288,14 @@
         "nestRemoting": true
       }
     },
+    "youtuber": {
+      "type": "belongsTo",
+      "model": "youtuber",
+      "foreignKey": "youtuberId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
     "units": {
       "type": "hasMany",
       "model": "unit",
@@ -326,6 +337,13 @@
       "principalId": "youtuber",
       "permission": "ALLOW",
       "property": "updateOnlineCourse"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "youtuber",
+      "permission": "ALLOW",
+      "property": "getOnlineCourses"
     },
     {
       "accessType": "EXECUTE",
@@ -420,6 +438,70 @@
     }
   ],
   "methods": {
+    "getOnlineCourses": {
+      "accepts": [
+        {
+          "arg": "searchKey",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "code",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "minPrice",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "maxPrice",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "limit",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "skip",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "req",
+          "type": "object",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "req"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "course",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/getOnlineCourses",
+          "verb": "get"
+        }
+      ]
+    },
     "updateOnlineCourse": {
       "accepts": [
         {
