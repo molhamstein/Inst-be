@@ -245,10 +245,10 @@ module.exports = function (Course) {
     }
   };
 
-  Course.getOnlineCourses = async function (searchKey, code, minPrice, maxPrice, limit, skip, req, callback) {
+  Course.getOnlineCourses = async function (searchKey, code, minPrice, maxPrice, youtuberId, limit, skip, req, callback) {
     try {
-      let coursesIds = await Course.app.query.getOnlineCourses(Course.app, searchKey, code, minPrice, maxPrice, limit, skip)
-      let courses = await Course.find({ "where": { "id": { "inq": coursesIds } },"oeder":"createdAt DESC" })
+      let coursesIds = await Course.app.query.getOnlineCourses(Course.app, searchKey, code, minPrice, maxPrice, youtuberId, limit, skip)
+      let courses = await Course.find({ "where": { "id": { "inq": coursesIds } }, "oeder": "createdAt DESC" })
       // let courses = await Course.app.query.threeLevel(Course.app, "course", "youtuber", "user", "youtuberId", "id", "userId", "id", { "where": { "isOnlineCourse": true , "youtuber.user.name":"anas"} }, false)
       callback(null, courses)
     } catch (error) {

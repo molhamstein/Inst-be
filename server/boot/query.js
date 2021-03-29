@@ -635,19 +635,23 @@ module.exports = {
     )
   },
 
-  getOnlineCourses: function (app, searchKey = "", code = "", minPrice, maxPrice, limit = 10, skip = 0) {
+  getOnlineCourses: function (app, searchKey = "", code = "", minPrice, maxPrice, youtuberId, limit = 10, skip = 0) {
     return new Promise(function (resolve, reject) {
       let query = 'SELECT JSON_OBJECT("userId",t2.userId,"createdAt",t2.createdAt,"id",t2.id,"status",t2.status,"balance",t2.balance,"frozenBalance",t2.frozenBalance,"user", JSON_OBJECT("gender",t3.gender,"birthdate",t3.birthdate,"name",t3.name,"phonenumber",t3.phonenumber,"id",t3.id,"email",t3.email)) AS youtuber ,JSON_OBJECT("nameAr",t4.nameAr,"nameEn",t4.nameEn,"createdAt",t4.createdAt,"id",t4.id,"status",t4.status,"code",t4.code) AS subcategory ,  `t1`.`id`, `t1`.`instituteId`, `t1`.`branchId`, `t1`.`venueId`, `t1`.`subcategoryId`, `t1`.`cost`, `t1`.`costSupplies`, `t1`.`typeCost`, `t1`.`sessionsNumber`, `t1`.`nameEn`, `t1`.`nameAr`, `t1`.`descriptionEn`, `t1`.`descriptionAr`, `t1`.`startAt`, `t1`.`maxCountStudent`, `t1`.`countStudent`, `t1`.`countStudentInQueue`, `t1`.`sessionAvgDuration`, `t1`.`waitingListId`, `t1`.`hasSession`, `t1`.`hasSpplies`, `t1`.`isStarted`, `t1`.`status`, `t1`.`createdAt`, `t1`.`isOnlineCourse` FROM ( `course` `t1` JOIN `subCategory` `t4` ON `t4`.`id` = `t1`.`subCategoryId` JOIN `youtuber` `t2` ON `t2`.`id` = `t1`.`youtuberId` ) JOIN `user` `t3` ON `t3`.`id` = `t2`.`userId`  WHERE `isOnlineCourse` = true AND (`t1`.`nameEn` LIKE "%' + searchKey + '%" OR `t1`.`nameAr` LIKE "%' + searchKey + '%" OR `t1`.`descriptionEn` LIKE "%' + searchKey + '%" OR `t1`.`descriptionAr` LIKE "%' + searchKey + '%" OR `t3`.`name` LIKE "%' + searchKey + '%" OR `t4`.`nameEn` LIKE "%' + searchKey + '%" OR `t4`.`nameAr` LIKE "%' + searchKey + '%") AND `t4`.`code` LIKE "%' + code + '%" ';
 
       if (minPrice) {
-        query += ' `t1`.`cost` >= ' + minPrice
+        query += ' AND `t1`.`cost` >= ' + minPrice
       }
 
       if (maxPrice) {
-        query += ' `t1`.`cost` <= ' + maxPrice
+        query += ' AND `t1`.`cost` <= ' + maxPrice
       }
 
-      query += 'ORDER BY `id` DESC LIMIT ' + skip + ',' + limit + ''
+      if (youtuberId) {
+        query += ' AND `t2`.`id` = ' + youtuberId
+      }
+
+      query += ' ORDER BY `id` DESC LIMIT ' + skip + ',' + limit + ''
       const connector = app.dataSources.mainDB.connector;
       console.log(query)
       connector.execute(query, null, (err, resultObjects) => {

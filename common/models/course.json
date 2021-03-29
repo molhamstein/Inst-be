@@ -465,6 +465,12 @@
           "description": ""
         },
         {
+          "arg": "youtuberId",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
           "arg": "limit",
           "type": "number",
           "required": false,
