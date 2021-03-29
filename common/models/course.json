@@ -341,7 +341,7 @@
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
-      "principalId": "youtuber",
+      "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "getOnlineCourses"
     },
@@ -411,7 +411,7 @@
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
-      "principalId": "youtuber",
+      "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "getOneOnlineCourse"
     },
