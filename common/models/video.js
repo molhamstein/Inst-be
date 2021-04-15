@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = function (Video) {
-    Video.watchVideo = async function (id, req, callback) {
+module.exports = function(Video) {
+    Video.watchVideo = async function(id, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId
@@ -16,7 +16,7 @@ module.exports = function (Video) {
                 let mainVideo = await video.findById(id);
                 if (mainVideo) {
                     let data = { "reachCount": mainVideo.reachCount + 1 }
-                    let oldVideoWatch = await videoWatch.findOne({ "youtuberId": userId, "videoId": id })
+                    let oldVideoWatch = await videoWatch.findOne({ "where": { "youtuberId": userId, "videoId": id } })
                     if (oldVideoWatch == null) {
                         data['viewCount'] = mainVideo.viewCount + 1;
                         await videoWatch.create({ "youtuberId": userId, "videoId": id })
@@ -30,7 +30,7 @@ module.exports = function (Video) {
         }
     };
 
-    Video.deleteVideoFromPodcast = async function (id, req, callback) {
+    Video.deleteVideoFromPodcast = async function(id, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId
