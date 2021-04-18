@@ -162,6 +162,7 @@ module.exports = function(Course) {
                     }
                     let updateData = {
                         "cost": data.cost,
+                        "discountCost": data.discountCost,
                         "sessionsNumber": data.sessionsNumber,
                         "nameEn": data.nameEn,
                         "nameAr": data.nameEn,

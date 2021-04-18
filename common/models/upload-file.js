@@ -4,6 +4,10 @@ const configPath = process.env.NODE_ENV === undefined ?
     '../../server/config.json' :
     `../../server/config.${process.env.NODE_ENV}.json`;
 const config = require(configPath);
+
+var ffmpegStatic = require('ffmpeg-static');
+var ffprobeStatic = require('ffprobe-static');
+
 var ffmpeg = require('fluent-ffmpeg');
 const { getVideoDurationInSeconds } = require('get-video-duration');
 const {
@@ -26,10 +30,13 @@ module.exports = function(Uploadfile) {
         var urlThumbRootSave = urlFileRoot + '/' + "thumbnail" + '/download/'
         var urlWebThumbRootSave = urlFileRoot + '/' + "web-thumbnail" + '/download/'
 
-        if (process.env.NODE_ENV != undefined) {
-            ffmpeg.setFfmpegPath(path.join(config.thumbUrl + config.programFFmpegName[0]));
-            ffmpeg.setFfprobePath(path.join(config.thumbUrl + config.programFFmpegName[1]));
-        }
+        // if (process.env.NODE_ENV != undefined) {
+        //     ffmpeg.setFfmpegPath(path.join(config.thumbUrl + config.programFFmpegName[0]));
+        //     ffmpeg.setFfprobePath(path.join(config.thumbUrl + config.programFFmpegName[1]));
+        // } 
+
+        ffmpeg.setFfmpegPath(ffmpegStatic.path);
+        ffmpeg.setFfprobePath(ffprobeStatic.path);
 
 
 
@@ -47,8 +54,10 @@ module.exports = function(Uploadfile) {
                     var size
                     ffmpeg.ffprobe(src + "/" + folderName + "/" + file.name, function(err, metadata) {
                         // ffmpeg.ffprobe("P:/vibo/VobbleApi/uploadFiles/videos/5efa41f0-db2a-11ea-b3fb-b7d2915714b61597078561678.mp4", function (err, metadata) {
-                        if (err) { console.log(err);
-                            console.log("err") } else {
+                        if (err) {
+                            console.log(err);
+                            console.log("err")
+                        } else {
                             //console.log(metadata);
                             metadata['streams'].forEach(function(element) {
                                 if (element.width) {
@@ -72,13 +81,13 @@ module.exports = function(Uploadfile) {
                                 newHeight = newWidth / res
                                 size = newWidth + 'x' + parseInt(newHeight)
                             }
-
-                            ffmpeg(src + "/" + folderName + "/" + file.name)
+                            console.log(src + "/" + folderName + "/" + file.name)
+                            ffmpeg("P:/agenda/MGMTImage/uploadFiles/video/a27e7640-a040-11eb-8b9a-4d4d28f3cbfc1618748502948.mp4")
                                 .screenshot({
                                     count: 1,
                                     filename: file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb.PNG",
-                                    folder: src + '/thumbnail/',
-                                    size: size
+                                    folder: src + '/thumbnail',
+                                    // size: size
                                 });
 
                             files.push({

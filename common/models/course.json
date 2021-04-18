@@ -1,1132 +1,1058 @@
 {
-  "name": "course",
-  "base": "PersistedModel",
-  "idInjection": true,
-  "options": {
-    "validateUpsert": true
-  },
-  "scope": {
-    "include": [
-      {
-        "relation": "institute"
-      },
-      {
-        "relation": "branch"
-      },
-      {
-        "relation": "subcategory"
-      },
-      {
-        "relation": "media"
-      },
-      {
-        "relation": "waitingList"
-      },
-      {
-        "relation": "supplies"
-      },
-      {
-        "relation": "units"
-      },
-      {
-        "relation": "image"
-      },
-      {
-        "relation": "youtuber"
-      }
-    ]
-  },
-  "properties": {
-    "instituteId": {
-      "type": "number",
-      "required": false
+    "name": "course",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
     },
-    "branchId": {
-      "type": "number",
-      "required": false
+    "scope": {
+        "include": [{
+                "relation": "institute"
+            },
+            {
+                "relation": "branch"
+            },
+            {
+                "relation": "subcategory"
+            },
+            {
+                "relation": "media"
+            },
+            {
+                "relation": "waitingList"
+            },
+            {
+                "relation": "supplies"
+            },
+            {
+                "relation": "units"
+            },
+            {
+                "relation": "image"
+            },
+            {
+                "relation": "video"
+            },
+            {
+                "relation": "youtuber"
+            }
+        ]
     },
-    "venueId": {
-      "type": "number",
-      "required": false
+    "properties": {
+        "instituteId": {
+            "type": "number",
+            "required": false
+        },
+        "branchId": {
+            "type": "number",
+            "required": false
+        },
+        "venueId": {
+            "type": "number",
+            "required": false
+        },
+        "subcategoryId": {
+            "type": "number",
+            "required": true
+        },
+        "youtuberId": {
+            "type": "number",
+            "required": false
+        },
+        "isOnlineCourse": {
+            "type": "boolean",
+            "required": true
+        },
+        "cost": {
+            "type": "number",
+            "required": true
+        },
+        "discountCost": {
+            "type": "number",
+            "required": true
+        },
+        "requirements": {
+            "type": "string",
+            "required": false
+        },
+        "courseSegment": {
+            "type": "string",
+            "required": false
+        },
+        "whatWillLearn": {
+            "type": "string",
+            "required": false
+        },
+        "duration": {
+            "type": "number",
+            "required": true
+        },
+        "costSupplies": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "typeCost": {
+            "type": "string",
+            "required": true
+        },
+        "sessionsNumber": {
+            "type": "number",
+            "required": true
+        },
+        "videoId": {
+            "type": "number",
+            "required": false
+        },
+        "imageId": {
+            "type": "number",
+            "required": false
+        },
+        "nameEn": {
+            "type": "string",
+            "required": true
+        },
+        "nameAr": {
+            "type": "string",
+            "required": true
+        },
+        "descriptionEn": {
+            "type": "string",
+            "required": true
+        },
+        "descriptionAr": {
+            "type": "string",
+            "required": true
+        },
+        "startAt": {
+            "type": "date",
+            "required": false
+        },
+        "maxCountStudent": {
+            "type": "number",
+            "required": true
+        },
+        "countStudent": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "countStudentInQueue": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "sessionAvgDuration": {
+            "type": "number",
+            "required": true
+        },
+        "waitingListId": {
+            "type": "number",
+            "required": false
+        },
+        "isBestSeeler": {
+            "type": "boolean",
+            "required": true,
+            "default": false
+        },
+        "isVerified": {
+            "type": "boolean",
+            "required": true,
+            "default": false
+        },
+        "hasSession": {
+            "type": "boolean",
+            "required": true,
+            "default": false
+        },
+        "hasSpplies": {
+            "type": "boolean",
+            "required": true,
+            "default": false
+        },
+        "isStarted": {
+            "type": "boolean",
+            "required": true,
+            "default": false
+        },
+        "status": {
+            "type": "string",
+            "required": true,
+            "default": "active"
+        },
+        "fiveRate": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "foureRate": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "threeRate": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "towRate": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "oneRate": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "totalRate": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "avgRate": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "rateCount": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "createdAt": {
+            "type": "date",
+            "required": true,
+            "defaultFn": "now"
+        }
     },
-    "subcategoryId": {
-      "type": "number",
-      "required": true
+    "validations": [],
+    "relations": {
+        "institute": {
+            "type": "belongsTo",
+            "model": "institute",
+            "foreignKey": "instituteId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "branch": {
+            "type": "belongsTo",
+            "model": "branch",
+            "foreignKey": "branchId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "subcategory": {
+            "type": "belongsTo",
+            "model": "subCategory",
+            "foreignKey": "subcategoryId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "video": {
+            "type": "belongsTo",
+            "model": "media",
+            "foreignKey": "videoId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "image": {
+            "type": "belongsTo",
+            "model": "media",
+            "foreignKey": "imageId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "media": {
+            "type": "hasMany",
+            "model": "media",
+            "foreignKey": "courseId",
+            "options": {
+                "nestRemoting": true
+            },
+            "through": "courseImages",
+            "keyThrough": "imageId"
+        },
+        "supplies": {
+            "type": "hasMany",
+            "model": "supply",
+            "foreignKey": "courseId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "waitingList": {
+            "type": "belongsTo",
+            "model": "waitingList",
+            "foreignKey": "waitingListId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "youtuber": {
+            "type": "belongsTo",
+            "model": "youtuber",
+            "foreignKey": "youtuberId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "units": {
+            "type": "hasMany",
+            "model": "unit",
+            "foreignKey": "courseId",
+            "options": {
+                "nestRemoting": true
+            }
+        }
     },
-    "youtuberId": {
-      "type": "number",
-      "required": false
-    },
-    "isOnlineCourse": {
-      "type": "boolean",
-      "required": true
-    },
-    "cost": {
-      "type": "number",
-      "required": true
-    },
-    "requirements": {
-      "type": "string",
-      "required": false
-    },
-    "courseSegment": {
-      "type": "string",
-      "required": false
-    },
-    "whatWillLearn": {
-      "type": "string",
-      "required": false
-    },
-    "duration": {
-      "type": "number",
-      "required": true
-    },
-    "costSupplies": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "typeCost": {
-      "type": "string",
-      "required": true
-    },
-    "sessionsNumber": {
-      "type": "number",
-      "required": true
-    },
-    "videoId": {
-      "type": "number",
-      "required": false
-    },
-    "imageId": {
-      "type": "number",
-      "required": false
-    },
-    "nameEn": {
-      "type": "string",
-      "required": true
-    },
-    "nameAr": {
-      "type": "string",
-      "required": true
-    },
-    "descriptionEn": {
-      "type": "string",
-      "required": true
-    },
-    "descriptionAr": {
-      "type": "string",
-      "required": true
-    },
-    "startAt": {
-      "type": "date",
-      "required": false
-    },
-    "maxCountStudent": {
-      "type": "number",
-      "required": true
-    },
-    "countStudent": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "countStudentInQueue": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "sessionAvgDuration": {
-      "type": "number",
-      "required": true
-    },
-    "waitingListId": {
-      "type": "number",
-      "required": false
-    },
-    "isBestSeeler": {
-      "type": "boolean",
-      "required": true,
-      "default": false
-    },
-    "isVerified": {
-      "type": "boolean",
-      "required": true,
-      "default": false
-    },
-    "hasSession": {
-      "type": "boolean",
-      "required": true,
-      "default": false
-    },
-    "hasSpplies": {
-      "type": "boolean",
-      "required": true,
-      "default": false
-    },
-    "isStarted": {
-      "type": "boolean",
-      "required": true,
-      "default": false
-    },
-    "status": {
-      "type": "string",
-      "required": true,
-      "default": "active"
-    },
-    "fiveRate": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "foureRate": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "threeRate": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "towRate": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "oneRate": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "totalRate": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "avgRate": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "rateCount": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "createdAt": {
-      "type": "date",
-      "required": true,
-      "defaultFn": "now"
+    "acls": [{
+            "accessType": "*",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "DENY"
+        },
+        {
+            "accessType": "*",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "READ",
+            "principalType": "ROLE",
+            "principalId": "youtuber",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "user-institute",
+            "permission": "ALLOW",
+            "property": "createNewPhysicalCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "youtuber",
+            "permission": "ALLOW",
+            "property": "updateOnlineCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW",
+            "property": "getOnlineCourses"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "youtuber",
+            "permission": "ALLOW",
+            "property": "rateCourseOnline"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "user-institute",
+            "permission": "ALLOW",
+            "property": "editPhysicalCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "user-institute",
+            "permission": "ALLOW",
+            "property": "addTeacherToCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "user-institute",
+            "permission": "ALLOW",
+            "property": "getTeacherInCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "user-institute",
+            "permission": "ALLOW",
+            "property": "getTeacherInCourseCount"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "user-institute",
+            "permission": "ALLOW",
+            "property": "getStudentInCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "user-institute",
+            "permission": "ALLOW",
+            "property": "getSessionInCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "user-institute",
+            "permission": "ALLOW",
+            "property": "getStudentInCourseCount"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "user-institute",
+            "permission": "ALLOW",
+            "property": "getOneCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW",
+            "property": "getOneOnlineCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "user-institute",
+            "permission": "ALLOW",
+            "property": "startCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "user-institute",
+            "permission": "ALLOW",
+            "property": "addSessionToCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW",
+            "property": "homePageCourse"
+        }
+    ],
+    "methods": {
+        "getOnlineCourses": {
+            "accepts": [{
+                    "arg": "searchKey",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "code",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "minPrice",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "maxPrice",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "youtuberId",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "limit",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "skip",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "course",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/getOnlineCourses",
+                "verb": "get"
+            }]
+        },
+        "updateOnlineCourse": {
+            "accepts": [{
+                    "arg": "data",
+                    "type": "object",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "units",
+                    "type": "array",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "course",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/updateOnlineCourse",
+                "verb": "post"
+            }]
+        },
+        "rateCourseOnline": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "data",
+                    "type": "object",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "course",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/rateCourseOnline",
+                "verb": "post"
+            }]
+        },
+        "createNewPhysicalCourse": {
+            "accepts": [{
+                    "arg": "data",
+                    "type": "object",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "supplies",
+                    "type": "array",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "imagesId",
+                    "type": "array",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "course",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/createNewPhysicalCourse",
+                "verb": "post"
+            }]
+        },
+        "editPhysicalCourse": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "data",
+                    "type": "object",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "imagesId",
+                    "type": "array",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "course",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/editPhysicalCourse",
+                "verb": "put"
+            }]
+        },
+        "addTeacherToCourse": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "teacherId",
+                    "type": "number",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "typePaid",
+                    "type": "string",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "value",
+                    "type": "number",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "object",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/addTeacherToCourse",
+                "verb": "post"
+            }]
+        },
+        "getTeacherInCourse": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "filter",
+                    "type": "object",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "result",
+                "type": "array",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/getTeacherInCourse",
+                "verb": "get"
+            }]
+        },
+        "getTeacherInCourseCount": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "filter",
+                    "type": "object",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "result",
+                "type": "array",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/getTeacherInCourseCount",
+                "verb": "get"
+            }]
+        },
+        "getSessionInCourse": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "filter",
+                    "type": "object",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "result",
+                "type": "array",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/getSessionInCourse",
+                "verb": "get"
+            }]
+        },
+        "getStudentInCourse": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "filter",
+                    "type": "object",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "result",
+                "type": "array",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/getStudentInCourse",
+                "verb": "get"
+            }]
+        },
+        "getStudentInCourseCount": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "filter",
+                    "type": "object",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "result",
+                "type": "array",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/getStudentInCourseCount",
+                "verb": "get"
+            }]
+        },
+        "addSessionToCourse": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "sessions",
+                    "type": "array",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "object",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/addSessionToCourse",
+                "verb": "post"
+            }]
+        },
+        "getOneCourse": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "object",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/getOneCourse",
+                "verb": "get"
+            }]
+        },
+        "getOneOnlineCourse": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "object",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/getOneOnlineCourse",
+                "verb": "get"
+            }]
+        },
+        "startCourse": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "object",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/startCourse",
+                "verb": "put"
+            }]
+        },
+        "homePageCourse": {
+            "accepts": [],
+            "returns": [{
+                "arg": "object",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/homePageCourse",
+                "verb": "get"
+            }]
+        }
     }
-  },
-  "validations": [],
-  "relations": {
-    "institute": {
-      "type": "belongsTo",
-      "model": "institute",
-      "foreignKey": "instituteId",
-      "options": {
-        "nestRemoting": true
-      }
-    },
-    "branch": {
-      "type": "belongsTo",
-      "model": "branch",
-      "foreignKey": "branchId",
-      "options": {
-        "nestRemoting": true
-      }
-    },
-    "subcategory": {
-      "type": "belongsTo",
-      "model": "subCategory",
-      "foreignKey": "subcategoryId",
-      "options": {
-        "nestRemoting": true
-      }
-    },
-    "video": {
-      "type": "belongsTo",
-      "model": "media",
-      "foreignKey": "videoId",
-      "options": {
-        "nestRemoting": true
-      }
-    },
-    "image": {
-      "type": "belongsTo",
-      "model": "media",
-      "foreignKey": "imageId",
-      "options": {
-        "nestRemoting": true
-      }
-    },
-    "media": {
-      "type": "hasMany",
-      "model": "media",
-      "foreignKey": "courseId",
-      "options": {
-        "nestRemoting": true
-      },
-      "through": "courseImages",
-      "keyThrough": "imageId"
-    },
-    "supplies": {
-      "type": "hasMany",
-      "model": "supply",
-      "foreignKey": "courseId",
-      "options": {
-        "nestRemoting": true
-      }
-    },
-    "waitingList": {
-      "type": "belongsTo",
-      "model": "waitingList",
-      "foreignKey": "waitingListId",
-      "options": {
-        "nestRemoting": true
-      }
-    },
-    "youtuber": {
-      "type": "belongsTo",
-      "model": "youtuber",
-      "foreignKey": "youtuberId",
-      "options": {
-        "nestRemoting": true
-      }
-    },
-    "units": {
-      "type": "hasMany",
-      "model": "unit",
-      "foreignKey": "courseId",
-      "options": {
-        "nestRemoting": true
-      }
-    }
-  },
-  "acls": [
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "DENY"
-    },
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "super-admin",
-      "permission": "ALLOW"
-    },
-    {
-      "accessType": "READ",
-      "principalType": "ROLE",
-      "principalId": "youtuber",
-      "permission": "ALLOW"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
-      "property": "createNewPhysicalCourse"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "youtuber",
-      "permission": "ALLOW",
-      "property": "updateOnlineCourse"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "ALLOW",
-      "property": "getOnlineCourses"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "youtuber",
-      "permission": "ALLOW",
-      "property": "rateCourseOnline"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
-      "property": "editPhysicalCourse"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
-      "property": "addTeacherToCourse"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
-      "property": "getTeacherInCourse"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
-      "property": "getTeacherInCourseCount"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
-      "property": "getStudentInCourse"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
-      "property": "getSessionInCourse"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
-      "property": "getStudentInCourseCount"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
-      "property": "getOneCourse"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "ALLOW",
-      "property": "getOneOnlineCourse"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
-      "property": "startCourse"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "user-institute",
-      "permission": "ALLOW",
-      "property": "addSessionToCourse"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "ALLOW",
-      "property": "homePageCourse"
-    }
-  ],
-  "methods": {
-    "getOnlineCourses": {
-      "accepts": [
-        {
-          "arg": "searchKey",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "code",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "minPrice",
-          "type": "number",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "maxPrice",
-          "type": "number",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "youtuberId",
-          "type": "number",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "limit",
-          "type": "number",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "skip",
-          "type": "number",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "course",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/getOnlineCourses",
-          "verb": "get"
-        }
-      ]
-    },
-    "updateOnlineCourse": {
-      "accepts": [
-        {
-          "arg": "data",
-          "type": "object",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "units",
-          "type": "array",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "course",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/updateOnlineCourse",
-          "verb": "post"
-        }
-      ]
-    },
-    "rateCourseOnline": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "data",
-          "type": "object",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "course",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/rateCourseOnline",
-          "verb": "post"
-        }
-      ]
-    },
-    "createNewPhysicalCourse": {
-      "accepts": [
-        {
-          "arg": "data",
-          "type": "object",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "supplies",
-          "type": "array",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "imagesId",
-          "type": "array",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "course",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/createNewPhysicalCourse",
-          "verb": "post"
-        }
-      ]
-    },
-    "editPhysicalCourse": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "data",
-          "type": "object",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "imagesId",
-          "type": "array",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "course",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/editPhysicalCourse",
-          "verb": "put"
-        }
-      ]
-    },
-    "addTeacherToCourse": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "teacherId",
-          "type": "number",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "typePaid",
-          "type": "string",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "value",
-          "type": "number",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/addTeacherToCourse",
-          "verb": "post"
-        }
-      ]
-    },
-    "getTeacherInCourse": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "filter",
-          "type": "object",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "array",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/getTeacherInCourse",
-          "verb": "get"
-        }
-      ]
-    },
-    "getTeacherInCourseCount": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "filter",
-          "type": "object",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "array",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/getTeacherInCourseCount",
-          "verb": "get"
-        }
-      ]
-    },
-    "getSessionInCourse": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "filter",
-          "type": "object",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "array",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/getSessionInCourse",
-          "verb": "get"
-        }
-      ]
-    },
-    "getStudentInCourse": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "filter",
-          "type": "object",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "array",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/getStudentInCourse",
-          "verb": "get"
-        }
-      ]
-    },
-    "getStudentInCourseCount": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "filter",
-          "type": "object",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "array",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/getStudentInCourseCount",
-          "verb": "get"
-        }
-      ]
-    },
-    "addSessionToCourse": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "sessions",
-          "type": "array",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/addSessionToCourse",
-          "verb": "post"
-        }
-      ]
-    },
-    "getOneCourse": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/getOneCourse",
-          "verb": "get"
-        }
-      ]
-    },
-    "getOneOnlineCourse": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/getOneOnlineCourse",
-          "verb": "get"
-        }
-      ]
-    },
-    "startCourse": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/startCourse",
-          "verb": "put"
-        }
-      ]
-    },
-    "homePageCourse": {
-      "accepts": [],
-      "returns": [
-        {
-          "arg": "object",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/homePageCourse",
-          "verb": "get"
-        }
-      ]
-    }
-  }
 }
