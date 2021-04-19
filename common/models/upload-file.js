@@ -53,12 +53,12 @@ module.exports = function(Uploadfile) {
                     var rotation;
                     var size
                     ffmpeg.ffprobe(src + "/" + folderName + "/" + file.name, function(err, metadata) {
-                        // ffmpeg.ffprobe("P:/vibo/VobbleApi/uploadFiles/videos/5efa41f0-db2a-11ea-b3fb-b7d2915714b61597078561678.mp4", function (err, metadata) {
+                        //     // ffmpeg.ffprobe("P:/vibo/VobbleApi/uploadFiles/videos/5efa41f0-db2a-11ea-b3fb-b7d2915714b61597078561678.mp4", function (err, metadata) {
                         if (err) {
                             console.log(err);
                             console.log("err")
                         } else {
-                            //console.log(metadata);
+                            console.log(metadata);
                             metadata['streams'].forEach(function(element) {
                                 if (element.width) {
                                     oldWidth = element.width;
@@ -82,13 +82,18 @@ module.exports = function(Uploadfile) {
                                 size = newWidth + 'x' + parseInt(newHeight)
                             }
                             console.log(src + "/" + folderName + "/" + file.name)
-                            ffmpeg("P:/agenda/MGMTImage/uploadFiles/video/a27e7640-a040-11eb-8b9a-4d4d28f3cbfc1618748502948.mp4")
-                                .screenshot({
-                                    count: 1,
-                                    filename: file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb.PNG",
-                                    folder: src + '/thumbnail',
-                                    // size: size
-                                });
+                            console.log(src + 'thumbnail')
+                            console.log(file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb.PNG")
+                            console.log(size);
+
+                            // ffmpeg('C:/Users/HP/Desktop/sample-mp4-file.mp4')
+                            //     .screenshots({
+                            //         count: 1,
+                            //         // timestamps: [30.5, '50%', '00:10.123'],
+                            //         filename: 'thumbnail-a-seconds.png',
+                            //         folder: 'C:/Users/HP/Desktop/',
+                            //         size: '320x240'
+                            //     });
 
                             files.push({
                                 'url': urlFileRootSave + file.name,
