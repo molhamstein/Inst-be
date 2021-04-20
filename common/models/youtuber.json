@@ -350,12 +350,20 @@
         },
         "userPodcast": {
             "accepts": [{
-                "arg": "id",
-                "type": "string",
-                "http": {
-                    "source": "path"
+                    "arg": "id",
+                    "type": "string",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "context",
+                    "type": "object",
+                    "http": {
+                        "source": "context"
+                    }
                 }
-            }],
+            ],
             "returns": [{
                 "arg": "result",
                 "type": "object",
