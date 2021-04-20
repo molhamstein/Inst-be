@@ -262,8 +262,8 @@ module.exports = function(Youtuber) {
             var userId = context.req.accessToken.userId;
             var userCourses = await Youtuber.app.models.youtuberCourse.find({ "where": { "userId": userId } });
             let coursesId = [];
-            for (let index = 0; index < array.length; index++) {
-                const element = array[index];
+            for (let index = 0; index < userCourses.length; index++) {
+                const element = userCourses[index];
                 coursesId.push(element.courseId)
             }
 
@@ -280,7 +280,7 @@ module.exports = function(Youtuber) {
             var userId;
             if (context.req.accessToken)
                 userId = context.req.accessToken.userId;
-            let filter = { "where": { "and": [{ "id": { inq: coursesId } }] } }
+            let filter = { "where": { "and": [{ "youtuberId": id }] } }
             if (userId != id)
                 filter['where']['and'].push({ "status": "active" })
             let courses = await Youtuber.app.models.Course.find(filter)
