@@ -275,9 +275,12 @@ module.exports = function(Course) {
                                 return obj.videoId == element.id;
                             });
                             if (isWatchVideo) {
-                                mainCourse['units'][indexUnit]['videos'][index]['isWatchVideo'] = true;
-                                console.log(mainCourse['units'][indexUnit]['videos'][index])
-                                videoFinishCount++;
+                                if (isWatchVideo.status == "finished") {
+                                    mainCourse['units'][indexUnit]['videos'][index]['isWatchVideo'] = true;
+                                    videoFinishCount++;
+                                } else if (isWatchVideo.status == "inProgress") {
+                                    mainCourse['units'][indexUnit]['videos'][index]['isProgress'] = true;
+                                }
                             }
                         }
                         mainCourse['units'][indexUnit]['videoFinishCount'] = videoFinishCount

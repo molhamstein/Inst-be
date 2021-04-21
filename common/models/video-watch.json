@@ -1,27 +1,32 @@
 {
-  "name": "videoWatch",
-  "base": "PersistedModel",
-  "idInjection": true,
-  "options": {
-    "validateUpsert": true
-  },
-  "properties": {
-    "videoId": {
-      "type": "number",
-      "required": true
+    "name": "videoWatch",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
     },
-    "youtuberId": {
-      "type": "number",
-      "required": true
+    "properties": {
+        "videoId": {
+            "type": "number",
+            "required": true
+        },
+        "youtuberId": {
+            "type": "number",
+            "required": true
+        },
+        "status": {
+            "type": "string",
+            "required": true,
+            "default": "inProgress"
+        },
+        "createdAt": {
+            "type": "date",
+            "required": true,
+            "defaultFn": "now"
+        }
     },
-    "createdAt": {
-      "type": "date",
-      "required": true,
-      "defaultFn": "now"
-    }
-  },
-  "validations": [],
-  "relations": {},
-  "acls": [],
-  "methods": {}
+    "validations": [],
+    "relations": {},
+    "acls": [],
+    "methods": {}
 }

@@ -30,6 +30,34 @@ module.exports = function(Video) {
         }
     };
 
+    Video.finishVideo = async function(id, req, callback) {
+        try {
+            // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
+            let userId = req.accessToken.userId
+            await Video.app.dataSources.mainDB.transaction(async models => {
+                const {
+                    video
+                } = models
+                const {
+                    videoWatch
+                } = models
+
+                let mainVideo = await video.findById(id);
+                if (mainVideo) {
+                    let oldVideoWatch = await videoWatch.findOne({ "where": { "youtuberId": userId, "videoId": id, "status": "inProgress" }, "order": "createdAt DESC" })
+                    if (oldVideoWatch == null) {
+                        await videoWatch.create({ "youtuberId": userId, "videoId": id, "status": "finished" })
+                    } else {
+                        await oldVideoWatch.updateAttribute("status", "finished")
+                    }
+                    callback(null, "ok")
+                }
+            })
+        } catch (error) {
+            callback(error)
+        }
+    };
+
     Video.deleteVideoFromPodcast = async function(id, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
