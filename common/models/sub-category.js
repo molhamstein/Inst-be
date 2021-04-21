@@ -136,14 +136,14 @@ module.exports = function(Subcategory) {
 
     Subcategory.addSubcategory = async function(nameEn, nameAr, subcategoryId, callback) {
         try {
-            await Category.app.dataSources.mainDB.transaction(async models => {
+            await Subcategory.app.dataSources.mainDB.transaction(async models => {
                 const {
-                    category
+                    subCategory
                 } = models
-                let codeLevel = await Category.getNewCodeAndLevel(subcategoryId)
+                let codeLevel = await Subcategory.getNewCodeAndLevel(subcategoryId)
                 let object = Object.assign(codeLevel, { nameAr, nameEn, subcategoryId })
-                let newCategory = await category.create(object)
-                callback(null, newCategory)
+                let newSubcategory = await subCategory.create(object)
+                callback(null, newSubcategory)
             })
         } catch (error) {
             callback(error)
@@ -171,7 +171,7 @@ module.exports = function(Subcategory) {
                         resolve({ code: newCode, level: 1 })
                     }
                 } else {
-                    let parent = await Category.findById(subcategoryId)
+                    let parent = await Subcategory.findById(subcategoryId)
                     if (lastChild == null) {
                         resolve({ code: parent.code + "000", level: parent.level + 1 })
                     } else {

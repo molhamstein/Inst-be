@@ -69,7 +69,8 @@
         },
         "discountCost": {
             "type": "number",
-            "required": true
+            "required": true,
+            "default": 0
         },
         "requirements": {
             "type": "string",
@@ -144,7 +145,7 @@
         },
         "sessionAvgDuration": {
             "type": "number",
-            "required": true
+            "required": false
         },
         "waitingListId": {
             "type": "number",

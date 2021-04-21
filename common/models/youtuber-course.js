@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = function (Youtubercourse) {
-    Youtubercourse.addToOnlineCourse = async function (courseId, context, callback) {
+module.exports = function(Youtubercourse) {
+    Youtubercourse.addToOnlineCourse = async function(courseId, context, callback) {
         var userId = context.req.accessToken.userId;
         try {
 
@@ -15,6 +15,7 @@ module.exports = function (Youtubercourse) {
                 }
                 let mainCourse = await course.findById(courseId)
                 let newYoutuberCourse = await youtuberCourse.create({ "youtuberId": userId, "cost": mainCourse.cost, courseId })
+                await mainCourse.updateAttribute("countStudent", mainCourse.countStudent + 1)
                 callback(null, newYoutuberCourse)
             })
         } catch (error) {

@@ -175,7 +175,7 @@ module.exports = function(Course) {
                     }
                     await oldCourse.updateAttributes(updateData);
                 } else {
-                    data['youtuberId'] = youtuberId;
+                    data['youtuberId'] = data['youtuberId'] ? data['youtuberId'] : youtuberId;
                     data['isStarted'] = true
                     data['maxCountStudent'] = 999999999
                     data['typeCost'] = "course"
@@ -184,7 +184,8 @@ module.exports = function(Course) {
                     data["whatWillLearn"] = data.whatWillLearn;
                     data["courseSegment"] = data.courseSegment;
                     data["requirements"] = data.requirements;
-                    data["duration"] = data.duration;
+                    data["duration"] = 20000;
+                    data["isOnlineCourse"] = true;
 
                     oldCourse = await course.create(data);
                 }
