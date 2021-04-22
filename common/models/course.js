@@ -163,13 +163,14 @@ module.exports = function(Course) {
                     let updateData = {
                         "cost": data.cost,
                         "discountCost": data.discountCost,
-                        "sessionsNumber": data.sessionsNumber,
                         "nameEn": data.nameEn,
                         "nameAr": data.nameEn,
                         "descriptionEn": data.descriptionEn,
                         "descriptionAr": data.descriptionEn,
                         "whatWillLearn": data.whatWillLearn,
                         "courseSegment": data.courseSegment,
+                        "imageId": data.imageId,
+                        "videoId": data.videoId,
                         "requirements": data.requirements,
                         "duration": 20000000
                     }
