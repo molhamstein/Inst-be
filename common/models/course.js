@@ -171,7 +171,7 @@ module.exports = function(Course) {
                         "whatWillLearn": data.whatWillLearn,
                         "courseSegment": data.courseSegment,
                         "requirements": data.requirements,
-                        "duration": element.duration
+                        "duration": 20000000
                     }
                     await oldCourse.updateAttributes(updateData);
                 } else {
