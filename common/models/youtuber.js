@@ -86,32 +86,34 @@ module.exports = function(Youtuber) {
             var socialId = data.socialId;
             var image = data.image;
             var phonenumber = data.phonenumber;
+            var email = data.email;
             var name = data.name;
             var gender = data.gender;
             var birthdate = data.birthdate;
 
             let youtuber = await Youtuber.findOne({ "where": { "socialId": socialId, "typeLogIn": type } })
-            if (youtuber == null && phonenumber != null) {
+            if (youtuber == null) {
                 // var pattern = new RegExp('.*' + username + '.*', "i");
                 // let usernameCount = await Users.count({ "username": { regexp: pattern.toString() } })
                 // if (usernameCount != 0) {
                 //     username += "_" + usernameCount
                 // }
-                image = await Youtuber.app.service.downloadImage(image, "profile");
+                let media;
+                if (image) {
+                    image = await Youtuber.app.service.downloadImage(image, "profile");
 
-                let media = await Youtuber.app.models.media.create({
-                    'url': image,
-                    'type': "profile"
-                })
-                let mainUser = await Youtuber.app.models.user.create({ "imageId": media.id, "phonenumber": phonenumber, "name": name, gender, birthdate })
+                    media = await Youtuber.app.models.media.create({
+                        'url': image,
+                        'type': "profile"
+                    })
+                }
+                let mainUser = await Youtuber.app.models.user.create({ "imageId": media ? media.id : null, "email": email, "name": name, gender, birthdate })
                 youtuber = await Youtuber.create({ "socialId": socialId, "typeLogIn": type, "userId": mainUser.id, "password": "000000" })
                 var newRoleMapping = await Youtuber.app.models.RoleMapping.create({
                     "principalType": "youtuber",
                     "principalId": youtuber.id,
                     "roleId": 5
                 })
-            } else if (youtuber == null) {
-                callback(null, { "isNewUser": true })
             }
             let newToken = await Youtuber.app.models.MultiAccessToken.create({
                 "userId": youtuber.id,
