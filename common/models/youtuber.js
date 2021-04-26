@@ -108,7 +108,7 @@ module.exports = function(Youtuber) {
                     })
                 }
                 let mainUser = await Youtuber.app.models.user.create({ "imageId": media ? media.id : null, "email": email, "name": name, gender, birthdate })
-                youtuber = await Youtuber.create({ "socialId": socialId, "typeLogIn": type, "userId": mainUser.id, "password": "000000" })
+                youtuber = await Youtuber.create({ "socialId": socialId, "email": email, "typeLogIn": type, "userId": mainUser.id, "password": "000000" })
                 var newRoleMapping = await Youtuber.app.models.RoleMapping.create({
                     "principalType": "youtuber",
                     "principalId": youtuber.id,
