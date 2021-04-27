@@ -157,9 +157,14 @@ module.exports = function(Course) {
                     console.log(youtuberId)
                     console.log(oldCourse.youtuberId)
                     console.log(oldCourse)
+                    let sessionsNumber = 0;
                     if (oldCourse == null || oldCourse.youtuberId != youtuberId) {
                         throw Course.app.err.global.authorization()
                     }
+
+                    units.forEach(element => {
+                        sessionsNumber += element.videos.length
+                    });
                     let updateData = {
                         "cost": data.cost,
                         "discountCost": data.discountCost,
@@ -173,7 +178,7 @@ module.exports = function(Course) {
                         "videoId": data.videoId,
                         "unitsNumber": units.length,
                         "requirements": data.requirements,
-                        "sessionsNumber": 0,
+                        "sessionsNumber": sessionsNumber,
                         "duration": 20000000
                     }
                     await oldCourse.updateAttributes(updateData);
@@ -189,7 +194,7 @@ module.exports = function(Course) {
                     data["requirements"] = data.requirements;
                     data["duration"] = 20000;
                     data['unitsNumber'] = units.length
-                    data['sessionsNumber'] = 0
+                    data['sessionsNumber'] = sessionsNumber
                     data["isOnlineCourse"] = true;
                     oldCourse = await course.create(data);
                 }
@@ -207,10 +212,10 @@ module.exports = function(Course) {
                         mainUnit = await unit.create({ "courseId": oldCourse.id, "nameEn": element.nameEn, "nameAr": element.nameEn, "videosCount": element.videos ? element.videos.length : 0 })
                     }
                     // unitCallback()
-                    newSessionsNumber += element.videos.length
 
                     async.forEachOf(element.videos, async function(videoElement, index, callback) {
                         let mainVideo
+
                         if (videoElement.id != null) {
                             mainVideo = await unit.findById(videoElement.id);
                             await mainVideo.updateAttributes({ "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
@@ -224,7 +229,6 @@ module.exports = function(Course) {
                         }
                     })
                 })
-                await oldCourse.updateAttribute("sessionsNumber", newSessionsNumber)
                 let mainCourse = await course.findById(oldCourse.id);
                 callback(null, mainCourse)
             })
