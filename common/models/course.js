@@ -171,7 +171,9 @@ module.exports = function(Course) {
                         "courseSegment": data.courseSegment,
                         "imageId": data.imageId,
                         "videoId": data.videoId,
+                        "unitsNumber": units.length,
                         "requirements": data.requirements,
+                        "sessionsNumber": 0,
                         "duration": 20000000
                     }
                     await oldCourse.updateAttributes(updateData);
@@ -186,11 +188,12 @@ module.exports = function(Course) {
                     data["courseSegment"] = data.courseSegment;
                     data["requirements"] = data.requirements;
                     data["duration"] = 20000;
+                    data['unitsNumber'] = units.length
+                    data['sessionsNumber'] = 0
                     data["isOnlineCourse"] = true;
-
                     oldCourse = await course.create(data);
                 }
-
+                let newSessionsNumber = 0;
                 async.forEachOf(units, async function(element, index, unitCallback) {
 
                     let mainUnit;
@@ -204,6 +207,7 @@ module.exports = function(Course) {
                         mainUnit = await unit.create({ "courseId": oldCourse.id, "nameEn": element.nameEn, "nameAr": element.nameEn, "videosCount": element.videos ? element.videos.length : 0 })
                     }
                     // unitCallback()
+                    newSessionsNumber += element.videos.length
 
                     async.forEachOf(element.videos, async function(videoElement, index, callback) {
                         let mainVideo
@@ -220,6 +224,7 @@ module.exports = function(Course) {
                         }
                     })
                 })
+                await mainCourse.updateAttribute("sessionsNumber", newSessionsNumber)
                 let mainCourse = await course.findById(oldCourse.id);
                 callback(null, mainCourse)
             })
@@ -261,10 +266,17 @@ module.exports = function(Course) {
             if (mainCourse == null || !mainCourse.isOnlineCourse)
                 throw Course.app.err.notFound.courseNotFound()
             mainCourse['isInCourse'] = false
+            mainCourse['finishLessonNumber'] = 0
+            mainCourse['nextLesson'] = null;
+
             if (userId) {
                 let mainYoutuberCourse = await Course.app.models.youtuberCourse.findOne({ "where": { "courseId": id, "youtuberId": userId } })
                 if (mainYoutuberCourse) {
                     mainCourse = JSON.parse(JSON.stringify(mainCourse))
+                    if (mainCourse.units[0] && mainCourse.units[0].videos[0]) {
+                        console.log("SSSS")
+                        mainCourse['nextLesson'] = mainCourse.units[0].videos[0];
+                    }
                     mainCourse['isInCourse'] = true;
                     let videosWatch = await Course.app.models.videoWatch.find({ "courseId": id });
                     for (let indexUnit = 0; indexUnit < mainCourse.units.length; indexUnit++) {
@@ -279,6 +291,13 @@ module.exports = function(Course) {
                                 if (isWatchVideo.status == "finished") {
                                     mainCourse['units'][indexUnit]['videos'][index]['isWatchVideo'] = true;
                                     videoFinishCount++;
+                                    mainCourse['finishLessonNumber']++
+                                        if (mainCourse['units'][indexUnit]['videos'][index + 1]) {
+                                            mainCourse['nextLesson'] = mainCourse['units'][indexUnit]['videos'][index + 1]
+                                        } else
+                                    if (mainCourse['units'][indexUnit + 1] && mainCourse['units'][indexUnit + 1]['videos'][0]) {
+                                        mainCourse['nextLesson'] = mainCourse['units'][indexUnit + 1]['videos'][0]
+                                    }
                                 } else if (isWatchVideo.status == "inProgress") {
                                     mainCourse['units'][indexUnit]['videos'][index]['isProgress'] = true;
                                 }

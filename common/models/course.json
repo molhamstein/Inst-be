@@ -101,6 +101,10 @@
             "type": "number",
             "required": true
         },
+        "unitsNumber": {
+            "type": "number",
+            "required": false
+        },
         "videoId": {
             "type": "number",
             "required": false
@@ -151,7 +155,7 @@
             "type": "number",
             "required": false
         },
-        "isBestSeeler": {
+        "isBestSeller": {
             "type": "boolean",
             "required": true,
             "default": false

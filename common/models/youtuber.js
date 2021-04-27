@@ -259,6 +259,7 @@ module.exports = function(Youtuber) {
         }
     }
 
+
     Youtuber.myPurchasedCourse = async function(context, callback) {
         try {
             var userId = context.req.accessToken.userId;
