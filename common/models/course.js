@@ -224,7 +224,7 @@ module.exports = function(Course) {
                         }
                     })
                 })
-                await mainCourse.updateAttribute("sessionsNumber", newSessionsNumber)
+                await oldCourse.updateAttribute("sessionsNumber", newSessionsNumber)
                 let mainCourse = await course.findById(oldCourse.id);
                 callback(null, mainCourse)
             })
