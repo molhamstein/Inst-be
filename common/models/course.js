@@ -152,19 +152,20 @@ module.exports = function(Course) {
                 } = models
 
                 let oldCourse;
+                let sessionsNumber = 0;
+                units.forEach(element => {
+                    sessionsNumber += element.videos.length
+                });
+
                 if (data.id != null) {
                     oldCourse = await course.findById(data.id);
                     console.log(youtuberId)
                     console.log(oldCourse.youtuberId)
                     console.log(oldCourse)
-                    let sessionsNumber = 0;
                     if (oldCourse == null || oldCourse.youtuberId != youtuberId) {
                         throw Course.app.err.global.authorization()
                     }
 
-                    units.forEach(element => {
-                        sessionsNumber += element.videos.length
-                    });
                     let updateData = {
                         "cost": data.cost,
                         "discountCost": data.discountCost,
