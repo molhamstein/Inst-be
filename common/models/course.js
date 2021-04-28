@@ -279,7 +279,6 @@ module.exports = function(Course) {
                 if (mainYoutuberCourse) {
                     mainCourse = JSON.parse(JSON.stringify(mainCourse))
                     if (mainCourse.units[0] && mainCourse.units[0].videos[0]) {
-                        console.log("SSSS")
                         mainCourse['nextLesson'] = mainCourse.units[0].videos[0];
                     }
                     mainCourse['isInCourse'] = true;
@@ -310,6 +309,8 @@ module.exports = function(Course) {
                         }
                         mainCourse['units'][indexUnit]['videoFinishCount'] = videoFinishCount
                     }
+                } else {
+                    mainCourse['media'] = []
                 }
             }
             callback(null, mainCourse)

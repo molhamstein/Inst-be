@@ -5,8 +5,9 @@ const configPath = process.env.NODE_ENV === undefined ?
     `../../server/config.${process.env.NODE_ENV}.json`;
 const config = require(configPath);
 
-var ffmpegStatic = require('ffmpeg-static');
+// var ffmpegStatic = require('ffmpeg-static');
 var ffprobeStatic = require('ffprobe-static');
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 
 var ffmpeg = require('fluent-ffmpeg');
 const { getVideoDurationInSeconds } = require('get-video-duration');
@@ -35,9 +36,10 @@ module.exports = function(Uploadfile) {
         //     ffmpeg.setFfprobePath(path.join(config.thumbUrl + config.programFFmpegName[1]));
         // } 
 
-        ffmpeg.setFfmpegPath(ffmpegStatic.path);
+        // ffmpeg.setFfmpegPath(ffmpegStatic.path);
         ffmpeg.setFfprobePath(ffprobeStatic.path);
 
+        ffmpeg.setFfmpegPath(ffmpegPath);
 
 
         let arrayFiles = result.result.files.file;
@@ -83,24 +85,26 @@ module.exports = function(Uploadfile) {
                             }
                             console.log(src + "/" + folderName + "/" + file.name)
                             console.log(src + 'thumbnail')
-                            console.log(file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb.PNG")
+                            console.log(file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb_1.PNG")
                             console.log(size);
 
-                            // ffmpeg('C:/Users/HP/Desktop/sample-mp4-file.mp4')
-                            //     .screenshots({
-                            //         count: 1,
-                            //         // timestamps: [30.5, '50%', '00:10.123'],
-                            //         filename: 'thumbnail-a-seconds.png',
-                            //         folder: 'C:/Users/HP/Desktop/',
-                            //         size: '320x240'
-                            //     });
+
+                            ffmpeg(src + "/" + folderName + "/" + file.name)
+                                .screenshots({
+                                    count: 1,
+                                    timestamps: [30.5, '50%', '01:10.123'],
+                                    timemarks: ['0.5'],
+                                    filename: file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb.PNG",
+                                    folder: src + 'thumbnail',
+                                    size: size
+                                });
 
                             files.push({
                                 'url': urlFileRootSave + file.name,
                                 'duration': duration,
                                 'type': folderName,
                                 "userId": userId,
-                                'thumb': urlThumbRootSave + file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb." + "png", //extension,
+                                'thumb': urlThumbRootSave + file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb_1.PNG", //extension,
                                 'webThumbUrl': "" //urlWebThumbRootSave + file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb." + extension
                             });
                             if (arrayFiles.length == index + 1) {
