@@ -316,8 +316,10 @@ module.exports = function(Course) {
                 } else {
                     mainCourse = JSON.parse(JSON.stringify(mainCourse))
                     mainCourse['units'] = []
-
                 }
+            } else {
+                mainCourse = JSON.parse(JSON.stringify(mainCourse))
+                mainCourse['units'] = []
             }
             callback(null, mainCourse)
 
