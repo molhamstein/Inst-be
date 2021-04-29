@@ -89,6 +89,26 @@
             "type": "string",
             "required": false
         },
+        "totalVideoTime": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "completedCourses": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "following": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "follower": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
         "createdAt": {
             "type": "date",
             "required": true,
@@ -137,6 +157,12 @@
             "accessType": "*",
             "principalType": "ROLE",
             "principalId": "super-admin",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "READ",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
             "permission": "ALLOW"
         },
         {

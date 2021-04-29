@@ -1,0 +1,122 @@
+{
+    "name": "follower",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "scope": {
+        "include": [
+            "youtuber",
+            "owner"
+        ]
+    },
+    "properties": {
+        "youtuberId": {
+            "type": "number",
+            "required": true
+        },
+        "ownerId": {
+            "type": "number",
+            "required": true
+        },
+        "createdAt": {
+            "type": "date",
+            "required": true,
+            "default": "$now"
+        }
+    },
+    "validations": [],
+    "relations": {
+        "owner": {
+            "type": "belongsTo",
+            "model": "youtuber"
+        },
+        "youtuber": {
+            "type": "belongsTo",
+            "model": "youtuber",
+            "foreignKey": "youtuberId"
+        }
+    },
+    "acls": [{
+            "accessType": "*",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "DENY"
+        },
+        {
+            "accessType": "READ",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "youtuber",
+            "permission": "ALLOW",
+            "property": "makeFollow"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "youtuber",
+            "permission": "ALLOW",
+            "property": "makeUnfollow"
+        }
+    ],
+    "methods": {
+        "makeFollow": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": {
+                "arg": "message",
+                "type": "object",
+                "root": true
+            },
+            "http": {
+                "verb": "post",
+                "path": "/makeFollow"
+            }
+        },
+        "makeUnfollow": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": {
+                "arg": "message",
+                "type": "object",
+                "root": true
+            },
+            "http": {
+                "verb": "put",
+                "path": "/makeUnfollow"
+            }
+        }
+    }
+}

@@ -33,7 +33,8 @@ module.exports = function(Video) {
     Video.finishVideo = async function(id, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
-            let userId = req.accessToken.userId
+            let userId = req.accessToken.userId;
+            let user = await Video.app.models.youtuber.findById(userId);
             await Video.app.dataSources.mainDB.transaction(async models => {
                 const {
                     video
@@ -45,10 +46,21 @@ module.exports = function(Video) {
                 let mainVideo = await video.findById(id);
                 if (mainVideo) {
                     let oldVideoWatch = await videoWatch.findOne({ "where": { "youtuberId": userId, "videoId": id, "status": "inProgress" }, "order": "createdAt DESC" })
-                    if (oldVideoWatch == null) {
-                        await videoWatch.create({ "youtuberId": userId, "videoId": id, "status": "finished" })
-                    } else {
-                        await oldVideoWatch.updateAttribute("status", "finished")
+                    if (oldVideoWatch != null) {
+                        await oldVideoWatch.updateAttribute("status", "finished");
+                        let newUserData = { "totalVideoTime": user.totalVideoTime + mainVideo.duration };
+
+                        var totalVideoCourse = await video.find({ "where": { "courseId": mainVideo.courseId } });
+                        var totalVideoCourseIds = [];
+                        totalVideoCourse.forEach(element => {
+                            totalVideoCourseIds.push(element.id);
+                        });
+                        var totalVideoCourseFinished = await videoWatch.count({ "youtuberId": userId, "videoId": { "inq": totalVideoCourseIds }, "status": "finished" })
+                        if (totalVideoCourseFinished == totalVideoCourse.length) {
+                            newUserData['completedCourses'] = user.completedCourses + 1
+                        }
+
+                        await user.updateAttributes(newUserData);
                     }
                     callback(null, "ok")
                 }

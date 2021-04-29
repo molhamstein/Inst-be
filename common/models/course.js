@@ -273,6 +273,7 @@ module.exports = function(Course) {
             mainCourse['isInCourse'] = false
             mainCourse['finishLessonNumber'] = 0
             mainCourse['nextLesson'] = null;
+            mainCourse['isCompleted'] = false;
 
             if (userId) {
                 let mainYoutuberCourse = await Course.app.models.youtuberCourse.findOne({ "where": { "courseId": id, "youtuberId": userId } })
@@ -309,8 +310,13 @@ module.exports = function(Course) {
                         }
                         mainCourse['units'][indexUnit]['videoFinishCount'] = videoFinishCount
                     }
+                    if (mainCourse['finishLessonNumber'] == mainCourse['sessionsNumber']) {
+                        mainCourse['isCompleted'] = true;
+                    }
                 } else {
-                    mainCourse['media'] = []
+                    mainCourse = JSON.parse(JSON.stringify(mainCourse))
+                    mainCourse['units'] = []
+
                 }
             }
             callback(null, mainCourse)
