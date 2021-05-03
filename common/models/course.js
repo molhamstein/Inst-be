@@ -338,11 +338,22 @@ module.exports = function(Course) {
                     }
                 } else {
                     mainCourse = JSON.parse(JSON.stringify(mainCourse))
-                    mainCourse['units'] = []
+                    for (let indexUnit = 0; indexUnit < mainCourse.units.length; indexUnit++) {
+                        const elementUnit = mainCourse.units[indexUnit];
+                        for (let index = 0; index < elementUnit.videos.length; index++) {
+                            mainCourse['units'][indexUnit]['videos'][index]['media'] = {}
+                        }
+                    }
                 }
             } else {
                 mainCourse = JSON.parse(JSON.stringify(mainCourse))
-                mainCourse['units'] = []
+                    // mainCourse['units'] = []
+                for (let indexUnit = 0; indexUnit < mainCourse.units.length; indexUnit++) {
+                    const elementUnit = mainCourse.units[indexUnit];
+                    for (let index = 0; index < elementUnit.videos.length; index++) {
+                        mainCourse['units'][indexUnit]['videos'][index]['media'] = {}
+                    }
+                }
             }
             callback(null, mainCourse)
 
