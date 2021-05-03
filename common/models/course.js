@@ -296,7 +296,7 @@ module.exports = function(Course) {
 
             if (userId) {
                 let mainYoutuberCourse = await Course.app.models.youtuberCourse.findOne({ "where": { "courseId": id, "youtuberId": userId } })
-                if (mainYoutuberCourse) {
+                if (mainYoutuberCourse || userId == mainCourse.youtuberId) {
                     mainCourse = JSON.parse(JSON.stringify(mainCourse))
                     if (mainCourse.units[0] && mainCourse.units[0].videos[0]) {
                         mainCourse['nextLesson'] = mainCourse.units[0].videos[0];
