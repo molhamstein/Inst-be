@@ -160,6 +160,13 @@
             "permission": "ALLOW"
         },
         {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "addYoutuber"
+        },
+        {
             "accessType": "READ",
             "principalType": "ROLE",
             "principalId": "$everyone",
@@ -230,6 +237,38 @@
         }
     ],
     "methods": {
+        "addYoutuber": {
+            "accepts": [{
+                    "arg": "email",
+                    "type": "string",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "password",
+                    "type": "string",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "name",
+                    "type": "string",
+                    "required": true,
+                    "description": ""
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/addYoutuber",
+                "verb": "post"
+            }]
+        },
         "signUp": {
             "accepts": [{
                     "arg": "email",

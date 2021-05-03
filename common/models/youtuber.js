@@ -80,6 +80,56 @@ module.exports = function(Youtuber) {
         }
     };
 
+    Youtuber.addYoutuber = async function(email, password, name, callback) {
+        try {
+            await Youtuber.app.dataSources.mainDB.transaction(async models => {
+                const {
+                    user
+                } = models;
+                const {
+                    youtuber
+                } = models
+                const {
+                    RoleMapping
+                } = models
+                const {
+                    verificationCode
+                } = models
+                var userObj = await user.findOne({
+                    "where": {
+                        "email": email
+                    }
+                })
+                if (userObj == null) {
+                    userObj = await user.create({
+                        "name": name,
+                        "email": email
+                    })
+                } else {
+                    throw Youtuber.app.err.user.emailAlreadyExists()
+                }
+                var newYoutuber = await youtuber.create({
+                    "userId": userObj.id,
+                    "password": password,
+                    "email": email,
+                    "status": "active"
+                });
+
+                var newRoleMapping = await RoleMapping.create({
+                    "principalType": "youtuber",
+                    "principalId": newYoutuber.id,
+                    "roleId": 5
+                })
+                var youtuberId = newYoutuber.id;
+                newYoutuber = await youtuber.findById(youtuberId);
+                callback(null, newYoutuber)
+            })
+        } catch (error) {
+            callback(error)
+        }
+    };
+
+
 
     Youtuber.socialLogin = async function(data, type, callback) {
         try {

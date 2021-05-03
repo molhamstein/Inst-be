@@ -133,6 +133,25 @@ module.exports = function(Course) {
         }
     };
 
+    Course.publishOnlineCourse = async function(id, req, callback) {
+        try {
+
+            var youtuberId = req.accessToken.userId;
+            await Course.app.dataSources.mainDB.transaction(async models => {
+                const {
+                    course
+                } = models
+                let oldCourse = await course.findById(id);
+                if (oldCourse == null || oldCourse.youtuberId != youtuberId) {
+                    throw Course.app.err.global.authorization()
+                }
+                await oldCourse.updateAttribute("status", "active");
+                callback(null, "ok")
+            })
+        } catch (err) {
+            callback(err)
+        }
+    }
 
     Course.updateOnlineCourse = async function(data, units, req, callback) {
         try {
@@ -287,6 +306,7 @@ module.exports = function(Course) {
                     for (let indexUnit = 0; indexUnit < mainCourse.units.length; indexUnit++) {
                         let videoFinishCount = 0
                         const elementUnit = mainCourse.units[indexUnit];
+                        mainCourse['units'][indexUnit]['isCompletedUnit'] = false
                         for (let index = 0; index < elementUnit.videos.length; index++) {
                             const element = elementUnit.videos[index];
                             let isWatchVideo = videosWatch.find(function(obj) {
@@ -309,6 +329,9 @@ module.exports = function(Course) {
                             }
                         }
                         mainCourse['units'][indexUnit]['videoFinishCount'] = videoFinishCount
+                        if (videoFinishCount == mainCourse['units'][indexUnit]['videosCount']) {
+                            mainCourse['units'][indexUnit]['isCompletedUnit'] = true
+                        }
                     }
                     if (mainCourse['finishLessonNumber'] == mainCourse['sessionsNumber']) {
                         mainCourse['isCompleted'] = true;
