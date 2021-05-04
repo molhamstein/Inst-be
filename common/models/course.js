@@ -155,7 +155,7 @@ module.exports = function(Course) {
 
     Course.updateOnlineCourse = async function(data, units, req, mainCallback) {
         try {
-            var youtuberId = req.accessToken.userId;
+            var youtuberId = data['youtuberId'] ? data['youtuberId'] : req.accessToken.userId;
             await Course.app.dataSources.mainDB.transaction(async models => {
                 const {
                     course
@@ -172,7 +172,7 @@ module.exports = function(Course) {
                 const {
                     youtuber
                 } = models
-                let mainYouTuber = await youtuber.findById(data['youtuberId'] ? data['youtuberId'] : youtuberId);
+                let mainYouTuber = await youtuber.findById(youtuberId);
                 let oldCourse;
                 let sessionsNumber = 0;
                 let createrSessionTime = 0;
