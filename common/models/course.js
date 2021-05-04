@@ -172,7 +172,7 @@ module.exports = function(Course) {
                 const {
                     youtuber
                 } = models
-                let mainYouTuber = await youtuber.findById(youtuberId);
+                let mainYouTuber = await youtuber.findById(data['youtuberId'] ? data['youtuberId'] : youtuberId);
                 let oldCourse;
                 let sessionsNumber = 0;
                 let createrSessionTime = 0;

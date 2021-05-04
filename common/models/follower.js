@@ -16,9 +16,10 @@ module.exports = function(Follower) {
         let following = owner.following + 1;
         await owner.updateAttribute("following", following);
         let user = await Follower.app.models.youtuber.findById(id);
-        let follower = user.follower + 1;
-        await user.updateAttribute("follower", follower);
 
+        let tempTotalPoint = user.totalPoint + 15;
+        let follower = user.follower + 1;
+        await user.updateAttributes({ "follower": follower, "totalPoint": tempTotalPoint });
         let newFollow = await Follower.create({ "youtuberId": id, ownerId: owner.id })
         callback(null, newFollow)
     }
@@ -39,8 +40,13 @@ module.exports = function(Follower) {
         let data = {}
 
         let user = await Follower.app.models.youtuber.findById(id);
+
         let follower = user.follower - 1;
-        await user.updateAttribute("follower", follower);
+        let tempTotalPoint = user.totalPoint - 15;
+        await user.updateAttributes({ "follower": follower, "totalPoint": tempTotalPoint });
+
+        // await user.updateAttribute("follower", follower);
+
         data = { "following": owner.following - 1 }
         await owner.updateAttributes(data);
         await Follower.destroyAll({ youtuberId: id, ownerId: owner.id })
