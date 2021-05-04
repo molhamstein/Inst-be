@@ -41,7 +41,7 @@
         "status": {
             "type": "string",
             "required": true,
-            "default": "pending"
+            "default": "active"
         },
         "frozenBalance": {
             "type": "number",
@@ -89,7 +89,22 @@
             "type": "string",
             "required": false
         },
-        "totalVideoTime": {
+        "totalSessionTime": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "totalSessionCreaterTime": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "enterSystemCount": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "totalPoint": {
             "type": "number",
             "required": true,
             "default": 0
@@ -192,6 +207,13 @@
             "principalId": "$authenticated",
             "permission": "ALLOW",
             "property": "me"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "enterSystem"
         },
         {
             "accessType": "EXECUTE",
@@ -344,6 +366,26 @@
             "description": "get my info",
             "http": [{
                 "path": "/me",
+                "verb": "get"
+            }]
+        },
+        "enterSystem": {
+            "accepts": [{
+                "arg": "context",
+                "type": "object",
+                "http": {
+                    "source": "context"
+                }
+            }],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my info",
+            "http": [{
+                "path": "/enterSystem",
                 "verb": "get"
             }]
         },

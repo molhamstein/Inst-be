@@ -456,6 +456,21 @@ module.exports = function(Youtuber) {
 
 
 
+    Youtuber.enterSystem = async function(context, callback) {
+        try {
+            var userId = context.req.accessToken.userId;
+            let user = await Youtuber.findById(userId)
+            let tempEnterSystemCount = user.enterSystemCount + 1;
+            let tempTotalPoint = user.totalPoint + 1;
+            await user.updateAttributes({ "totalPoint": tempTotalPoint, "enterSystemCount": tempEnterSystemCount });
+            callback(null, "ok")
+        } catch (error) {
+            callback(error)
+        }
+    }
+
+
+
 
 
 

@@ -1,8 +1,8 @@
 {
     "restApiRoot": "/api",
-    "host": "0.0.0.0",
-    "domain": "http://192.168.1.106:3030",
-    "siteDomain": "http://192.168.1.106:3030",
+    "host": "192.168.1.115",
+    "domain": "http://192.168.1.115:3030",
+    "siteDomain": "http://192.168.1.115:3030",
     "thumbUrl": "C:/ffmpeg/x32/",
     "programFFmpegName": [
         "ffmpeg.exe",

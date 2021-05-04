@@ -406,11 +406,11 @@
         "dataSource": "mainDB",
         "public": true
     },
-    "video": {
+    "onlineSession": {
         "dataSource": "mainDB",
         "public": true
     },
-    "videoWatch": {
+    "onlineSessionWatch": {
         "dataSource": "mainDB",
         "public": true
     },

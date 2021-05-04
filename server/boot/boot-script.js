@@ -63,9 +63,9 @@ module.exports = function(app) {
 
     var youtuber = app.models.youtuber
     var unit = app.models.unit
-    var video = app.models.video
+    var onlineSession = app.models.onlineSession
     var youtuberCourse = app.models.youtuberCourse
-    var videoWatch = app.models.videoWatch
+    var onlineSessionWatch = app.models.onlineSessionWatch
     var podcast = app.models.podcast
     var podcastSubscribe = app.models.podcastSubscribe
     var rate = app.models.rate
@@ -590,9 +590,9 @@ module.exports = function(app) {
             await customdAutoUpload(tag, 'tag', []);
             await customdAutoUpload(studentTag, 'studentTag', []);
             await customdAutoUpload(unit, 'unit', []);
-            await customdAutoUpload(video, 'video', []);
+            await customdAutoUpload(onlineSession, 'onlineSession', []);
             await customdAutoUpload(youtuberCourse, 'youtuberCourse', []);
-            await customdAutoUpload(videoWatch, 'videoWatch', []);
+            await customdAutoUpload(onlineSessionWatch, 'onlineSessionWatch', []);
             await customdAutoUpload(podcast, 'podcast', [])
             await customdAutoUpload(podcastSubscribe, 'podcastSubscribe', [])
             await customdAutoUpload(rate, 'rate', [])

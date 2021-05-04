@@ -153,7 +153,7 @@ module.exports = function(Course) {
         }
     }
 
-    Course.updateOnlineCourse = async function(data, units, req, callback) {
+    Course.updateOnlineCourse = async function(data, units, req, mainCallback) {
         try {
             var youtuberId = req.accessToken.userId;
             await Course.app.dataSources.mainDB.transaction(async models => {
@@ -164,16 +164,21 @@ module.exports = function(Course) {
                     unit
                 } = models
                 const {
-                    video
+                    onlineSession
                 } = models
                 const {
                     media
                 } = models
-
+                const {
+                    youtuber
+                } = models
+                let mainYouTuber = await youtuber.findById(youtuberId);
                 let oldCourse;
                 let sessionsNumber = 0;
+                let createrSessionTime = 0;
+                let tempTotalPoint = mainYouTuber.totalPoint;
                 units.forEach(element => {
-                    sessionsNumber += element.videos.length
+                    sessionsNumber += element.onlineSessions.length
                 });
 
                 if (data.id != null) {
@@ -216,44 +221,52 @@ module.exports = function(Course) {
                     data['unitsNumber'] = units.length
                     data['sessionsNumber'] = sessionsNumber
                     data["isOnlineCourse"] = true;
+                    console.log("creat course")
                     oldCourse = await course.create(data);
                 }
-                let newSessionsNumber = 0;
-                async.forEachOf(units, async function(element, index, unitCallback) {
-
+                // async.forEachOf(units, async function(element, unitIndex, unitCallback) {
+                for (var i = 0; i < units.length; i++) {
+                    var element = units[i];
                     let mainUnit;
-                    console.log(element)
-                    console.log(element.id)
                     if (element.id != null) {
                         mainUnit = await unit.findById(element.id);
-                        await mainUnit.updateAttributes({ "nameEn": element.nameEn, "nameAr": element.nameEn, "videosCount": element.videos ? element.videos.length : 0 })
+                        await mainUnit.updateAttributes({ "nameEn": element.nameEn, "nameAr": element.nameEn, "onlineSessionsCount": element.onlineSessions ? element.onlineSessions.length : 0 })
                     } else {
-                        // console.log("SSSSSSs")
-                        mainUnit = await unit.create({ "courseId": oldCourse.id, "nameEn": element.nameEn, "nameAr": element.nameEn, "videosCount": element.videos ? element.videos.length : 0 })
+                        mainUnit = await unit.create({ "courseId": oldCourse.id, "nameEn": element.nameEn, "nameAr": element.nameEn, "onlineSessionsCount": element.onlineSessions ? element.onlineSessions.length : 0 })
                     }
-                    // unitCallback()
 
-                    async.forEachOf(element.videos, async function(videoElement, index, callback) {
+                    // async.forEachOf(element.onlineSessions, async function (videoElement, index, callback) {
+                    for (var j = 0; j < element.onlineSessions.length; j++) {
+                        var videoElement = element.onlineSessions[i];
                         let mainVideo
-
                         if (videoElement.id != null) {
                             mainVideo = await unit.findById(videoElement.id);
                             await mainVideo.updateAttributes({ "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
                         } else {
                             try {
+                                console.log("QQQQ")
                                 let mainMedia = await media.findById(videoElement.mediaId)
-                                mainVideo = await video.create({ "courseId": oldCourse.id, duration: mainMedia.duration, "unitId": mainUnit.id, "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
+                                createrSessionTime += mainMedia.duration;
+                                mainVideo = await onlineSession.create({ "courseId": oldCourse.id, duration: mainMedia.duration, "unitId": mainUnit.id, "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
                             } catch (error) {
                                 console.log(error)
                             }
                         }
-                    })
-                })
+                    }
+                }
+                tempTotalPoint += (parseInt(createrSessionTime / 60) * 15);
+
+                await mainYouTuber.updateAttributes({ "totalPoint": tempTotalPoint, "totalSessionCreaterTime": createrSessionTime });
                 let mainCourse = await course.findById(oldCourse.id);
-                callback(null, mainCourse)
+                console.log("Finish")
+                mainCallback(null, mainCourse)
+
             })
+
+
+            // })
         } catch (err) {
-            callback(err)
+            mainCallback(err)
         }
     }
 
@@ -298,38 +311,38 @@ module.exports = function(Course) {
                 let mainYoutuberCourse = await Course.app.models.youtuberCourse.findOne({ "where": { "courseId": id, "youtuberId": userId } })
                 if (mainYoutuberCourse || userId == mainCourse.youtuberId) {
                     mainCourse = JSON.parse(JSON.stringify(mainCourse))
-                    if (mainCourse.units[0] && mainCourse.units[0].videos[0]) {
-                        mainCourse['nextLesson'] = mainCourse.units[0].videos[0];
+                    if (mainCourse.units[0] && mainCourse.units[0].onlineSessions[0]) {
+                        mainCourse['nextLesson'] = mainCourse.units[0].onlineSessions[0];
                     }
                     mainCourse['isInCourse'] = true;
-                    let videosWatch = await Course.app.models.videoWatch.find({ "courseId": id });
+                    let onlineSessionWatch = await Course.app.models.onlineSessionWatch.find({ "courseId": id });
                     for (let indexUnit = 0; indexUnit < mainCourse.units.length; indexUnit++) {
-                        let videoFinishCount = 0
+                        let onlineSessionFinishCount = 0
                         const elementUnit = mainCourse.units[indexUnit];
                         mainCourse['units'][indexUnit]['isCompletedUnit'] = false
-                        for (let index = 0; index < elementUnit.videos.length; index++) {
-                            const element = elementUnit.videos[index];
-                            let isWatchVideo = videosWatch.find(function(obj) {
+                        for (let index = 0; index < elementUnit.onlineSessions.length; index++) {
+                            const element = elementUnit.onlineSessions[index];
+                            let isWatchOnlineSession = onlineSessionWatch.find(function(obj) {
                                 return obj.videoId == element.id;
                             });
-                            if (isWatchVideo) {
-                                if (isWatchVideo.status == "finished") {
-                                    mainCourse['units'][indexUnit]['videos'][index]['isWatchVideo'] = true;
-                                    videoFinishCount++;
+                            if (isWatchOnlineSession) {
+                                if (isWatchOnlineSession.status == "finished") {
+                                    mainCourse['units'][indexUnit]['onlineSessions'][index]['isWatchOnlineSession'] = true;
+                                    onlineSessionFinishCount++;
                                     mainCourse['finishLessonNumber']++
-                                        if (mainCourse['units'][indexUnit]['videos'][index + 1]) {
-                                            mainCourse['nextLesson'] = mainCourse['units'][indexUnit]['videos'][index + 1]
+                                        if (mainCourse['units'][indexUnit]['onlineSessions'][index + 1]) {
+                                            mainCourse['nextLesson'] = mainCourse['units'][indexUnit]['onlineSessions'][index + 1]
                                         } else
-                                    if (mainCourse['units'][indexUnit + 1] && mainCourse['units'][indexUnit + 1]['videos'][0]) {
-                                        mainCourse['nextLesson'] = mainCourse['units'][indexUnit + 1]['videos'][0]
+                                    if (mainCourse['units'][indexUnit + 1] && mainCourse['units'][indexUnit + 1]['onlineSessions'][0]) {
+                                        mainCourse['nextLesson'] = mainCourse['units'][indexUnit + 1]['onlineSessions'][0]
                                     }
-                                } else if (isWatchVideo.status == "inProgress") {
-                                    mainCourse['units'][indexUnit]['videos'][index]['isProgress'] = true;
+                                } else if (isWatchOnlineSession.status == "inProgress") {
+                                    mainCourse['units'][indexUnit]['onlineSessions'][index]['isProgress'] = true;
                                 }
                             }
                         }
-                        mainCourse['units'][indexUnit]['videoFinishCount'] = videoFinishCount
-                        if (videoFinishCount == mainCourse['units'][indexUnit]['videosCount']) {
+                        mainCourse['units'][indexUnit]['onlineSessionFinishCount'] = onlineSessionFinishCount
+                        if (onlineSessionFinishCount == mainCourse['units'][indexUnit]['onlineSessionsCount']) {
                             mainCourse['units'][indexUnit]['isCompletedUnit'] = true
                         }
                     }
@@ -340,8 +353,8 @@ module.exports = function(Course) {
                     mainCourse = JSON.parse(JSON.stringify(mainCourse))
                     for (let indexUnit = 0; indexUnit < mainCourse.units.length; indexUnit++) {
                         const elementUnit = mainCourse.units[indexUnit];
-                        for (let index = 0; index < elementUnit.videos.length; index++) {
-                            mainCourse['units'][indexUnit]['videos'][index]['media'] = {}
+                        for (let index = 0; index < elementUnit.onlineSessions.length; index++) {
+                            mainCourse['units'][indexUnit]['onlineSessions'][index]['media'] = {}
                         }
                     }
                 }
@@ -350,8 +363,8 @@ module.exports = function(Course) {
                     // mainCourse['units'] = []
                 for (let indexUnit = 0; indexUnit < mainCourse.units.length; indexUnit++) {
                     const elementUnit = mainCourse.units[indexUnit];
-                    for (let index = 0; index < elementUnit.videos.length; index++) {
-                        mainCourse['units'][indexUnit]['videos'][index]['media'] = {}
+                    for (let index = 0; index < elementUnit.onlineSessions.length; index++) {
+                        mainCourse['units'][indexUnit]['onlineSessions'][index]['media'] = {}
                     }
                 }
             }
@@ -680,10 +693,14 @@ module.exports = function(Course) {
         await Course.app.dataSources.mainDB.transaction(async models => {
             const { course } = models
             const { rate } = models
+            const { youtuber } = models
             let mainCourse = await course.findById(id);
             if (mainCourse == null) {
                 throw Course.app.err.global.authorization()
             }
+            let mainYouTuber = await youtuber.findById(mainCourse.youtuberId)
+            let tempTotalPoint = mainYouTuber.totalPoint;
+
             let mainRate = await rate.findOne({ "where": { "courseId": id, "youtuberId": userId } })
             if (mainRate) {
                 throw Course.app.err.global.authorization()
@@ -700,12 +717,15 @@ module.exports = function(Course) {
             switch (data.value) {
                 case 5:
                     updateData['fiveRate'] = mainCourse['fiveRate'] + 1
+                    tempTotalPoint += 15
                     break;
                 case 4:
                     updateData['foureRate'] = mainCourse['foureRate'] + 1
+                    tempTotalPoint += 10
                     break;
                 case 3:
                     updateData['threeRate'] = mainCourse['threeRate'] + 1
+                    tempTotalPoint += 5
                     break;
                 case 2:
                     updateData['towRate'] = mainCourse['towRate'] + 1
@@ -717,6 +737,8 @@ module.exports = function(Course) {
                 default:
                     break;
             }
+            await mainYouTuber.updateAttributes({ "totalPoint": tempTotalPoint });
+
             await mainCourse.updateAttributes(updateData)
             callback(null, mainRate)
         })

@@ -1,5 +1,5 @@
 {
-    "name": "videoWatch",
+    "name": "onlineSessionWatch",
     "base": "PersistedModel",
     "idInjection": true,
     "options": {

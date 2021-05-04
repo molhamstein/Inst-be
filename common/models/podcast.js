@@ -1,8 +1,8 @@
 'use strict';
 var async = require("async");
 
-module.exports = function (Podcast) {
-    Podcast.addPodcast = async function (data, videos, req, callback) {
+module.exports = function(Podcast) {
+    Podcast.addPodcast = async function(data, videos, req, callback) {
         try {
             let userId = req.accessToken.userId
             await Podcast.app.dataSources.mainDB.transaction(async models => {
@@ -28,7 +28,7 @@ module.exports = function (Podcast) {
         }
     };
 
-    Podcast.updatePodcast = async function (id, data, req, callback) {
+    Podcast.updatePodcast = async function(id, data, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId
@@ -49,26 +49,40 @@ module.exports = function (Podcast) {
         }
     };
 
-    Podcast.addVideoToPodcast = async function (id, data, req, callback) {
+    Podcast.addVideoToPodcast = async function(id, data, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId
             await Podcast.app.dataSources.mainDB.transaction(async models => {
                 const {
-                    video
+                    onlineSession
                 } = models
                 const {
                     podcast
                 } = models
+                const {
+                    media
+                } = models
+                const {
+                    youtuber
+                } = models
+                let mainYouTuber = await youtuber.findById(userId);
                 let mainPodcast = await podcast.findById(id);
                 if (mainPodcast == null || mainPodcast.youtuberId != userId) {
                     throw Video.app.err.global.authorization()
                 }
+                let mainMedia = await media.findById(data.mediaId)
+
                 data['podcastId'] = id
                 data['descriptionAr'] = data['descriptionEn'];
                 data['nameAr'] = data['nameEn'];
+                data['duration'] = mainMedia.duration;
 
-                let mainVideo = await video.create(data);
+
+                let tempTotalPoint = mainYouTuber.totalPoint + (parseInt(mainMedia.duration / 60) * 10);
+                await mainYouTuber.updateAttributes({ "totalPoint": tempTotalPoint });
+
+                let mainVideo = await onlineSession.create(data);
                 callback(null, mainVideo)
             })
         } catch (error) {
@@ -77,7 +91,7 @@ module.exports = function (Podcast) {
     };
 
 
-    Podcast.subscribePodcast = async function (id, req, callback) {
+    Podcast.subscribePodcast = async function(id, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId
@@ -104,7 +118,7 @@ module.exports = function (Podcast) {
         }
     };
 
-    Podcast.unsubscribePodcast = async function (id, req, callback) {
+    Podcast.unsubscribePodcast = async function(id, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId

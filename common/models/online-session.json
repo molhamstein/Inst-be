@@ -1,5 +1,5 @@
 {
-    "name": "video",
+    "name": "onlineSession",
     "base": "PersistedModel",
     "idInjection": true,
     "options": {
@@ -79,14 +79,14 @@
             "principalType": "ROLE",
             "principalId": "youtuber",
             "permission": "ALLOW",
-            "property": "watchVideo"
+            "property": "watchSession"
         },
         {
             "accessType": "EXECUTE",
             "principalType": "ROLE",
             "principalId": "youtuber",
             "permission": "ALLOW",
-            "property": "finishVideo"
+            "property": "finishSession"
         },
         {
             "accessType": "EXECUTE",
@@ -97,7 +97,7 @@
         }
     ],
     "methods": {
-        "watchVideo": {
+        "watchSession": {
             "accepts": [{
                     "arg": "videoId",
                     "type": "number",
@@ -125,11 +125,11 @@
             }],
             "description": "",
             "http": [{
-                "path": "/:videoId/watchVideo",
+                "path": "/:videoId/watchSession",
                 "verb": "post"
             }]
         },
-        "finishVideo": {
+        "finishSession": {
             "accepts": [{
                     "arg": "videoId",
                     "type": "number",
@@ -157,7 +157,7 @@
             }],
             "description": "",
             "http": [{
-                "path": "/:videoId/finishVideo",
+                "path": "/:videoId/finishSession",
                 "verb": "post"
             }]
         },

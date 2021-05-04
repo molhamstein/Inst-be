@@ -1,51 +1,49 @@
 {
-  "name": "unit",
-  "base": "PersistedModel",
-  "idInjection": true,
-  "options": {
-    "validateUpsert": true
-  },
-  "scope": {
-    "include": [
-      {
-        "relation": "videos"
-      }
-    ]
-  },
-  "properties": {
-    "courseId": {
-      "type": "number",
-      "required": true
+    "name": "unit",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
     },
-    "nameEn": {
-      "type": "string",
-      "required": true
+    "scope": {
+        "include": [{
+            "relation": "onlineSessions"
+        }]
     },
-    "nameAr": {
-      "type": "string",
-      "required": true
+    "properties": {
+        "courseId": {
+            "type": "number",
+            "required": true
+        },
+        "nameEn": {
+            "type": "string",
+            "required": true
+        },
+        "nameAr": {
+            "type": "string",
+            "required": true
+        },
+        "onlineSessionsCount": {
+            "type": "number",
+            "required": true
+        },
+        "createdAt": {
+            "type": "date",
+            "required": true,
+            "defaultFn": "now"
+        }
     },
-    "videosCount": {
-      "type": "number",
-      "required": true
+    "validations": [],
+    "relations": {
+        "onlineSessions": {
+            "type": "hasMany",
+            "model": "onlineSession",
+            "foreignKey": "unitId",
+            "options": {
+                "nestRemoting": true
+            }
+        }
     },
-    "createdAt": {
-      "type": "date",
-      "required": true,
-      "defaultFn": "now"
-    }
-  },
-  "validations": [],
-  "relations": {
-    "videos": {
-      "type": "hasMany",
-      "model": "video",
-      "foreignKey": "unitId",
-      "options": {
-        "nestRemoting": true
-      }
-    }
-  },
-  "acls": [],
-  "methods": {}
+    "acls": [],
+    "methods": {}
 }
