@@ -237,8 +237,8 @@ module.exports = function(Course) {
 
                     // async.forEachOf(element.onlineSessions, async function (videoElement, index, callback) {
                     for (var j = 0; j < element.onlineSessions.length; j++) {
-                        var videoElement = element.onlineSessions[i];
-                        let mainVideo
+                        var videoElement = element.onlineSessions[j];
+                        let mainVideo;
                         if (videoElement.id != null) {
                             mainVideo = await unit.findById(videoElement.id);
                             await mainVideo.updateAttributes({ "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
@@ -256,7 +256,7 @@ module.exports = function(Course) {
                 }
                 tempTotalPoint += (parseInt(createrSessionTime / 60) * 15);
 
-                await mainYouTuber.updateAttributes({ "totalPoint": tempTotalPoint, "totalSessionCreaterTime": createrSessionTime });
+                await mainYouTuber.updateAttributes({ "totalPoint": tempTotalPoint, "totalSessionCreaterTime": mainYouTuber.totalSessionCreaterTime + createrSessionTime });
                 let mainCourse = await course.findById(oldCourse.id);
                 console.log("Finish")
                 mainCallback(null, mainCourse)

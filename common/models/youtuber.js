@@ -470,6 +470,23 @@ module.exports = function(Youtuber) {
     }
 
 
+    Youtuber.changePasswordYoutuber = async function(oldPassword, newPassword, context, callback) {
+        try {
+            var userId = context.req.accessToken.userId;
+            let user = await Youtuber.findById(userId)
+            let isRightPassword = await user.hasPassword(oldPassword);
+            if (!isRightPassword) {
+
+            } else {
+                await user.updateAttribute("password", Youtuber.hashPassword(newPassword))
+                callback(null, "ok")
+            }
+        } catch (error) {
+            callback(error)
+        }
+    }
+
+
 
 
 

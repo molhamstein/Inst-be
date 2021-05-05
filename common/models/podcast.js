@@ -2,25 +2,43 @@
 var async = require("async");
 
 module.exports = function(Podcast) {
-    Podcast.addPodcast = async function(data, videos, req, callback) {
+    Podcast.addPodcast = async function(data, onlineSessions, req, callback) {
         try {
             let userId = req.accessToken.userId
             await Podcast.app.dataSources.mainDB.transaction(async models => {
                 const {
-                    video
+                    onlineSession
                 } = models
                 const {
                     podcast
                 } = models
+                const {
+                    media
+                } = models
+                const {
+                    youtuber
+                } = models
+
                 data['youtuberId'] = userId;
+                let mainYouTuber = await youtuber.findById(userId)
                 let mainPodcast = await podcast.create(data);
-                videos
-                for (let index = 0; index < videos.length; index++) {
-                    videos[index]['podcastId'] = mainPodcast.id;
-                    videos[index]['descriptionAr'] = videos[index]['descriptionEn'];
-                    videos[index]['nameAr'] = videos[index]['nameEn'];
+                let tempTotalPoint = mainYouTuber.totalPoint;
+                let tempTotalSessionCreaterTime = mainYouTuber.totalSessionCreaterTime;
+                let createrSessionTime = 0;
+
+                for (let index = 0; index < onlineSessions.length; index++) {
+                    let element = onlineSessions[index]
+                    onlineSessions[index]['podcastId'] = mainPodcast.id;
+                    onlineSessions[index]['descriptionAr'] = videos[index]['descriptionEn'];
+                    onlineSessions[index]['nameAr'] = videos[index]['nameEn'];
+                    let mainMedia = await media.findById(element.mediaId);
+                    tempTotalDuration += mainMedia.duration;
                 }
-                await video.create(videos)
+                tempTotalPoint += (parseInt(createrSessionTime / 60) * 10);
+                tempTotalSessionCreaterTime += createrSessionTime;
+                await mainYouTuber.updateAttributes({ "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime })
+                await onlineSession.create(onlineSessions)
+
                 callback(null, mainPodcast);
             })
         } catch (error) {
@@ -80,8 +98,9 @@ module.exports = function(Podcast) {
 
 
                 let tempTotalPoint = mainYouTuber.totalPoint + (parseInt(mainMedia.duration / 60) * 10);
-                await mainYouTuber.updateAttributes({ "totalPoint": tempTotalPoint });
+                let tempTotalSessionCreaterTime = mainYouTuber.totalSessionCreaterTime + createrSessionTime;
 
+                await mainYouTuber.updateAttributes({ "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime });
                 let mainVideo = await onlineSession.create(data);
                 callback(null, mainVideo)
             })
