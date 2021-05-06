@@ -20,6 +20,7 @@ module.exports = function(Podcast) {
                 } = models
 
                 data['youtuberId'] = userId;
+                data['onlineSessionCount'] = onlineSessions.length;
                 let mainYouTuber = await youtuber.findById(userId)
                 let mainPodcast = await podcast.create(data);
                 let tempTotalPoint = mainYouTuber.totalPoint;
@@ -29,14 +30,18 @@ module.exports = function(Podcast) {
                 for (let index = 0; index < onlineSessions.length; index++) {
                     let element = onlineSessions[index]
                     onlineSessions[index]['podcastId'] = mainPodcast.id;
-                    onlineSessions[index]['descriptionAr'] = videos[index]['descriptionEn'];
-                    onlineSessions[index]['nameAr'] = videos[index]['nameEn'];
+                    onlineSessions[index]['descriptionAr'] = onlineSessions[index]['descriptionEn'];
+                    onlineSessions[index]['nameAr'] = onlineSessions[index]['nameEn'];
                     let mainMedia = await media.findById(element.mediaId);
-                    tempTotalDuration += mainMedia.duration;
+                    onlineSessions[index]['duration'] = mainMedia.duration;
+                    onlineSessions[index]['orderInPodcast'] = index + 1
+                    createrSessionTime += mainMedia.duration;
                 }
                 tempTotalPoint += (parseInt(createrSessionTime / 60) * 10);
                 tempTotalSessionCreaterTime += createrSessionTime;
-                await mainYouTuber.updateAttributes({ "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime })
+                let levelId = await Podcast.app.service.getLevelId(Podcast.app, tempTotalPoint);
+
+                await mainYouTuber.updateAttributes({ "isPublisher": true, "levelId": levelId, "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime })
                 await onlineSession.create(onlineSessions)
 
                 callback(null, mainPodcast);
@@ -89,6 +94,12 @@ module.exports = function(Podcast) {
                 if (mainPodcast == null || mainPodcast.youtuberId != userId) {
                     throw Video.app.err.global.authorization()
                 }
+
+                let lastOnlineSession = await onlineSession.findOne({ "where": { "podcastId": id }, "order": "orderInPodcast DESC" })
+                data['orderInPodcast'] = 1;
+                if (lastOnlineSession != null) {
+                    data['orderInPodcast'] = lastOnlineSession.orderInPodcast + 1
+                }
                 let mainMedia = await media.findById(data.mediaId)
 
                 data['podcastId'] = id
@@ -96,11 +107,12 @@ module.exports = function(Podcast) {
                 data['nameAr'] = data['nameEn'];
                 data['duration'] = mainMedia.duration;
 
-
+                await mainPodcast.updateAttribute("onlineSessionCount", mainPodcast.onlineSessionCount + 1)
                 let tempTotalPoint = mainYouTuber.totalPoint + (parseInt(mainMedia.duration / 60) * 10);
-                let tempTotalSessionCreaterTime = mainYouTuber.totalSessionCreaterTime + createrSessionTime;
+                let tempTotalSessionCreaterTime = mainYouTuber.totalSessionCreaterTime + mainMedia.duration;
+                let levelId = await Podcast.app.service.getLevelId(Podcast.app, tempTotalPoint);
 
-                await mainYouTuber.updateAttributes({ "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime });
+                await mainYouTuber.updateAttributes({ "levelId": levelId, "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime });
                 let mainVideo = await onlineSession.create(data);
                 callback(null, mainVideo)
             })
@@ -163,5 +175,13 @@ module.exports = function(Podcast) {
             callback(error)
         }
     };
+
+    Podcast.getPodcast = async function(searchKey, code, youtuberId, limit, skip, callback) {
+        let podcastIds = await Podcast.app.query.getPodcast(Podcast.app, searchKey, code, youtuberId, limit, skip)
+        let podcast = await Podcast.find({ "where": { "id": { "inq": podcastIds } } })
+        callback(null, podcast)
+    }
+
+
 
 };

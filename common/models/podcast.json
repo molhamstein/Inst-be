@@ -1,247 +1,329 @@
 {
-  "name": "podcast",
-  "base": "PersistedModel",
-  "idInjection": true,
-  "options": {
-    "validateUpsert": true
-  },
-  "properties": {
-    "nameEn": {
-      "type": "string",
-      "required": true
+    "name": "podcast",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
     },
-    "nameAr": {
-      "type": "string",
-      "required": true
+    "scope": {
+        "include": [{
+                "relation": "subcategory"
+            },
+            {
+                "relation": "youtuber"
+            },
+            {
+                "relation": "image"
+            }
+        ]
     },
-    "descriptionEn": {
-      "type": "string",
-      "required": true
+    "properties": {
+        "nameEn": {
+            "type": "string",
+            "required": true
+        },
+        "nameAr": {
+            "type": "string",
+            "required": true
+        },
+        "descriptionEn": {
+            "type": "string",
+            "required": true
+        },
+        "descriptionAr": {
+            "type": "string",
+            "required": true
+        },
+        "subcategoryId": {
+            "type": "number",
+            "required": true
+        },
+        "youtuberId": {
+            "type": "number",
+            "required": true
+        },
+        "imageId": {
+            "type": "number",
+            "required": true
+        },
+        "subscriberCount": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "status": {
+            "type": "string",
+            "required": true,
+            "default": "active"
+        },
+        "onlineSessionCount": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "createdAt": {
+            "type": "date",
+            "required": true,
+            "defaultFn": "now"
+        }
     },
-    "descriptionAr": {
-      "type": "string",
-      "required": true
+    "validations": [],
+    "relations": {
+        "subcategory": {
+            "type": "belongsTo",
+            "model": "subCategory",
+            "foreignKey": "subcategoryId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "youtuber": {
+            "type": "belongsTo",
+            "model": "youtuber",
+            "foreignKey": "youtuberId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "image": {
+            "type": "belongsTo",
+            "model": "media",
+            "foreignKey": "imageId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "onlineSessions": {
+            "type": "hasMany",
+            "model": "onlineSession",
+            "foreignKey": "podcastId",
+            "options": {
+                "nestRemoting": true
+            }
+        }
     },
-    "youtuberId": {
-      "type": "number",
-      "required": true
-    },
-    "subscriberCount": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "createdAt": {
-      "type": "date",
-      "required": true,
-      "defaultFn": "now"
+    "acls": [],
+    "methods": {
+        "addPodcast": {
+            "accepts": [{
+                    "arg": "data",
+                    "type": "object",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "onlineSessions",
+                    "type": [
+                        "object"
+                    ],
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/addPodcast",
+                "verb": "post"
+            }]
+        },
+        "updatePodcast": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "data",
+                    "type": "object",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/updatePodcast",
+                "verb": "put"
+            }]
+        },
+        "addVideoToPodcast": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "data",
+                    "type": "object",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/addVideoToPodcast",
+                "verb": "post"
+            }]
+        },
+        "subscribePodcast": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/subscribePodcast",
+                "verb": "post"
+            }]
+        },
+        "unsubscribePodcast": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/unsubscribePodcast",
+                "verb": "post"
+            }]
+        },
+        "getPodcast": {
+            "accepts": [{
+                    "arg": "searchKey",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "code",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "youtuberId",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "limit",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "skip",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/getPodcast",
+                "verb": "get"
+            }]
+        }
     }
-  },
-  "validations": [],
-  "relations": {},
-  "acls": [],
-  "methods": {
-    "addPodcast": {
-      "accepts": [
-        {
-          "arg": "data",
-          "type": "object",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "videos",
-          "type": [
-            "object"
-          ],
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "student",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/addPodcast",
-          "verb": "post"
-        }
-      ]
-    },
-    "updatePodcast": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "data",
-          "type": "object",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "student",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/updatePodcast",
-          "verb": "put"
-        }
-      ]
-    },
-    "addVideoToPodcast": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "data",
-          "type": "object",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "student",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/addVideoToPodcast",
-          "verb": "post"
-        }
-      ]
-    },
-    "subscribePodcast": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "student",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/subscribePodcast",
-          "verb": "post"
-        }
-      ]
-    },
-    "unsubscribePodcast": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "req",
-          "type": "object",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "req"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "student",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/unsubscribePodcast",
-          "verb": "post"
-        }
-      ]
-    }
-  }
 }

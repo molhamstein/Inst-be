@@ -26,7 +26,9 @@ module.exports = function(Onlinesession) {
                         let mainYouTuber = await youtuber.findById(userId)
                         await onlineSessionWatch.create({ "youtuberId": userId, "videoId": id })
                         let tempTotalPoint = mainYouTuber.totalPoint + 1;
-                        await mainYouTuber.updateAttributes({ "totalPoint": tempTotalPoint });
+                        let levelId = await Onlinesession.app.service.getLevelId(Onlinesession.app, tempTotalPoint);
+
+                        await mainYouTuber.updateAttributes({ "levelId": levelId, "totalPoint": tempTotalPoint });
                     }
                     await mainSession.updateAttributes(data)
                     callback(null, "ok")
@@ -59,7 +61,7 @@ module.exports = function(Onlinesession) {
                     let oldVideoWatch = await onlineSessionWatch.findOne({ "where": { "youtuberId": userId, "videoId": id, "status": "inProgress" }, "order": "createdAt DESC" })
                     if (oldVideoWatch != null) {
                         await oldVideoWatch.updateAttribute("status", "finished");
-                        let newUserData = { "totalSessionTime": mainYouTuber.totalSessionTime + mainVideo.duration };
+                        let newUserData = { "totalSessionCount": mainYouTuber.totalSessionCount + 1, "totalSessionTime": mainYouTuber.totalSessionTime + mainVideo.duration };
 
                         var totalVideoCourse = await onlineSession.find({ "where": { "courseId": mainVideo.courseId } });
                         var totalVideoCourseIds = [];
@@ -109,5 +111,65 @@ module.exports = function(Onlinesession) {
             callback(error)
         }
     };
+
+
+    Onlinesession.getHomeOnlineSession = async function(callback) {
+        let tempOnlineSession = await Onlinesession.app.query.towLevel(Onlinesession.app, "onlineSession", "podcast", "podcastId", "id", { "limit": 20, "where": { "podcast.status": "active" } }, false)
+        let onlineSessionIds = [];
+        tempOnlineSession.forEach(element => {
+            onlineSessionIds.push(element.id)
+        });
+        let onlineSession = await Onlinesession.find({ "where": { "id": { "inq": onlineSessionIds } } })
+        callback(null, onlineSession)
+    }
+
+
+    Onlinesession.getOnlineSession = async function(id, callback) {
+        try {
+            let mainOnlineSession = await Onlinesession.findById(id);
+            if (mainOnlineSession == null) {
+                throw Onlinesession.app.err.global.notFound()
+            }
+            let data = { "mainSession": mainOnlineSession, "related": [] };
+            let nextAndPrevious = await Onlinesession.find({
+                "where": {
+                    "and": [
+                        { "podcastId": mainOnlineSession.podcastId },
+                        {
+                            "or": [
+                                { "orderInPodcast": mainOnlineSession.orderInPodcast + 1 },
+                                { "orderInPodcast": mainOnlineSession.orderInPodcast - 1 }
+                            ]
+                        }
+                    ]
+                }
+            })
+            data['related'].push(nextAndPrevious);
+
+            let mainPodcast = await mainOnlineSession.podcast();
+            let youtuberId = mainPodcast.youtuberId;
+            let subcategoryId = mainPodcast.subcategoryId;
+            console.log(youtuberId);
+            console.log(subcategoryId);
+
+            let x = await Onlinesession.app.query.queryGenerater(Onlinesession.app, ['onlineSession', 'podcast'], [{
+                    "fromTable": 0,
+                    "mainId": "id",
+                    "fromId": "podcastId",
+                    "mainTable": 1,
+                    "relationName": "podcast"
+                }], { "where": { "and": [] } })
+                // let onlineSessionIds = [];
+                // let newOnlineSession = await Onlinesession.app.query.towLevel(Onlinesession.app, "onlineSession", "podcast", "podcastId", "id", { "limit": 20, "where": { "podcast.status": "active" } }, false)
+                // newOnlineSession.forEach(element => {
+                //     onlineSessionIds.push(element.id)
+                // });
+                // let onlineSession = await Onlinesession.find({ "where": { "id": { "inq": onlineSessionIds } } })
+
+            callback(null, data);
+        } catch (error) {
+            callback(error)
+        }
+    }
 
 };

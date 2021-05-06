@@ -70,6 +70,10 @@ module.exports = function(app) {
     var podcastSubscribe = app.models.podcastSubscribe
     var rate = app.models.rate
     var follower = app.models.follower
+    var invitationCode = app.models.invitationCode
+    var levels = app.models.levels
+
+
 
 
 
@@ -597,6 +601,9 @@ module.exports = function(app) {
             await customdAutoUpload(podcastSubscribe, 'podcastSubscribe', [])
             await customdAutoUpload(rate, 'rate', [])
             await customdAutoUpload(follower, 'follower', [])
+            await customdAutoUpload(invitationCode, 'invitationCode', [])
+            await customdAutoUpload(levels, 'levels', [])
+
 
 
         } catch (error) {

@@ -205,6 +205,14 @@
         "dataSource": "mainDB",
         "public": true
     },
+    "invitationCode": {
+        "dataSource": "mainDB",
+        "public": true
+    },
+    "levels": {
+        "dataSource": "mainDB",
+        "public": true
+    },
     "teacher": {
         "dataSource": "mainDB",
         "public": true,

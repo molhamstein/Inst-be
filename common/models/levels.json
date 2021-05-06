@@ -1,0 +1,47 @@
+{
+    "name": "levels",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "min": {
+            "type": "number",
+            "required": true
+        },
+        "max": {
+            "type": "number",
+            "required": true
+        },
+        "nameEn": {
+            "type": "string",
+            "required": true
+        },
+        "nameAr": {
+            "type": "string",
+            "required": true
+        },
+        "createdAt": {
+            "type": "date",
+            "required": true,
+            "defaultFn": "now"
+        }
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [{
+            "accessType": "*",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "*",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW"
+        }
+    ],
+    "methods": {}
+}

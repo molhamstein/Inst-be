@@ -462,8 +462,20 @@ module.exports = function(Youtuber) {
             let user = await Youtuber.findById(userId)
             let tempEnterSystemCount = user.enterSystemCount + 1;
             let tempTotalPoint = user.totalPoint + 1;
-            await user.updateAttributes({ "totalPoint": tempTotalPoint, "enterSystemCount": tempEnterSystemCount });
+            let levelId = await Youtuber.app.service.getLevelId(Youtuber.app, tempTotalPoint);
+            await user.updateAttributes({ "levelId": levelId, "totalPoint": tempTotalPoint, "enterSystemCount": tempEnterSystemCount });
             callback(null, "ok")
+        } catch (error) {
+            callback(error)
+        }
+    }
+
+    Youtuber.generateInvitationCode = async function(context, callback) {
+        try {
+            var userId = context.req.accessToken.userId;
+            var code = Youtuber.app.service.makeCode(8);
+            var invitationCode = await Youtuber.app.models.invitationCode.create({ "code": code, "youtuberId": userId });
+            callback(null, invitationCode)
         } catch (error) {
             callback(error)
         }
@@ -479,7 +491,21 @@ module.exports = function(Youtuber) {
 
             } else {
                 await user.updateAttribute("password", Youtuber.hashPassword(newPassword))
-                callback(null, "ok")
+                let newToken = await Youtuber.app.models.MultiAccessToken.create({
+                    "userId": userId,
+                    "principalType": "youtuber",
+                    "ttl": 31536000000
+                })
+                let loginData = await Youtuber.app.models.MultiAccessToken.findOne({
+                    include: {
+                        relation: 'user'
+                    },
+                    where: {
+                        userId: userId,
+                        id: newToken.id
+                    }
+                })
+                callback(null, loginData)
             }
         } catch (error) {
             callback(error)

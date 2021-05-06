@@ -7,8 +7,12 @@
     },
     "scope": {
         "include": [{
-            "relation": "media"
-        }]
+                "relation": "media"
+            },
+            {
+                "relation": "podcast"
+            }
+        ]
     },
     "properties": {
         "courseId": {
@@ -43,6 +47,10 @@
             "type": "string",
             "required": true
         },
+        "orderInPodcast": {
+            "type": "number",
+            "required": false
+        },
         "mediaId": {
             "type": "number",
             "required": true
@@ -72,6 +80,14 @@
             "options": {
                 "nestRemoting": true
             }
+        },
+        "podcast": {
+            "type": "belongsTo",
+            "model": "podcast",
+            "foreignKey": "podcastId",
+            "options": {
+                "nestRemoting": true
+            }
         }
     },
     "acls": [{
@@ -94,6 +110,20 @@
             "principalId": "youtuber",
             "permission": "ALLOW",
             "property": "deleteVideoFromPodcast"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW",
+            "property": "getHomeOnlineSession"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW",
+            "property": "getOnlineSession"
         }
     ],
     "methods": {
@@ -192,6 +222,43 @@
                 "path": "/:videoId/deleteVideoFromPodcast",
                 "verb": "delete"
             }]
+        },
+        "getHomeOnlineSession": {
+            "accepts": [],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/getHomeOnlineSession",
+                "verb": "get"
+            }]
+        },
+        "getOnlineSession": {
+            "accepts": [{
+                "arg": "id",
+                "type": "number",
+                "required": true,
+                "description": "",
+                "http": {
+                    "source": "path"
+                }
+            }],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/getOnlineSession",
+                "verb": "get"
+            }]
         }
+
     }
 }

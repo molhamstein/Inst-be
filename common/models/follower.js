@@ -19,7 +19,10 @@ module.exports = function(Follower) {
 
         let tempTotalPoint = user.totalPoint + 15;
         let follower = user.follower + 1;
-        await user.updateAttributes({ "follower": follower, "totalPoint": tempTotalPoint });
+
+        let levelId = await Follower.app.service.getLevelId(Follower.app, tempTotalPoint);
+
+        await user.updateAttributes({ "levelId": levelId, "follower": follower, "totalPoint": tempTotalPoint });
         let newFollow = await Follower.create({ "youtuberId": id, ownerId: owner.id })
         callback(null, newFollow)
     }
@@ -43,7 +46,9 @@ module.exports = function(Follower) {
 
         let follower = user.follower - 1;
         let tempTotalPoint = user.totalPoint - 15;
-        await user.updateAttributes({ "follower": follower, "totalPoint": tempTotalPoint });
+        let levelId = await Follower.app.service.getLevelId(Follower.app, tempTotalPoint);
+
+        await user.updateAttributes({ "levelId": levelId, "follower": follower, "totalPoint": tempTotalPoint });
 
         // await user.updateAttribute("follower", follower);
 
