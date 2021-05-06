@@ -109,7 +109,7 @@
             "principalType": "ROLE",
             "principalId": "youtuber",
             "permission": "ALLOW",
-            "property": "deleteVideoFromPodcast"
+            "property": "deleteOnlineSessionFromPodcast"
         },
         {
             "accessType": "EXECUTE",
@@ -191,7 +191,7 @@
                 "verb": "post"
             }]
         },
-        "deleteVideoFromPodcast": {
+        "deleteOnlineSessionFromPodcast": {
             "accepts": [{
                     "arg": "videoId",
                     "type": "number",
@@ -219,7 +219,7 @@
             }],
             "description": "",
             "http": [{
-                "path": "/:videoId/deleteVideoFromPodcast",
+                "path": "/:videoId/deleteOnlineSessionFromPodcast",
                 "verb": "delete"
             }]
         },

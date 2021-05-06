@@ -72,7 +72,7 @@ module.exports = function(Podcast) {
         }
     };
 
-    Podcast.addVideoToPodcast = async function(id, data, req, callback) {
+    Podcast.addOnlineSessionToPodcast = async function(id, data, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId
