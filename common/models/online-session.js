@@ -144,7 +144,7 @@ module.exports = function(Onlinesession) {
                     ]
                 }
             })
-            data['related'].push(nextAndPrevious);
+            data['related'] = data['related'].concat(nextAndPrevious);
 
             let mainPodcast = await mainOnlineSession.podcast();
             let youtuberId = mainPodcast.youtuberId;
@@ -152,20 +152,37 @@ module.exports = function(Onlinesession) {
             console.log(youtuberId);
             console.log(subcategoryId);
 
-            let x = await Onlinesession.app.query.queryGenerater(Onlinesession.app, ['onlineSession', 'podcast'], [{
-                    "fromTable": 0,
-                    "mainId": "id",
-                    "fromId": "podcastId",
-                    "mainTable": 1,
-                    "relationName": "podcast"
-                }], { "where": { "and": [] } })
-                // let onlineSessionIds = [];
-                // let newOnlineSession = await Onlinesession.app.query.towLevel(Onlinesession.app, "onlineSession", "podcast", "podcastId", "id", { "limit": 20, "where": { "podcast.status": "active" } }, false)
-                // newOnlineSession.forEach(element => {
-                //     onlineSessionIds.push(element.id)
-                // });
-                // let onlineSession = await Onlinesession.find({ "where": { "id": { "inq": onlineSessionIds } } })
+            let onlineSessionIds = [];
+            let onlineSessionByYouTuber = await Onlinesession.app.query.queryGenerater(Onlinesession.app, ['onlineSession', 'podcast'], [{
+                "fromTable": 1,
+                "mainId": "podcastId",
+                "fromId": "id",
+                "mainTable": 0,
+                "relationName": "podcast"
+            }], { "where": { "and": [{ "podcast.youtuberId": youtuberId }] }, "order": "createdAt DESC", "limit": 50 })
+            onlineSessionByYouTuber.forEach(element => {
+                onlineSessionIds.push(element.id)
+            });
 
+
+            let onlineSessionBySubcategory = await Onlinesession.app.query.queryGenerater(Onlinesession.app, ['onlineSession', 'podcast'], [{
+                "fromTable": 1,
+                "mainId": "podcastId",
+                "fromId": "id",
+                "mainTable": 0,
+                "relationName": "podcast"
+            }], { "where": { "and": [{ "podcast.subcategoryId": subcategoryId }] }, "order": "createdAt DESC", "limit": 50 })
+            onlineSessionBySubcategory.forEach(element => {
+                onlineSessionIds.push(element.id)
+            });
+
+
+            let newOnlineSession = await Onlinesession.app.query.towLevel(Onlinesession.app, "onlineSession", "podcast", "podcastId", "id", { "limit": 25, "where": { "podcast.status": "active" } }, false)
+            newOnlineSession.forEach(element => {
+                onlineSessionIds.push(element.id)
+            });
+            let onlineSession = await Onlinesession.find({ "where": { "id": { "inq": onlineSessionIds } } })
+            data['related'] = data['related'].concat(onlineSession);
             callback(null, data);
         } catch (error) {
             callback(error)

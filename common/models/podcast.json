@@ -92,14 +92,6 @@
             "options": {
                 "nestRemoting": true
             }
-        },
-        "onlineSessions": {
-            "type": "hasMany",
-            "model": "onlineSession",
-            "foreignKey": "podcastId",
-            "options": {
-                "nestRemoting": true
-            }
         }
     },
     "acls": [],
@@ -281,7 +273,7 @@
                 "verb": "post"
             }]
         },
-        "getPodcast": {
+        "getPodcasts": {
             "accepts": [{
                     "arg": "searchKey",
                     "type": "string",
@@ -321,7 +313,29 @@
             }],
             "description": "",
             "http": [{
-                "path": "/getPodcast",
+                "path": "/getPodcasts",
+                "verb": "get"
+            }]
+        },
+        "getOnePodcast": {
+            "accepts": [{
+                "arg": "id",
+                "type": "number",
+                "required": true,
+                "description": "",
+                "http": {
+                    "source": "path"
+                }
+            }],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/getOnePodcast",
                 "verb": "get"
             }]
         }

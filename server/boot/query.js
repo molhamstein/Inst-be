@@ -745,15 +745,14 @@ module.exports = {
 
             if (isCount == false) {
                 query = query
-                    // .order(orderKey, orderType)
-                    // .limit(skip + "," + limit)
+                    .order(orderKey, orderType)
+                    .limit(skip + "," + limit)
                     .build()
             } else {
                 query = query
                     // .count(null, 'count')
                     .build()
             }
-            console.log(query);
 
 
             var selectIndex = query.indexOf('SELECT') + 6
@@ -767,6 +766,10 @@ module.exports = {
                 addedString += ') AS ' + relationelement.relationName + ' , '
                 query = query.slice(0, selectIndex) + addedString + query.slice(selectIndex);
             }
+
+            console.log("query");
+            console.log(query);
+
             const connector = app.dataSources.mainDB.connector;
             connector.execute(query, null, (err, resultObjects) => {
                 if (!err) {

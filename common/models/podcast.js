@@ -176,11 +176,19 @@ module.exports = function(Podcast) {
         }
     };
 
-    Podcast.getPodcast = async function(searchKey, code, youtuberId, limit, skip, callback) {
+    Podcast.getPodcasts = async function(searchKey, code, youtuberId, limit, skip, callback) {
         let podcastIds = await Podcast.app.query.getPodcast(Podcast.app, searchKey, code, youtuberId, limit, skip)
         let podcast = await Podcast.find({ "where": { "id": { "inq": podcastIds } } })
         callback(null, podcast)
     }
+
+    Podcast.getOnePodcast = async function(id, callback) {
+        let mainPodcast = await Podcast.findById(id)
+        let podcastOnlinesession = await Podcast.app.models.onlineSession.find({ "where": { "podcastId": id }, "order": "orderInPodcast DESC" })
+        mainPodcast['onlineSessions'] = podcastOnlinesession
+        callback(null, mainPodcast)
+    }
+
 
 
 
