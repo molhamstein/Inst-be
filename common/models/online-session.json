@@ -41,11 +41,11 @@
         },
         "descriptionEn": {
             "type": "string",
-            "required": true
+            "required": false
         },
         "descriptionAr": {
             "type": "string",
-            "required": true
+            "required": false
         },
         "orderInPodcast": {
             "type": "number",

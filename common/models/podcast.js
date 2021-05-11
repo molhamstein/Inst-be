@@ -21,6 +21,8 @@ module.exports = function(Podcast) {
 
                 data['youtuberId'] = userId;
                 data['onlineSessionCount'] = onlineSessions.length;
+                data["descriptionAr"] = data['descriptionEn'];
+                data["nameAr"] = data['nameEn'];
                 let mainYouTuber = await youtuber.findById(userId)
                 let mainPodcast = await podcast.create(data);
                 let tempTotalPoint = mainYouTuber.totalPoint;

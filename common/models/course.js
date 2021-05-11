@@ -243,14 +243,10 @@ module.exports = function(Course) {
                             mainVideo = await unit.findById(videoElement.id);
                             await mainVideo.updateAttributes({ "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
                         } else {
-                            try {
-                                console.log("QQQQ")
-                                let mainMedia = await media.findById(videoElement.mediaId)
-                                createrSessionTime += mainMedia.duration;
-                                mainVideo = await onlineSession.create({ "courseId": oldCourse.id, duration: mainMedia.duration, "unitId": mainUnit.id, "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
-                            } catch (error) {
-                                console.log(error)
-                            }
+                            console.log("QQQQ")
+                            let mainMedia = await media.findById(videoElement.mediaId)
+                            createrSessionTime += mainMedia.duration;
+                            mainVideo = await onlineSession.create({ "courseId": oldCourse.id, duration: mainMedia.duration, "unitId": mainUnit.id, "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
                         }
                     }
                 }

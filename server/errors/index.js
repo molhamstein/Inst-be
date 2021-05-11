@@ -38,7 +38,7 @@ module.exports.notFound = {
 }
 module.exports.user = {
     emailAlreadyExists: function() {
-        return new cError(454, 'phonenumber is already used', 454);
+        return new cError(454, 'Email is already used', 454);
     },
 
     userNotFound: function() {
