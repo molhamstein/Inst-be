@@ -61,6 +61,11 @@
             "required": true,
             "default": 0
         },
+        "updatedAt": {
+            "type": "date",
+            "required": true,
+            "defaultFn": "now"
+        },
         "createdAt": {
             "type": "date",
             "required": true,

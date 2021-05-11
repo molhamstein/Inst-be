@@ -66,6 +66,7 @@ module.exports = function(Podcast) {
                 if (oldPodcast == null || oldPodcast.youtuberId != userId) {
                     throw Podcast.app.err.global.authorization()
                 }
+                data['updatedAt'] = new Date()
                 let newPodcast = await oldPodcast.updateAttributes(data)
                 callback(null, newPodcast);
             })
@@ -109,7 +110,7 @@ module.exports = function(Podcast) {
                 data['nameAr'] = data['nameEn'];
                 data['duration'] = mainMedia.duration;
 
-                await mainPodcast.updateAttribute("onlineSessionCount", mainPodcast.onlineSessionCount + 1)
+                await mainPodcast.updateAttributes({ "updatedAt": new Date(), "onlineSessionCount": mainPodcast.onlineSessionCount + 1 })
                 let tempTotalPoint = mainYouTuber.totalPoint + (parseInt(mainMedia.duration / 60) * 10);
                 let tempTotalSessionCreaterTime = mainYouTuber.totalSessionCreaterTime + mainMedia.duration;
                 let levelId = await Podcast.app.service.getLevelId(Podcast.app, tempTotalPoint);
