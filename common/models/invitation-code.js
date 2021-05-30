@@ -23,8 +23,8 @@ module.exports = function(Invitationcode) {
                     let tempTotalPointOwner = owner.totalPoint + 30;
                     let tempTotalPointUser = user.totalPoint + 30;
 
-                    let levelIdOwner = await Invitationcode.app.service.getLevelId(Invitationcode.app, tempTotalPointOwner);
-                    let levelIdUser = await Invitationcode.app.service.getLevelId(Invitationcode.app, tempTotalPointUser);
+                    let levelIdOwner = await Invitationcode.app.service.getLevelId(Invitationcode.app, owner, { "totalPoint": tempTotalPointOwner });
+                    let levelIdUser = await Invitationcode.app.service.getLevelId(Invitationcode.app, user, { "totalPoint": tempTotalPointUser });
 
                     await owner.updateAttributes({ "levelId": levelIdOwner, "totalPoint": tempTotalPointOwner })
                     await user.updateAttributes({ "levelId": levelIdUser, "totalPoint": tempTotalPointUser });

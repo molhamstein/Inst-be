@@ -26,7 +26,7 @@ module.exports = function(Onlinesession) {
                         let mainYouTuber = await youtuber.findById(userId)
                         await onlineSessionWatch.create({ "youtuberId": userId, "videoId": id })
                         let tempTotalPoint = mainYouTuber.totalPoint + 1;
-                        let levelId = await Onlinesession.app.service.getLevelId(Onlinesession.app, tempTotalPoint);
+                        let levelId = await Onlinesession.app.service.getLevelId(Onlinesession.app, mainYouTuber, { "totalPoint": tempTotalPoint });
 
                         await mainYouTuber.updateAttributes({ "levelId": levelId, "totalPoint": tempTotalPoint });
                     }
@@ -72,7 +72,8 @@ module.exports = function(Onlinesession) {
                         if (totalVideoCourseFinished == totalVideoCourse.length) {
                             newUserData['completedCourses'] = mainYouTuber.completedCourses + 1
                         }
-
+                        let levelId = await Onlinesession.app.service.getLevelId(Onlinesession.app, mainYouTuber, { completedCourses: newUserData['completedCourses'] ? newUserData['completedCourses'] : null, "totalSessionTime": mainYouTuber.totalSessionTime + mainVideo.duration });
+                        newUserData["levelId"] = levelId;
                         await mainYouTuber.updateAttributes(newUserData);
                     }
                     callback(null, "ok")

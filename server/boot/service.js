@@ -52,16 +52,38 @@ module.exports = {
         }
         return result;
     },
-    getLevelId: function(app, point) {
+    getLevelId: function(app, mainUser, data) {
         return new Promise(function(resolve, reject) {
+            let filterDate = { "minTotalPoint": { "lte": data.totalPoint ? data.totalPoint : mainUser.totalPoint }, "maxTotalPoint": { "gte": data.totalPoint ? data.totalPoint : mainUser.totalPoint } }
+
+            filterDate['minEnterSystemCount'] = { "lte": data.enterSystemCount ? data.enterSystemCount : mainUser.enterSystemCount }
+            filterDate['maxEnterSystemCount'] = { "gte": data.enterSystemCount ? data.enterSystemCount : mainUser.enterSystemCount }
+
+
+            filterDate['minTotalSessionTime'] = { "lte": data.totalSessionTime ? data.totalSessionTime : mainUser.totalSessionTime }
+            filterDate['maxTotalSessionTime'] = { "gte": data.totalSessionTime ? data.totalSessionTime : mainUser.totalSessionTime }
+
+
+            filterDate['minCompletedCourses'] = { "lte": data.completedCourses ? data.completedCourses : mainUser.completedCourses }
+            filterDate['maxCompletedCourses'] = { "gte": data.completedCourses ? data.completedCourses : mainUser.completedCourses }
+
+            filterDate['minTotalSessionCreaterTime'] = { "lte": data.totalSessionCreaterTime ? data.totalSessionCreaterTime : mainUser.totalSessionCreaterTime }
+            filterDate['maxTotalSessionCreaterTime'] = { "gte": data.totalSessionCreaterTime ? data.totalSessionCreaterTime : mainUser.totalSessionCreaterTime }
+
+            filterDate['minFollower'] = { "lte": data.follower ? data.follower : mainUser.follower }
+            filterDate['maxFollower'] = { "gte": data.follower ? data.follower : mainUser.follower }
+
+
             app.models.levels.findOne({
-                    "where": { "min": { "lte": point }, "max": { "gte": point } }
+                    "where": filterDate
                 },
                 function(err, level) {
                     if (err) reject(err)
                     console.log("level")
                     console.log(level)
-                    console.log(point)
+
+                    console.log(data)
+                    console.log(filterDate)
                     resolve(level ? level.id : null)
                 })
         })

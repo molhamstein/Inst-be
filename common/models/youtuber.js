@@ -462,7 +462,7 @@ module.exports = function(Youtuber) {
             let user = await Youtuber.findById(userId)
             let tempEnterSystemCount = user.enterSystemCount + 1;
             let tempTotalPoint = user.totalPoint + 1;
-            let levelId = await Youtuber.app.service.getLevelId(Youtuber.app, tempTotalPoint);
+            let levelId = await Youtuber.app.service.getLevelId(Youtuber.app, user, { "totalPoint": tempTotalPoint, "enterSystemCount": tempEnterSystemCount });
             await user.updateAttributes({ "levelId": levelId, "totalPoint": tempTotalPoint, "enterSystemCount": tempEnterSystemCount });
             callback(null, "ok")
         } catch (error) {

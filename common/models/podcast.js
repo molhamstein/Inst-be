@@ -41,7 +41,7 @@ module.exports = function(Podcast) {
                 }
                 tempTotalPoint += (parseInt(createrSessionTime / 60) * 10);
                 tempTotalSessionCreaterTime += createrSessionTime;
-                let levelId = await Podcast.app.service.getLevelId(Podcast.app, tempTotalPoint);
+                let levelId = await Podcast.app.service.getLevelId(Podcast.app, mainYouTuber, { "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime });
 
                 await mainYouTuber.updateAttributes({ "isPublisher": true, "levelId": levelId, "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime })
                 await onlineSession.create(onlineSessions)
@@ -113,7 +113,7 @@ module.exports = function(Podcast) {
                 await mainPodcast.updateAttributes({ "updatedAt": new Date(), "onlineSessionCount": mainPodcast.onlineSessionCount + 1 })
                 let tempTotalPoint = mainYouTuber.totalPoint + (parseInt(mainMedia.duration / 60) * 10);
                 let tempTotalSessionCreaterTime = mainYouTuber.totalSessionCreaterTime + mainMedia.duration;
-                let levelId = await Podcast.app.service.getLevelId(Podcast.app, tempTotalPoint);
+                let levelId = await Podcast.app.service.getLevelId(Podcast.app, mainYouTuber, { "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime });
 
                 await mainYouTuber.updateAttributes({ "levelId": levelId, "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime });
                 let mainVideo = await onlineSession.create(data);

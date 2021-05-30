@@ -6,11 +6,51 @@
         "validateUpsert": true
     },
     "properties": {
-        "min": {
+        "minTotalPoint": {
             "type": "number",
             "required": true
         },
-        "max": {
+        "maxTotalPoint": {
+            "type": "number",
+            "required": true
+        },
+        "minEnterSystemCount": {
+            "type": "number",
+            "required": true
+        },
+        "maxEnterSystemCount": {
+            "type": "number",
+            "required": true
+        },
+        "minTotalSessionTime": {
+            "type": "number",
+            "required": true
+        },
+        "maxTotalSessionTime": {
+            "type": "number",
+            "required": true
+        },
+        "minCompletedCourses": {
+            "type": "number",
+            "required": true
+        },
+        "maxCompletedCourses": {
+            "type": "number",
+            "required": true
+        },
+        "minTotalSessionCreaterTime": {
+            "type": "number",
+            "required": true
+        },
+        "maxTotalSessionCreaterTime": {
+            "type": "number",
+            "required": true
+        },
+        "minFollower": {
+            "type": "number",
+            "required": true
+        },
+        "maxFollower": {
             "type": "number",
             "required": true
         },

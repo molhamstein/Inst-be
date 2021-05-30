@@ -251,7 +251,7 @@ module.exports = function(Course) {
                     }
                 }
                 tempTotalPoint += (parseInt(createrSessionTime / 60) * 15);
-                let levelId = await Course.app.service.getLevelId(Course.app, tempTotalPoint);
+                let levelId = await Course.app.service.getLevelId(Course.app, mainYouTuber, { "totalPoint": tempTotalPoint, "totalSessionCreaterTime": mainYouTuber.totalSessionCreaterTime + createrSessionTime });
 
                 await mainYouTuber.updateAttributes({ "isPublisher": true, "isTrainer": true, "levelId": levelId, "totalPoint": tempTotalPoint, "totalSessionCreaterTime": mainYouTuber.totalSessionCreaterTime + createrSessionTime });
                 let mainCourse = await course.findById(oldCourse.id);
@@ -738,7 +738,7 @@ module.exports = function(Course) {
             if (updateData['fiveRate'] > 4) {
                 isPopular = true
             }
-            let levelId = await Course.app.service.getLevelId(Course.app, tempTotalPoint);
+            let levelId = await Course.app.service.getLevelId(Course.app, mainYouTuber, { "totalPoint": tempTotalPoint });
 
             await mainYouTuber.updateAttributes({ "isPopular": isPopular, "levelId": levelId, "totalPoint": tempTotalPoint });
 
