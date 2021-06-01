@@ -172,6 +172,10 @@ module.exports = function(Course) {
                 const {
                     youtuber
                 } = models
+                const {
+                    subCategory
+                } = models
+
                 let mainYouTuber = await youtuber.findById(youtuberId);
                 let oldCourse;
                 let sessionsNumber = 0;
@@ -221,7 +225,24 @@ module.exports = function(Course) {
                     data['unitsNumber'] = units.length
                     data['sessionsNumber'] = sessionsNumber
                     data["isOnlineCourse"] = true;
-                    console.log("creat course")
+
+                    let mainSubcategory = await subCategory.findById(data['subcategoryId'])
+
+                    if (mainSubcategory == null) {
+                        throw Podcast.app.err.global.notFound()
+                    }
+                    let subCategoryTreeCode = []
+                    for (let index = 0; index < mainSubcategory.code.length / 3; index++) {
+                        subCategoryTreeCode.push(mainSubcategory['code'].slice(0, (index + 1) * 3));
+                    }
+
+                    let subcategoryTree = await subCategory.find({ "where": { "code": { "inq": subCategoryTreeCode } } });
+
+                    subcategoryTree.forEach(async(oneSubcategory) => {
+                        let newCount = oneSubcategory.courseCount + 1
+                        await oneSubcategory.updateAttribute("courseCount", newCount);
+                    })
+
                     oldCourse = await course.create(data);
                 }
                 // async.forEachOf(units, async function(element, unitIndex, unitCallback) {

@@ -18,7 +18,15 @@ module.exports = function(Podcast) {
                 const {
                     youtuber
                 } = models
+                const {
+                    subCategory
+                } = models
 
+                let mainSubcategory = await subCategory.findById(data['subcategoryId'])
+
+                if (mainSubcategory == null) {
+                    throw Podcast.app.err.global.notFound()
+                }
                 data['youtuberId'] = userId;
                 data['onlineSessionCount'] = onlineSessions.length;
                 data["descriptionAr"] = data['descriptionEn'];
@@ -43,6 +51,21 @@ module.exports = function(Podcast) {
                 tempTotalSessionCreaterTime += createrSessionTime;
                 let levelId = await Podcast.app.service.getLevelId(Podcast.app, mainYouTuber, { "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime });
 
+
+                let subCategoryTreeCode = []
+                for (let index = 0; index < mainSubcategory.code.length / 3; index++) {
+                    subCategoryTreeCode.push(mainSubcategory['code'].slice(0, (index + 1) * 3));
+                }
+
+                let subcategoryTree = await subCategory.find({ "where": { "code": { "inq": subCategoryTreeCode } } });
+
+                subcategoryTree.forEach(async(oneSubcategory) => {
+                    let newCount = oneSubcategory.podcastCount + 1
+                    await oneSubcategory.updateAttribute("podcastCount", newCount);
+                })
+
+
+
                 await mainYouTuber.updateAttributes({ "isPublisher": true, "levelId": levelId, "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime })
                 await onlineSession.create(onlineSessions)
 
@@ -61,6 +84,7 @@ module.exports = function(Podcast) {
                 const {
                     podcast
                 } = models
+
 
                 let oldPodcast = await podcast.findById(id)
                 if (oldPodcast == null || oldPodcast.youtuberId != userId) {

@@ -12,6 +12,9 @@
             },
             {
                 "relation": "subCategory"
+            },
+            {
+                "relation": "media"
             }
         ]
     },
@@ -28,6 +31,9 @@
             "type": "number"
         },
         "subcategoryId": {
+            "type": "number"
+        },
+        "mediaId": {
             "type": "number"
         },
         "status": {
@@ -49,6 +55,16 @@
             "type": "string",
             "required": true
         },
+        "courseCount": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "podcastCount": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
         "createdAt": {
             "type": "date",
             "required": true,
@@ -61,6 +77,14 @@
             "type": "belongsTo",
             "model": "subject",
             "foreignKey": "subjectId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "media": {
+            "type": "belongsTo",
+            "model": "media",
+            "foreignKey": "mediaId",
             "options": {
                 "nestRemoting": true
             }
