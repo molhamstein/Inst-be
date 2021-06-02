@@ -132,20 +132,17 @@ module.exports = function(Onlinesession) {
                 throw Onlinesession.app.err.global.notFound()
             }
             let data = { "mainSession": mainOnlineSession, "related": [] };
-            let nextAndPrevious = await Onlinesession.find({
+            let nextSession = await Onlinesession.find({
                 "where": {
                     "and": [
                         { "podcastId": mainOnlineSession.podcastId },
-                        {
-                            "or": [
-                                { "orderInPodcast": mainOnlineSession.orderInPodcast + 1 },
-                                { "orderInPodcast": mainOnlineSession.orderInPodcast - 1 }
-                            ]
-                        }
+                        { "orderInPodcast": mainOnlineSession.orderInPodcast + 1 },
                     ]
                 }
             })
-            data['related'] = data['related'].concat(nextAndPrevious);
+
+            let listSessionPodcast = await Onlinesession.find({ "where": { "podcastId": mainOnlineSession.podcastId } })
+            data['related'] = data['related'].concat(nextSession);
 
             let mainPodcast = await mainOnlineSession.podcast();
             let youtuberId = mainPodcast.youtuberId;
@@ -184,6 +181,7 @@ module.exports = function(Onlinesession) {
             });
             let onlineSession = await Onlinesession.find({ "where": { "id": { "inq": onlineSessionIds } } })
             data['related'] = data['related'].concat(onlineSession);
+            data['podcastSession'] = listSessionPodcast
             callback(null, data);
         } catch (error) {
             callback(error)
