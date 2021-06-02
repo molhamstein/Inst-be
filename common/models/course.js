@@ -308,7 +308,7 @@ module.exports = function(Course) {
             }
             let coursesIds = await Course.app.query.getOnlineCourses(Course.app, searchKey, code, minPrice, maxPrice, youtuberId, limit, skip)
             let courses = await Course.find({ "where": { "id": { "inq": coursesIds } }, "oeder": "createdAt DESC" })
-            courses = Course.checkIsInCourse(courses, userId)
+            courses = await Course.checkIsInCourse(courses, userId)
             callback(null, courses)
         } catch (error) {
             callback(error)
@@ -805,7 +805,7 @@ module.exports = function(Course) {
             }
 
             let allCourse = await Course.find({ "where": { subcategoryId: { inq: featuredCategoriesId } }, "order": "createdAt DESC" })
-            allCourse = Course.checkIsInCourse(allCourse, userId)
+            allCourse = await Course.checkIsInCourse(allCourse, userId)
 
 
             for (let index = 0; index < allCourse.length; index++) {
@@ -860,7 +860,7 @@ module.exports = function(Course) {
                         }
                     }
 
-                    resolve(products)
+                    resolve(courses)
                 })
             }
 
