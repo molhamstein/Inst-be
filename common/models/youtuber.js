@@ -321,6 +321,7 @@ module.exports = function(Youtuber) {
             }
 
             let courses = await Youtuber.app.models.Course.find({ "where": { "id": { inq: coursesId } } })
+            courses = Youtuber.app.models.Course.checkIsInCourse(allCourse, userId)
             callback(null, courses)
         } catch (error) {
             callback(error)
@@ -428,7 +429,6 @@ module.exports = function(Youtuber) {
         }
     }
 
-
     Youtuber.requestResetPasswordYoutuber = async function(email, callback) {
         try {
             let user = await Youtuber.findOne({ "where": { email: email } })
@@ -442,12 +442,12 @@ module.exports = function(Youtuber) {
             var html_body = renderer({ "url": url });
             console.log(html_body)
 
-            // await Users.app.models.Email.send({
-            //   to: email, //"besmayahcity@gmail.com", //superAdminUser ? superAdminUser.email : "gelpcourse@gmail.com",
-            //   from: "anas@s.com",
-            //   subject: 'activate account',
-            //   html: html_body
-            // })
+            await Youtuber.app.models.Email.send({
+                to: email, //"besmayahcity@gmail.com", //superAdminUser ? superAdminUser.email : "gelpcourse@gmail.com",
+                from: "gelpcourse@gmail.com",
+                subject: 'activate account',
+                html: html_body
+            })
             callback(null, user);
         } catch (error) {
             callback(error)
@@ -513,6 +513,18 @@ module.exports = function(Youtuber) {
     }
 
 
+    Youtuber.updateProfile = async function(data, context, callback) {
+        try {
+            var userId = context.req.accessToken.userId;
+            let mainYoutuber = await Youtuber.findById(userId);
+            let mainUser = await Youtuber.app.models.User.findById(mainYoutuber.userId);
+            await mainUser.updateAttributes({ "phonenumber": data.phonenumber, "imageId": data.imageId, "ISOCode": data.ISOCode, "name": data.name })
+            await mainYoutuber.updateAttributes({ "about": data.about, "primaryIdentifier": data.primaryIdentifier })
+            callback(null, {})
+        } catch (error) {
+            callback(error)
+        }
+    }
 
 
 

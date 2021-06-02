@@ -302,9 +302,13 @@ module.exports = function(Course) {
 
     Course.getOnlineCourses = async function(searchKey, code, minPrice, maxPrice, youtuberId, limit, skip, req, callback) {
         try {
+            let userId;
+            if (req.accessToken) {
+                userId = req.accessToken.userId;
+            }
             let coursesIds = await Course.app.query.getOnlineCourses(Course.app, searchKey, code, minPrice, maxPrice, youtuberId, limit, skip)
             let courses = await Course.find({ "where": { "id": { "inq": coursesIds } }, "oeder": "createdAt DESC" })
-                // let courses = await Course.app.query.threeLevel(Course.app, "course", "youtuber", "user", "youtuberId", "id", "userId", "id", { "where": { "isOnlineCourse": true , "youtuber.user.name":"anas"} }, false)
+            courses = Course.checkIsInCourse(courses, userId)
             callback(null, courses)
         } catch (error) {
             callback(error)
@@ -786,10 +790,13 @@ module.exports = function(Course) {
     }
 
 
-    Course.homePageCourse = async function(callback) {
+    Course.homePageCourse = async function(req, callback) {
         try {
 
-
+            let userId;
+            if (req.accessToken) {
+                userId = req.accessToken.userId;
+            }
             let featuredCategories = await Course.app.models.subCategory.find({ "where": { "isFeatured": true } })
             let featuredCategoriesId = []
             for (let index = 0; index < featuredCategories.length; index++) {
@@ -798,6 +805,7 @@ module.exports = function(Course) {
             }
 
             let allCourse = await Course.find({ "where": { subcategoryId: { inq: featuredCategoriesId } }, "order": "createdAt DESC" })
+            allCourse = Course.checkIsInCourse(allCourse, userId)
 
 
             for (let index = 0; index < allCourse.length; index++) {
@@ -819,5 +827,44 @@ module.exports = function(Course) {
         }
     }
 
+
+    Course.checkIsInCourse = function(courses, userId) {
+        return new Promise(function(resolve, reject) {
+            let coursesId = []
+            if (userId == null) {
+                for (let index = 0; index < courses.length; index++) {
+                    courses[index].isInCourse = false
+                }
+                resolve(courses)
+            } else {
+
+                courses.forEach(element => {
+                    coursesId.push(element.id)
+                });
+
+                Course.app.models.studentCourse.find({ where: { ownerId: userId, coursesId: { "inq": coursesId } } }, function(err, allCourseMember) {
+                    if (err) {
+                        reject(err)
+                    }
+                    let allCourseMemberId = [];
+                    allCourseMember.forEach(element => {
+                        allCourseMemberId.push(element.courseId)
+                    });
+
+                    for (let index = 0; index < courses.length; index++) {
+                        const element = courses[index];
+                        if (allCourseMemberId.includes(element.id)) {
+                            courses[index].isInCourse = true
+                        } else {
+                            courses[index].isInCourse = false
+                        }
+                    }
+
+                    resolve(products)
+                })
+            }
+
+        })
+    }
 
 };
