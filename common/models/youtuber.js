@@ -346,7 +346,13 @@ module.exports = function(Youtuber) {
 
     Youtuber.userPodcast = async function(id, context, callback) {
         try {
+            var userId;
+            if (context.req.accessToken)
+                userId = context.req.accessToken.userId;
             let filter = { "where": { "and": [{ "youtuberId": id }] } }
+            if (userId != id)
+                filter['where']['and'].push({ "status": "active" })
+
             let Podcasts = await Youtuber.app.models.podcast.find(filter)
             callback(null, Podcasts)
         } catch (error) {

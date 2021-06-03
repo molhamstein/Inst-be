@@ -295,14 +295,14 @@
         {
             "accessType": "EXECUTE",
             "principalType": "ROLE",
-            "principalId": "$authenticated",
+            "principalId": "$everyone",
             "permission": "ALLOW",
             "property": "userPodcast"
         },
         {
             "accessType": "EXECUTE",
             "principalType": "ROLE",
-            "principalId": "$authenticated",
+            "principalId": "$everyone",
             "permission": "ALLOW",
             "property": "userCourse"
         }

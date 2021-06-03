@@ -5,7 +5,16 @@
     "options": {
         "validateUpsert": true
     },
+    "scope": {
+        "include": [{
+            "relation": "media"
+        }]
+    },
     "properties": {
+        "mediaId": {
+            "type": "number",
+            "required": true
+        },
         "minTotalPoint": {
             "type": "number",
             "required": true
@@ -69,7 +78,16 @@
         }
     },
     "validations": [],
-    "relations": {},
+    "relations": {
+        "media": {
+            "type": "belongsTo",
+            "model": "media",
+            "foreignKey": "mediaId",
+            "options": {
+                "nestRemoting": true
+            }
+        }
+    },
     "acls": [{
             "accessType": "*",
             "principalType": "ROLE",
