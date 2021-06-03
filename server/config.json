@@ -1,28 +1,37 @@
 {
-  "restApiRoot": "/api",
-  "host": "0.0.0.0",
-  "domain": "http://165.227.162.64:3000",
-  "siteDomain": "http://165.227.162.64:3000",
-  "programFFmpegName": [
-    "ffmpeg.exe",
-    "ffprobe.exe"
-  ],
-  "port": 3000,
-  "remoting": {
-    "context": false,
-    "rest": {
-      "handleErrors": false,
-      "normalizeHttpPath": false,
-      "xml": false
+    "restApiRoot": "/api",
+    "host": "0.0.0.0",
+    "domain": "https://gelp.academy:3000",
+    "siteDomain": "https://gelp.academy:3000",
+    "programFFmpegName": [
+        "ffmpeg.exe",
+        "ffprobe.exe"
+    ],
+    "port": 3000,
+    "remoting": {
+        "context": false,
+        "rest": {
+            "handleErrors": false,
+            "normalizeHttpPath": false,
+            "xml": false
+        },
+        "json": {
+            "strict": false,
+            "limit": "100kb"
+        },
+        "urlencoded": {
+            "extended": true,
+            "limit": "100kb"
+        },
+        "cors": false
     },
-    "json": {
-      "strict": false,
-      "limit": "100kb"
-    },
-    "urlencoded": {
-      "extended": true,
-      "limit": "100kb"
-    },
-    "cors": false
-  }
+    "httpMode": false,
+    "certConfig": {
+        "path": "/etc/letsencrypt/live/gelp.academy/",
+        "key": "privkey.pem",
+        "cert": "cert.pem",
+        "ca": [],
+        "requestCert": false,
+        "rejectUnauthorized": false
+    }
 }
