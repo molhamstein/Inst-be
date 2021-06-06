@@ -269,6 +269,13 @@
             "principalType": "ROLE",
             "principalId": "$authenticated",
             "permission": "ALLOW",
+            "property": "updateProfile"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
             "property": "activeYoutuber"
         },
         {
@@ -363,8 +370,8 @@
             }],
             "description": "",
             "http": [{
-                "path": "/addYoutuber",
-                "verb": "post"
+                "path": "/updateProfile",
+                "verb": "put"
             }]
         },
         "signUp": {
