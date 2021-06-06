@@ -321,7 +321,7 @@ module.exports = function(Youtuber) {
             }
 
             let courses = await Youtuber.app.models.Course.find({ "where": { "id": { inq: coursesId } } })
-            courses = await Youtuber.app.models.Course.checkIsInCourse(allCourse, userId)
+            courses = await Youtuber.app.models.Course.checkIsInCourse(courses, userId)
             callback(null, courses)
         } catch (error) {
             callback(error)
