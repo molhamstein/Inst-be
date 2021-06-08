@@ -54,6 +54,7 @@ module.exports = {
     },
     getLevelId: function(app, mainUser, data) {
         return new Promise(function(resolve, reject) {
+
             let filterDate = { "minTotalPoint": { "lte": data.totalPoint ? data.totalPoint : mainUser.totalPoint }, "maxTotalPoint": { "gte": data.totalPoint ? data.totalPoint : mainUser.totalPoint } }
 
             filterDate['minEnterSystemCount'] = { "lte": data.enterSystemCount ? data.enterSystemCount : mainUser.enterSystemCount }
@@ -73,19 +74,49 @@ module.exports = {
             filterDate['minFollower'] = { "lte": data.follower ? data.follower : mainUser.follower }
             filterDate['maxFollower'] = { "gte": data.follower ? data.follower : mainUser.follower }
 
+            let mainDate = {
+                "follower": data.follower ? data.follower : mainUser.follower,
+                "totalSessionCreaterTime": data.totalSessionCreaterTime ? data.totalSessionCreaterTime : mainUser.totalSessionCreaterTime,
+                "completedCourses": data.completedCourses ? data.completedCourses : mainUser.completedCourses,
+                "totalSessionTime": data.totalSessionTime ? data.totalSessionTime : mainUser.totalSessionTime,
+                "enterSystemCount": data.enterSystemCount ? data.enterSystemCount : mainUser.enterSystemCount,
+                "totalPoint": data.totalPoint ? data.totalPoint : mainUser.totalPoint
+            }
 
             app.models.levels.findOne({
                     "where": filterDate
                 },
                 function(err, level) {
                     if (err) reject(err)
-                    console.log("level")
-                    console.log(level)
+                    if (level)
+                        resolve(level.id);
+                    else {
+                        app.levels.find({}, function(err, allLevel) {
+                            if (err) reject(err)
+                            var i = allLevel.length;
+                            let mainLevel = null;
+                            while (i--) {
+                                let element = allLevel[i];
+                                if (mainDate.follower >= element.minFollower &&
+                                    mainDate.totalSessionCreaterTime >= element.minTotalSessionCreaterTime &&
+                                    mainDate.completedCourses >= element.minCompletedCourses &&
+                                    mainDate.totalSessionTime >= element.minTotalSessionTime &&
+                                    mainDate.enterSystemCount >= element.minEnterSystemCount &&
+                                    mainDate.totalPoint >= element.minTotalPoint
+                                ) {
+                                    mainLevel = element;
+                                }
+                            }
+                            if (mainLevel) {
+                                resolve(mainLevel.id)
+                            } else {
+                                resolve(null)
+                            }
 
-                    console.log(data)
-                    console.log(filterDate)
-                    resolve(level ? level.id : null)
+                        })
+                    }
                 })
+
         })
     }
 }
