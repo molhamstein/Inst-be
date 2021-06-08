@@ -91,7 +91,7 @@ module.exports = {
                     if (level)
                         resolve(level.id);
                     else {
-                        app.levels.find({}, function(err, allLevel) {
+                        app.models.levels.find({}, function(err, allLevel) {
                             if (err) reject(err)
                             var i = allLevel.length;
                             let mainLevel = null;
