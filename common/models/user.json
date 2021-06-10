@@ -1,82 +1,89 @@
 {
-  "name": "user",
-  "base": "PersistedModel",
-  "idInjection": true,
-  "options": {
-    "validateUpsert": true
-  },
-  "properties": {
-    "phonenumber": {
-      "type": "string",
-      "required": false
+    "name": "user",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
     },
-    "name": {
-      "type": "string",
-      "required": true
+    "scope": {
+        "include": [{
+            "relation": "media"
+        }]
     },
-    "gender": {
-      "type": "string",
-      "required": false
-    },
-    "imageId": {
-      "type": "number",
-      "required": false
-    },
-    "ISOCode": {
-      "type": "string",
-      "required": false
-    },
-    "birthdate": {
-      "type": "date",
-      "required": false
-    },
-    "email": {
-      "type": "string",
-      "required": true
-    }
-  },
-  "validations": [],
-  "relations": {},
-  "acls": [
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "DENY"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "checkUser"
-    }
-  ],
-  "methods": {
-    "checkUser": {
-      "accepts": [
-        {
-          "arg": "key",
-          "type": "string",
-          "required": true,
-          "description": ""
+    "properties": {
+        "phonenumber": {
+            "type": "string",
+            "required": false
+        },
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "gender": {
+            "type": "string",
+            "required": false
+        },
+        "imageId": {
+            "type": "number",
+            "required": false
+        },
+        "ISOCode": {
+            "type": "string",
+            "required": false
+        },
+        "birthdate": {
+            "type": "date",
+            "required": false
+        },
+        "email": {
+            "type": "string",
+            "required": true
         }
-      ],
-      "returns": [
-        {
-          "arg": "user",
-          "type": "object",
-          "root": true,
-          "description": ""
+    },
+    "validations": [],
+    "relations": {
+        "media": {
+            "type": "belongsTo",
+            "model": "media",
+            "foreignKey": "imageId",
+            "options": {
+                "nestRemoting": true
+            }
         }
-      ],
-      "description": "",
-      "http": [
+    },
+    "acls": [{
+            "accessType": "*",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "DENY"
+        },
         {
-          "path": "/checkuser",
-          "verb": "get"
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "checkUser"
         }
-      ]
+    ],
+    "methods": {
+        "checkUser": {
+            "accepts": [{
+                "arg": "key",
+                "type": "string",
+                "required": true,
+                "description": ""
+            }],
+            "returns": [{
+                "arg": "user",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/checkuser",
+                "verb": "get"
+            }]
+        }
     }
-  }
 }
