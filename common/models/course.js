@@ -328,8 +328,11 @@ module.exports = function(Course) {
             mainCourse['finishLessonNumber'] = 0
             mainCourse['nextLesson'] = null;
             mainCourse['isCompleted'] = false;
+            mainCourse['rate'] = null;
+
 
             if (userId) {
+                mainCourse['rate'] = await Course.app.models.rate.findOne({ "where": { "courseId": id, "youtuberId": userId } })
                 let mainYoutuberCourse = await Course.app.models.youtuberCourse.findOne({ "where": { "courseId": id, "youtuberId": userId } })
                 if (mainYoutuberCourse || userId == mainCourse.youtuberId) {
                     mainCourse = JSON.parse(JSON.stringify(mainCourse))
@@ -768,6 +771,7 @@ module.exports = function(Course) {
             await mainYouTuber.updateAttributes({ "isPopular": isPopular, "levelId": levelId, "totalPoint": tempTotalPoint });
 
             await mainCourse.updateAttributes(updateData)
+            mainRate = await rate.findById(mainRate.id);
             callback(null, mainRate)
         })
     }

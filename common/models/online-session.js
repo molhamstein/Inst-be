@@ -120,7 +120,7 @@ module.exports = function(Onlinesession) {
         tempOnlineSession.forEach(element => {
             onlineSessionIds.push(element.id)
         });
-        let onlineSession = await Onlinesession.find({ "where": { "id": { "inq": onlineSessionIds } } })
+        let onlineSession = await Onlinesession.find({ "where": { "id": { "inq": onlineSessionIds } }, "order": "createdAt DESC" })
         callback(null, onlineSession)
     }
 
