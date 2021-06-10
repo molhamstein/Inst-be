@@ -3,7 +3,7 @@ const configPath = process.env.NODE_ENV === undefined ?
     '../../server/config.json' :
     `../../server/config.${process.env.NODE_ENV}.json`;
 const config = require(configPath);
-const urlFileRoot = config.domain + config.restApiRoot + "/files";
+const urlFileRoot = config.domain + config.restApiRoot + "/uploadFiles";
 const urlFileRootSave = urlFileRoot + '/profile/download/';
 const path = require('path');
 const ejs = require('ejs');
