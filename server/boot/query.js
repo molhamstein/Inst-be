@@ -15,7 +15,7 @@ const fields = {
     course: ["id", "instituteId", "branchId", "venueId", "subcategoryId", "cost", "costSupplies", "typeCost", "sessionsNumber", "nameEn", "nameAr", "descriptionEn", "descriptionAr", "startAt", "maxCountStudent", "countStudent", "countStudentInQueue", "sessionAvgDuration", "waitingListId", "hasSession", "hasSpplies", "isStarted", "status", "createdAt", "isOnlineCourse"],
     venue: ["id", "instituteId", "branchId", "nameEn", "nameAr", "type", "status", "createdAt"],
     studentPayment: ["id", "studentId", "value", "date", "note", "courseId", "createdAt"],
-    onlineSession: ["id", "courseId", "unitId", "podcastId", "duration", "nameEn", "nameAr", "descriptionEn", "descriptionAr", "mediaId", "reachCount", "viewCount", "createAt"],
+    onlineSession: ["id", "courseId", "unitId", "podcastId", "duration", "nameEn", "nameAr", "descriptionEn", "descriptionAr", "mediaId", "reachCount", "viewCount", "createdAt"],
     podcast: ["id", "youtuberId", "createdAt", "subscriberCount", "subcategoryId", "status", "nameEn", "nameAr", "descriptionEn", "descriptionAr"]
 }
 
