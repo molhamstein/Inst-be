@@ -217,6 +217,26 @@ module.exports = function(Podcast) {
     }
 
 
+    Podcast.publishPodcast = async function(id, req, callback) {
+        try {
+
+            var youtuberId = req.accessToken.userId;
+            await Podcast.app.dataSources.mainDB.transaction(async models => {
+                const {
+                    podcast
+                } = models
+                let oldPodcast = await podcast.findById(id);
+                if (oldPodcast == null || oldPodcast.youtuberId != youtuberId) {
+                    throw Podcast.app.err.global.authorization()
+                }
+                await oldPodcast.updateAttribute("status", "active");
+                callback(null, "ok")
+            })
+        } catch (err) {
+            callback(err)
+        }
+    }
+
 
 
 };

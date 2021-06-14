@@ -157,7 +157,7 @@ module.exports = function(Onlinesession) {
                 "fromId": "id",
                 "mainTable": 0,
                 "relationName": "podcast"
-            }], { "where": { "and": [{ "podcast.youtuberId": youtuberId }] }, "order": "createdAt DESC", "limit": 50 })
+            }], { "where": { "and": [{ "podcast.youtuberId": youtuberId }, { "id": { "neq": id } }] }, "order": "createdAt DESC", "limit": 50 })
             onlineSessionByYouTuber.forEach(element => {
                 onlineSessionIds.push(element.id)
             });
@@ -169,7 +169,7 @@ module.exports = function(Onlinesession) {
                 "fromId": "id",
                 "mainTable": 0,
                 "relationName": "podcast"
-            }], { "where": { "and": [{ "podcast.subcategoryId": subcategoryId }] }, "order": "createdAt DESC", "limit": 50 })
+            }], { "where": { "and": [{ "podcast.subcategoryId": subcategoryId }, { "id": { "neq": id } }] }, "order": "createdAt DESC", "limit": 50 })
             onlineSessionBySubcategory.forEach(element => {
                 onlineSessionIds.push(element.id)
             });
@@ -177,7 +177,8 @@ module.exports = function(Onlinesession) {
 
             let newOnlineSession = await Onlinesession.app.query.towLevel(Onlinesession.app, "onlineSession", "podcast", "podcastId", "id", { "limit": 25, "where": { "podcast.status": "active" } }, false)
             newOnlineSession.forEach(element => {
-                onlineSessionIds.push(element.id)
+                if (element.id != id)
+                    onlineSessionIds.push(element.id)
             });
             let onlineSession = await Onlinesession.find({ "where": { "id": { "inq": onlineSessionIds } } })
             data['related'] = data['related'].concat(onlineSession);

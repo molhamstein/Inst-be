@@ -122,6 +122,11 @@ module.exports = {
                                         "key": mainKey,
                                         "value": sql.lt(value['lt'])
                                     }
+                                } else {
+                                    object = {
+                                        "key": mainKey,
+                                        "value": sql.ne(value['neq'])
+                                    }
                                 }
                             }
                             if (n == -1) {
