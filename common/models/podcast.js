@@ -164,7 +164,7 @@ module.exports = function(Podcast) {
                 if (mainPodcast == null) {
                     throw Podcast.app.err.global.authorization()
                 }
-                let mainSubscribePodcast = await podcastSubscribe.findOne({ "where": { "youtuberId": userId, "propertyId": id } })
+                let mainSubscribePodcast = await podcastSubscribe.findOne({ "where": { "youtuberId": userId, "podcastId": id } })
                 if (mainSubscribePodcast == null) {
                     await mainPodcast.updateAttribute("subscriberCount", mainPodcast.subscriberCount + 1)
                     mainSubscribePodcast = await podcastSubscribe.create({ "youtuberId": userId, "podcastId": id })
