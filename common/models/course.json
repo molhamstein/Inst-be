@@ -69,8 +69,7 @@
         },
         "discountCost": {
             "type": "number",
-            "required": true,
-            "default": 0
+            "required": false
         },
         "requirements": {
             "type": "string",
