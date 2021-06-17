@@ -211,7 +211,7 @@ module.exports = function(Podcast) {
 
     Podcast.getOnePodcast = async function(id, callback) {
         let mainPodcast = await Podcast.findById(id)
-        let podcastOnlinesession = await Podcast.app.models.onlineSession.find({ "where": { "podcastId": id }, "order": "orderInPodcast DESC" })
+        let podcastOnlinesession = await Podcast.app.models.onlineSession.find({ "where": { "podcastId": id }, "order": "orderInPodcast ASC" })
         mainPodcast['onlineSessions'] = podcastOnlinesession
         callback(null, mainPodcast)
     }
