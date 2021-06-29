@@ -313,7 +313,7 @@ module.exports = function(Youtuber) {
     Youtuber.myPurchasedCourse = async function(context, callback) {
         try {
             var userId = context.req.accessToken.userId;
-            var userCourses = await Youtuber.app.models.youtuberCourse.find({ "where": { "userId": userId } });
+            var userCourses = await Youtuber.app.models.youtuberCourse.find({ "where": { "youtuberId": userId } });
             let coursesId = [];
             for (let index = 0; index < userCourses.length; index++) {
                 const element = userCourses[index];

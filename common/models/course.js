@@ -846,7 +846,7 @@ module.exports = function(Course) {
                     coursesId.push(element.id)
                 });
 
-                Course.app.models.studentCourse.find({ where: { ownerId: userId, coursesId: { "inq": coursesId } } }, function(err, allCourseMember) {
+                Course.app.models.youtuberCourse.find({ where: { youtuberId: userId, coursesId: { "inq": coursesId } } }, function(err, allCourseMember) {
                     if (err) {
                         reject(err)
                     }
