@@ -338,6 +338,7 @@ module.exports = function(Youtuber) {
             if (userId != id)
                 filter['where']['and'].push({ "status": "active" })
             let courses = await Youtuber.app.models.Course.find(filter)
+            courses = await Youtuber.app.models.Course.checkIsInCourse(courses, userId)
             callback(null, courses)
         } catch (error) {
             callback(error)
@@ -494,7 +495,7 @@ module.exports = function(Youtuber) {
             let user = await Youtuber.findById(userId)
             let isRightPassword = await user.hasPassword(oldPassword);
             if (!isRightPassword) {
-
+                throw Youtuber.app.err.user.oldPasswordIsWrong()
             } else {
                 await user.updateAttribute("password", Youtuber.hashPassword(newPassword))
                 let newToken = await Youtuber.app.models.MultiAccessToken.create({
