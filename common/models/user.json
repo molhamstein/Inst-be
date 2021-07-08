@@ -7,8 +7,12 @@
     },
     "scope": {
         "include": [{
-            "relation": "media"
-        }]
+                "relation": "media"
+            },
+            {
+                "relation": "country"
+            }
+        ]
     },
     "properties": {
         "phonenumber": {
@@ -46,6 +50,14 @@
             "type": "belongsTo",
             "model": "media",
             "foreignKey": "imageId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "country": {
+            "type": "belongsTo",
+            "model": "country",
+            "foreignKey": "ISOCode",
             "options": {
                 "nestRemoting": true
             }
