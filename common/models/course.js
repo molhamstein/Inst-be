@@ -261,7 +261,7 @@ module.exports = function(Course) {
                         var videoElement = element.onlineSessions[j];
                         let mainVideo;
                         if (videoElement.id != null) {
-                            mainVideo = await unit.findById(videoElement.id);
+                            mainVideo = await media.findById(videoElement.id);
                             await mainVideo.updateAttributes({ "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
                         } else {
                             console.log("QQQQ")
