@@ -15,7 +15,7 @@ module.exports = function(Youtubercourse) {
                     throw Youtubercourse.app.err.course.studentAlreadyInMultiCourse([courseId])
                 }
                 let mainCourse = await course.findById(courseId)
-                let courseCost = mainCourse.discountCost ? mainCourse.discountCost : course.cost;
+                let courseCost = mainCourse.discountCost ? mainCourse.discountCost : mainCourse.cost;
                 let newYoutuberCourse = await youtuberCourse.create({ "youtuberId": userId, "cost": courseCost, courseId })
                 let courseOwner = mainCourse.youtuber();
                 let admin = await youtuber.findOne({ "where": { "email": "gelp@academy.com" } });
