@@ -7,6 +7,7 @@ module.exports = function(Youtubercourse) {
 
             await Youtubercourse.app.dataSources.mainDB.transaction(async models => {
                 const { youtuber } = models
+                const { transaction } = models
                 const { youtuberCourse } = models
                 const { course } = models
                 let oldYoutuberCourse = await youtuberCourse.findOne({ "where": { "youtuberId": userId, "courseId": courseId } })
@@ -14,8 +15,18 @@ module.exports = function(Youtubercourse) {
                     throw Youtubercourse.app.err.course.studentAlreadyInMultiCourse([courseId])
                 }
                 let mainCourse = await course.findById(courseId)
-                let newYoutuberCourse = await youtuberCourse.create({ "youtuberId": userId, "cost": mainCourse.cost, courseId })
+                let courseCost = mainCourse.discountCost ? mainCourse.discountCost : course.cost;
+                let newYoutuberCourse = await youtuberCourse.create({ "youtuberId": userId, "cost": courseCost, courseId })
+                let courseOwner = mainCourse.youtuber();
+                let admin = await youtuber.findOne({ "where": { "email": "gelp@academy.com" } });
+                console.log("courseCost")
+                console.log(courseCost)
                 await mainCourse.updateAttribute("countStudent", mainCourse.countStudent + 1)
+                await transaction.create({ "youtuberId": mainCourse.ownerId, "value": courseCost * courseOwner.percentageCourse / 100, "type": "receiveCourse", courseId: mainCourse.id })
+                await transaction.create({ "youtuberId": admin.id, "value": courseCost * (100 - courseOwner.percentageCourse) / 100, "type": "receiveCourse", courseId: mainCourse.id })
+                await courseOwner.updateAttribute("balance", courseOwner.balance + (courseCost * courseOwner.percentageCourse / 100))
+                await admin.updateAttribute("balance", admin.balance + (courseCost * (100 - courseOwner.percentageCourse) / 100))
+
                 callback(null, newYoutuberCourse)
             })
         } catch (error) {

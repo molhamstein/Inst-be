@@ -96,6 +96,11 @@
             "type": "string",
             "required": false
         },
+        "percentageCourse": {
+            "type": "number",
+            "required": true,
+            "default": 80
+        },
         "totalSessionTime": {
             "type": "number",
             "required": true,
