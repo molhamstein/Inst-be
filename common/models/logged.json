@@ -1,0 +1,37 @@
+{
+    "name": "logged",
+    "base": "PersistedModel",
+    "options": {
+        "validateUpsert": true
+    },
+    "scope": {
+        "include": []
+    },
+    "properties": {
+        "youtuberId": {
+            "type": "number",
+            "required": true
+        },
+        "createdAt": {
+            "type": "date",
+            "required": true,
+            "defaultFn": "now"
+        }
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [{
+            "accessType": "*",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "DENY"
+        },
+        {
+            "accessType": "READ",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW"
+        }
+    ],
+    "methods": {}
+}

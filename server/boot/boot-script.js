@@ -72,6 +72,7 @@ module.exports = function(app) {
     var follower = app.models.follower
     var invitationCode = app.models.invitationCode
     var levels = app.models.levels
+    var logged = app.models.logged
 
 
 
@@ -603,6 +604,7 @@ module.exports = function(app) {
             await customdAutoUpload(follower, 'follower', [])
             await customdAutoUpload(invitationCode, 'invitationCode', [])
             await customdAutoUpload(levels, 'levels', [])
+            await customdAutoUpload(logged, 'logged', []);
 
 
 
@@ -660,6 +662,7 @@ module.exports = function(app) {
         await customdAutoUpload(notification, 'notification', []);
         await customdAutoUpload(notificationType, 'notificationType', []);
         await customdAutoUpload(youtuber, 'youtuber', []);
+
     }
 
     console.log("process.env.NODE_ENV")

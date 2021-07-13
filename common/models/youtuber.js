@@ -296,7 +296,16 @@ module.exports = function(Youtuber) {
             let user = await Youtuber.findById(userId)
             if (user.status != 'active')
                 throw Youtuber.app.err.user.userIsNotActive()
-                    // await user.updateAttribute("lastLogin", new Date())
+
+            let nowDate = new Date();
+            let startDate = new Date(nowDate.setHours(0))
+            startDate.setMinutes(0);
+            let hasLogToday = await Youtuber.app.models.logged.findOne({ "where": { "createdAt": { "gte": new Date(startDate) }, "youtuberId": userId } })
+            if (hasLogToday == null) {
+                hasLogToday = await Youtuber.app.models.logged.create({ "youtuberId": userId })
+            }
+
+            // await user.updateAttribute("lastLogin", new Date())
             if (userVersion == null)
                 callback(null, user);
             else {

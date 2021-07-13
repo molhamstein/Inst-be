@@ -441,5 +441,9 @@
     "follower": {
         "dataSource": "mainDB",
         "public": true
+    },
+    "logged": {
+        "dataSource": "mainDB",
+        "public": true
     }
 }
