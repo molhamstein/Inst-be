@@ -1,33 +1,84 @@
 {
-  "name": "admin",
-  "base": "User",
-  "idInjection": true,
-  "options": {
-    "validateUpsert": true,
-    "ttl": 31536000000
-  },
-  "ownerRelations": true,
-  "hidden": [
-    "password",
-    "verificationToken",
-    "emailVerified",
-    "realm"
-  ],
-  "properties": {},
-  "validations": [],
-  "relations": {
-    "accessTokens": {
-      "type": "hasMany",
-      "model": "MultiAccessToken",
-      "polymorphic": {
-        "foreignKey": "userId",
-        "discriminator": "principalType"
-      },
-      "options": {
-        "disableInclude": true
-      }
+    "name": "admin",
+    "base": "User",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true,
+        "ttl": 31536000000
+    },
+    "ownerRelations": true,
+    "hidden": [
+        "password",
+        "verificationToken",
+        "emailVerified",
+        "realm"
+    ],
+    "properties": {},
+    "validations": [],
+    "relations": {
+        "accessTokens": {
+            "type": "hasMany",
+            "model": "MultiAccessToken",
+            "polymorphic": {
+                "foreignKey": "userId",
+                "discriminator": "principalType"
+            },
+            "options": {
+                "disableInclude": true
+            }
+        }
+    },
+    "acls": [{
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "getTransactionsReport"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "getStatistic"
+        }
+    ],
+    "methods": {
+        "getStatistic": {
+            "accepts": [{
+                "arg": "filterLogged",
+                "type": "object",
+                "required": false
+            }],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my filter",
+            "http": [{
+                "path": "/getStatistic",
+                "verb": "get"
+            }]
+        },
+        "getTransactionsReport": {
+            "accepts": [{
+                "arg": "filter",
+                "type": "object",
+                "required": false
+            }],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my filter",
+            "http": [{
+                "path": "/getTransactionsReport",
+                "verb": "get"
+            }]
+        }
     }
-  },
-  "acls": [],
-  "methods": {}
 }

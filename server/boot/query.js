@@ -16,7 +16,8 @@ const fields = {
     venue: ["id", "instituteId", "branchId", "nameEn", "nameAr", "type", "status", "createdAt"],
     studentPayment: ["id", "studentId", "value", "date", "note", "courseId", "createdAt"],
     onlineSession: ["id", "courseId", "unitId", "podcastId", "duration", "nameEn", "nameAr", "descriptionEn", "descriptionAr", "mediaId", "reachCount", "viewCount", "createdAt"],
-    podcast: ["id", "youtuberId", "createdAt", "subscriberCount", "subcategoryId", "status", "nameEn", "nameAr", "descriptionEn", "descriptionAr"]
+    podcast: ["id", "youtuberId", "createdAt", "subscriberCount", "subcategoryId", "status", "nameEn", "nameAr", "descriptionEn", "descriptionAr"],
+    user: ['id', 'name']
 }
 
 const relationName = {
@@ -897,5 +898,121 @@ module.exports = {
                     reject(err)
             })
         })
+    },
+
+
+    getLoggedSubscribePodcast: function(app, filterLogged) {
+        return new Promise(function(resolve, reject) {
+
+            let query = `SELECT DATE(createdAt) AS saledate, COUNT(*) AS count FROM podcastSubscribe `
+            if (filterLogged.from && filterLogged.to) {
+                query += " WHERE `createdAt` > '" + filterLogged.from + "' AND `createdAt` < '" + filterLogged.to + "' "
+            }
+            query += " GROUP BY saledate"
+            const connector = app.dataSources.mainDB.connector;
+            connector.execute(query, null, (err, resultObjects) => {
+                if (!err) {
+                    resolve(resultObjects)
+                } else
+                    reject(err)
+            })
+
+        })
+    },
+    getLoggedEnrollCourse: function(app, filterLogged) {
+        return new Promise(function(resolve, reject) {
+
+            let query = `SELECT DATE(createdAt) AS saledate, COUNT(*) AS count FROM youtuberCourse `
+            if (filterLogged.from && filterLogged.to) {
+                query += " WHERE `createdAt` > '" + filterLogged.from + "' AND `createdAt` < '" + filterLogged.to + "' "
+            }
+            query += " GROUP BY saledate"
+            const connector = app.dataSources.mainDB.connector;
+            connector.execute(query, null, (err, resultObjects) => {
+                if (!err) {
+                    resolve(resultObjects)
+                } else
+                    reject(err)
+            })
+
+        })
+    },
+    getLoggedViews: function(app, filterLogged) {
+        return new Promise(function(resolve, reject) {
+
+            let query = `SELECT DATE(createdAt) AS saledate, COUNT(*) AS count FROM onlineSessionWatch `
+            if (filterLogged.from && filterLogged.to) {
+                query += " WHERE `createdAt` > '" + filterLogged.from + "' AND `createdAt` < '" + filterLogged.to + "' "
+            }
+            query += " GROUP BY saledate"
+
+            const connector = app.dataSources.mainDB.connector;
+            connector.execute(query, null, (err, resultObjects) => {
+                if (!err) {
+                    resolve(resultObjects)
+                } else
+                    reject(err)
+            })
+
+        })
+    },
+    getLoggedActiveUser: function(app, filterLogged) {
+        return new Promise(function(resolve, reject) {
+
+            let query = `SELECT DATE(createdAt) AS saledate, COUNT(*) AS count FROM logged`
+            if (filterLogged.from && filterLogged.to) {
+                query += " WHERE `createdAt` > '" + filterLogged.from + "' AND `createdAt` < '" + filterLogged.to + "' "
+            }
+            query += " GROUP BY saledate"
+            const connector = app.dataSources.mainDB.connector;
+            connector.execute(query, null, (err, resultObjects) => {
+                if (!err) {
+                    resolve(resultObjects)
+                } else
+                    reject(err)
+            })
+
+        })
+    },
+    getLoggedUser: function(app, filterLogged) {
+        return new Promise(function(resolve, reject) {
+
+            let query = `SELECT DATE(createdAt) AS saledate, COUNT(*) AS count FROM youtuber`
+            if (filterLogged.from && filterLogged.to) {
+                query += " WHERE `createdAt` > '" + filterLogged.from + "' AND `createdAt` < '" + filterLogged.to + "' "
+            }
+            query += " GROUP BY saledate"
+            const connector = app.dataSources.mainDB.connector;
+            connector.execute(query, null, (err, resultObjects) => {
+                if (!err) {
+                    resolve(resultObjects)
+                } else
+                    reject(err)
+            })
+
+        })
+    },
+    getTransactionsReport: function(app, filterLogged) {
+        return new Promise(function(resolve, reject) {
+
+            let query = `SELECT DATE(createdAt) AS saledate, SUM(value) AS totalValue, SUM(CASE WHEN isToSystem THEN value ELSE 0 END) AS systemValue FROM transaction`
+            if (filterLogged.from && filterLogged.to) {
+                query += " WHERE `createdAt` > '" + filterLogged.from + "' AND `createdAt` < '" + filterLogged.to + "' "
+            }
+            query += " GROUP BY saledate"
+            console.log(query)
+            const connector = app.dataSources.mainDB.connector;
+            connector.execute(query, null, (err, resultObjects) => {
+                if (!err) {
+                    resolve(resultObjects)
+                } else
+                    reject(err)
+            })
+
+        })
     }
+
+
+
+
 }

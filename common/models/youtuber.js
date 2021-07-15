@@ -80,7 +80,7 @@ module.exports = function(Youtuber) {
         }
     };
 
-    Youtuber.addYoutuber = async function(email, password, name, callback) {
+    Youtuber.addYoutuber = async function(email, password, name, status, behanceLink, facebookLink, githubLink, twitterLink, websiteLink, linkedinLink, primaryIdentifier, about, percentageCourse, callback) {
         try {
             await Youtuber.app.dataSources.mainDB.transaction(async models => {
                 const {
@@ -110,9 +110,19 @@ module.exports = function(Youtuber) {
                 }
                 var newYoutuber = await youtuber.create({
                     "userId": userObj.id,
-                    "password": password,
-                    "email": email,
-                    "status": "active"
+                    password,
+                    email,
+                    status,
+                    behanceLink,
+                    facebookLink,
+                    githubLink,
+                    twitterLink,
+                    websiteLink,
+                    linkedinLink,
+                    primaryIdentifier,
+                    about,
+                    percentageCourse,
+                    // "status": "active"
                 });
 
                 var newRoleMapping = await RoleMapping.create({
@@ -541,6 +551,40 @@ module.exports = function(Youtuber) {
             callback(error)
         }
     }
+
+    Youtuber.getYoutubers = async function(searchKey, limit = 10, skip = 0, callback) {
+        try {
+            let youtuberData = []
+            if (searchKey) {
+                let youtubers = await Youtuber.app.query.towLevel(Youtuber.app, 'youtuber', 'user', 'userId', 'id', { limit, skip, "where": { "user.name": { "like": searchKey } } }, false)
+                let youtuberIds = [];
+                youtubers.forEach(element => {
+                    youtuberIds.push(element.id);
+                });
+                youtuberData = await Youtuber.find({ "where": { "id": { "inq": youtuberIds } } })
+            } else {
+                youtuberData = await Youtuber.find({ limit, skip, "order": "createdAt DESC" })
+            }
+            callback(null, youtuberData)
+        } catch (error) {
+            callback(error)
+        }
+    }
+
+    Youtuber.getYoutubersCount = async function(searchKey, callback) {
+        try {
+            let youtubersCount = {}
+            if (searchKey) {
+                youtubersCount = await Youtuber.app.query.towLevel(Youtuber.app, 'youtuber', 'user', 'userId', 'id', { "user.name": { "like": searchKey } }, true)
+            } else {
+                youtubersCount["count"] = await Youtuber.count()
+            }
+            callback(null, youtubersCount)
+        } catch (error) {
+            callback(error)
+        }
+    }
+
 
 
 

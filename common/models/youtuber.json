@@ -317,6 +317,20 @@
             "principalId": "$everyone",
             "permission": "ALLOW",
             "property": "userCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "getYoutubers"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "getYoutubersCount"
         }
     ],
     "methods": {
@@ -338,6 +352,66 @@
                     "type": "string",
                     "required": true,
                     "description": ""
+                },
+                {
+                    "arg": "status",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "behanceLink",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "facebookLink",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "githubLink",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "twitterLink",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "websiteLink",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "linkedinLink",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "primaryIdentifier",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "about",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "percentageCourse",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
                 }
             ],
             "returns": [{
@@ -350,6 +424,57 @@
             "http": [{
                 "path": "/addYoutuber",
                 "verb": "post"
+            }]
+        },
+        "getYoutubers": {
+            "accepts": [{
+                    "arg": "searchKey",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "limit",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "skip",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/getYoutubers",
+                "verb": "get"
+            }]
+        },
+        "getYoutubersCount": {
+            "accepts": [{
+                "arg": "searchKey",
+                "type": "string",
+                "required": false,
+                "description": ""
+            }],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/getYoutubersCount",
+                "verb": "get"
             }]
         },
         "updateProfile": {

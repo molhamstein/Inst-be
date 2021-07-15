@@ -23,7 +23,7 @@ module.exports = function(Youtubercourse) {
                 console.log(courseCost)
                 await mainCourse.updateAttribute("countStudent", mainCourse.countStudent + 1)
                 await transaction.create({ "youtuberId": mainCourse.youtuberId, "value": courseCost * courseOwner.percentageCourse / 100, "type": "receiveCourse", courseId: mainCourse.id })
-                await transaction.create({ "youtuberId": admin.id, "value": courseCost * (100 - courseOwner.percentageCourse) / 100, "type": "receiveCourse", courseId: mainCourse.id })
+                await transaction.create({ "youtuberId": admin.id, "value": courseCost * (100 - courseOwner.percentageCourse) / 100, "type": "receiveCourse", courseId: mainCourse.id, "isToSystem": true })
                 await courseOwner.updateAttribute("balance", courseOwner.balance + (courseCost * courseOwner.percentageCourse / 100))
                 await admin.updateAttribute("balance", admin.balance + (courseCost * (100 - courseOwner.percentageCourse) / 100))
 

@@ -69,6 +69,7 @@ module.exports = function(Podcast) {
                 await mainYouTuber.updateAttributes({ "isPublisher": true, "levelId": levelId, "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime })
                 await onlineSession.create(onlineSessions)
 
+                mainPodcast = await podcast.findById(mainPodcast.id)
                 callback(null, mainPodcast);
             })
         } catch (error) {

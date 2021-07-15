@@ -208,6 +208,7 @@ module.exports = function(Course) {
                         "unitsNumber": units.length,
                         "requirements": data.requirements,
                         "sessionsNumber": sessionsNumber,
+                        "status": data.status ? data.status : oldCourse.status,
                         "duration": 20000000
                     }
                     await oldCourse.updateAttributes(updateData);
