@@ -809,7 +809,7 @@ module.exports = function(Course) {
                 featuredCategoriesId.push(element.id);
             }
 
-            let allCourse = await Course.find({ "where": { subcategoryId: { inq: featuredCategoriesId } }, "order": "createdAt DESC" })
+            let allCourse = await Course.find({ "where": { "status": "active", subcategoryId: { inq: featuredCategoriesId } }, "order": "createdAt DESC" })
             allCourse = await Course.checkIsInCourse(allCourse, userId)
 
 
