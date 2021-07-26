@@ -272,9 +272,23 @@
         {
             "accessType": "EXECUTE",
             "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "adminChangePassword"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
             "principalId": "$authenticated",
             "permission": "ALLOW",
             "property": "updateProfile"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "adminUpdateProfile"
         },
         {
             "accessType": "EXECUTE",
@@ -477,6 +491,35 @@
                 "verb": "get"
             }]
         },
+        "adminUpdateProfile": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "data",
+                    "type": "object",
+                    "required": true,
+                    "description": ""
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/adminUpdateProfile",
+                "verb": "put"
+            }]
+        },
         "updateProfile": {
             "accepts": [{
                     "arg": "data",
@@ -620,6 +663,32 @@
             "http": [{
                 "path": "/generateInvitationCode",
                 "verb": "post"
+            }]
+        },
+        "adminChangePassword": {
+            "accepts": [{
+                    "arg": "userId",
+                    "type": "number",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "newPassword",
+                    "type": "string",
+                    "required": true
+                }
+            ],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my info",
+            "http": [{
+                "path": "/:userId/adminChangePassword",
+                "verb": "put"
             }]
         },
         "changePasswordYoutuber": {

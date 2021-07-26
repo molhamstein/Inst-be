@@ -507,6 +507,17 @@ module.exports = function(Youtuber) {
         }
     }
 
+    Youtuber.adminChangePassword = async function(userId, newPassword, callback) {
+        try {
+            let user = await Youtuber.findById(userId)
+            await user.updateAttribute("password", Youtuber.hashPassword(newPassword))
+            callback(null, {})
+        } catch (error) {
+            callback(error)
+        }
+    }
+
+
 
     Youtuber.changePasswordYoutuber = async function(oldPassword, newPassword, context, callback) {
         try {
@@ -551,6 +562,31 @@ module.exports = function(Youtuber) {
             callback(error)
         }
     }
+
+    Youtuber.adminUpdateProfile = async function(id, data, callback) {
+        try {
+            let mainYoutuber = await Youtuber.findById(id);
+            let mainUser = await Youtuber.app.models.User.findById(mainYoutuber.userId);
+            await mainUser.updateAttributes({ "phonenumber": data.phonenumber, "imageId": data.imageId, "ISOCode": data.ISOCode, "name": data.name })
+            await mainYoutuber.updateAttributes({
+                "status": data.status,
+                "about": data.about,
+                "behanceLink": data.behanceLink,
+                "facebookLink": data.facebookLink,
+                "githubLink": data.githubLink,
+                "twitterLink": data.twitterLink,
+                "websiteLink": data.websiteLink,
+                "linkedinLink": data.linkedinLink,
+                "percentageCourse": data.percentageCourse,
+                "primaryIdentifier": data.primaryIdentifier
+            })
+            callback(null, {})
+        } catch (error) {
+            callback(error)
+        }
+    }
+
+
 
     Youtuber.getYoutubers = async function(searchKey, limit = 10, skip = 0, callback) {
         try {

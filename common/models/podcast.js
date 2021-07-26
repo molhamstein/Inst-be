@@ -4,7 +4,10 @@ var async = require("async");
 module.exports = function(Podcast) {
     Podcast.addPodcast = async function(data, onlineSessions, req, callback) {
         try {
-            let userId = req.accessToken.userId
+            let userId = req.accessToken.userId;
+            if (data.youtuberId) {
+                userId = data.youtuberId
+            }
             await Podcast.app.dataSources.mainDB.transaction(async models => {
                 const {
                     onlineSession
@@ -80,7 +83,11 @@ module.exports = function(Podcast) {
     Podcast.updatePodcast = async function(id, data, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
-            let userId = req.accessToken.userId
+            let userId = req.accessToken.userId;
+            if (data.youtuberId) {
+                userId = data.youtuberId
+            }
+
             await Podcast.app.dataSources.mainDB.transaction(async models => {
                 const {
                     podcast
