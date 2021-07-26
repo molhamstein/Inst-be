@@ -5,7 +5,7 @@ const service = require('./boot/service.js');
 console.log(service)
 var loopback = require('loopback');
 var boot = require('loopback-boot');
-// var loopbackSSL = require('loopback-ssl');
+var loopbackSSL = require('loopback-ssl');
 
 var app = module.exports = loopback();
 app.use(loopback.token({
@@ -52,7 +52,7 @@ boot(app, __dirname, function(err) {
     if (err) throw err;
 
     // start the server if `$ node server.js`
-    if (require.main === module)
-        app.start();
-    // return loopbackSSL.startServer(app);
+    // if (require.main === module)
+    //     app.start();
+    return loopbackSSL.startServer(app);
 });
