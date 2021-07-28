@@ -112,8 +112,8 @@ module.exports = function(Podcast) {
 
                 data['updatedAt'] = new Date()
                 let newPodcast = await oldPodcast.updateAttributes(data);
-                for (var j = 0; j < onlineSessions.length; j++) {
-                    var videoElement = onlineSessions[j];
+                for (var index = 0; index < onlineSessions.length; index++) {
+                    var videoElement = onlineSessions[index];
                     let mainVideo;
                     if (videoElement.id != null) {
                         mainVideo = await onlineSession.findById(videoElement.id);
