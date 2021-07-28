@@ -90,7 +90,13 @@ module.exports = function(Podcast) {
 
             await Podcast.app.dataSources.mainDB.transaction(async models => {
                 const {
+                    onlineSession
+                } = models
+                const {
                     podcast
+                } = models
+                const {
+                    media
                 } = models
                 const {
                     youtuber
