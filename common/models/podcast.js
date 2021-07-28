@@ -80,7 +80,7 @@ module.exports = function(Podcast) {
         }
     };
 
-    Podcast.updatePodcast = async function(id, data, req, callback) {
+    Podcast.updatePodcast = async function(id, data, onlineSessions,req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId;
@@ -92,14 +92,37 @@ module.exports = function(Podcast) {
                 const {
                     podcast
                 } = models
-
-
+                const {
+                    youtub
+                } = models
                 let oldPodcast = await podcast.findById(id)
                 if (oldPodcast == null || oldPodcast.youtuberId != userId) {
                     throw Podcast.app.err.global.authorization()
                 }
+                let mainYouTuber = await youtuber.findById(userId)
+                let tempTotalPoint = mainYouTuber.totalPoint;
+                let tempTotalSessionCreaterTime = mainYouTuber.totalSessionCreaterTime;
+                let createrSessionTime = 0;
+
                 data['updatedAt'] = new Date()
-                let newPodcast = await oldPodcast.updateAttributes(data)
+                let newPodcast = await oldPodcast.updateAttributes(data);
+                for (var j = 0; j < onlineSessions.length; j++) {
+                    var videoElement = onlineSessions[j];
+                    let mainVideo;
+                    if (videoElement.id != null) {
+                        mainVideo = await onlineSession.findById(videoElement.id);
+                        await mainVideo.updateAttributes({ "orderInPodcast":index+1, "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn })
+                    } else {
+                        let mainMedia = await media.findById(videoElement.mediaId)
+                        mainVideo = await onlineSession.create({"podcastId":id,  "orderInPodcast":index+1,"nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId,"duration":mainMedia.duration })
+                        createrSessionTime += mainMedia.duration;
+                    }
+                }
+                tempTotalPoint += (parseInt(createrSessionTime / 60) * 10);
+                tempTotalSessionCreaterTime += createrSessionTime;
+                let levelId = await Podcast.app.service.getLevelId(Podcast.app, mainYouTuber, { "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime });
+                await mainYouTuber.updateAttributes({  "levelId": levelId, "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime })
+
                 callback(null, newPodcast);
             })
         } catch (error) {
