@@ -93,7 +93,7 @@ module.exports = function(Podcast) {
                     podcast
                 } = models
                 const {
-                    youtub
+                    youtuber
                 } = models
                 let oldPodcast = await podcast.findById(id)
                 if (oldPodcast == null || oldPodcast.youtuberId != userId) {
