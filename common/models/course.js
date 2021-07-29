@@ -210,7 +210,6 @@ module.exports = function(Course) {
                         "requirements": data.requirements,
                         "sessionsNumber": sessionsNumber,
                         "status": data.status ? data.status : oldCourse.status,
-                        "duration": 0
                     }
                     await oldCourse.updateAttributes(updateData);
                 } else {
