@@ -179,6 +179,7 @@ module.exports = function(Course) {
                 let mainYouTuber = await youtuber.findById(youtuberId);
                 let oldCourse;
                 let sessionsNumber = 0;
+                let newCourseDuration=0;
                 let createrSessionTime = 0;
                 let tempTotalPoint = mainYouTuber.totalPoint;
                 units.forEach(element => {
@@ -209,7 +210,7 @@ module.exports = function(Course) {
                         "requirements": data.requirements,
                         "sessionsNumber": sessionsNumber,
                         "status": data.status ? data.status : oldCourse.status,
-                        "duration": 20000000
+                        "duration": 0
                     }
                     await oldCourse.updateAttributes(updateData);
                 } else {
@@ -222,7 +223,7 @@ module.exports = function(Course) {
                     data["whatWillLearn"] = data.whatWillLearn;
                     data["courseSegment"] = data.courseSegment;
                     data["requirements"] = data.requirements;
-                    data["duration"] = 20000;
+                    data["duration"] = 0;
                     data['unitsNumber'] = units.length
                     data['sessionsNumber'] = sessionsNumber
                     data["isOnlineCourse"] = true;
@@ -268,6 +269,7 @@ module.exports = function(Course) {
                             console.log("QQQQ")
                             let mainMedia = await media.findById(videoElement.mediaId)
                             createrSessionTime += mainMedia.duration;
+                            newCourseDuration+=mainMedia.duration;
                             mainVideo = await onlineSession.create({ "courseId": oldCourse.id, duration: mainMedia.duration, "unitId": mainUnit.id, "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
                         }
                     }
@@ -276,6 +278,7 @@ module.exports = function(Course) {
                 let levelId = await Course.app.service.getLevelId(Course.app, mainYouTuber, { "totalPoint": tempTotalPoint, "totalSessionCreaterTime": mainYouTuber.totalSessionCreaterTime + createrSessionTime });
 
                 await mainYouTuber.updateAttributes({ "isPublisher": true, "isTrainer": true, "levelId": levelId, "totalPoint": tempTotalPoint, "totalSessionCreaterTime": mainYouTuber.totalSessionCreaterTime + createrSessionTime });
+                await oldCourse.updateAttribute("duration",oldCourse.duration+newCourseDuration)
                 let mainCourse = await course.findById(oldCourse.id);
                 console.log("Finish")
                 mainCallback(null, mainCourse)
