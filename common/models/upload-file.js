@@ -104,7 +104,7 @@ module.exports = function(Uploadfile) {
                                 'duration': duration,
                                 'type': folderName,
                                 "userId": userId,
-                                'thumb': urlThumbRootSave + file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb_1.PNG", //extension,
+                                'thumbUrl': urlThumbRootSave + file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb_1.PNG", //extension,
                                 'webThumbUrl': "" //urlWebThumbRootSave + file.name.substring(0, file.name.lastIndexOf('.')) + "_thumb." + extension
                             });
                             if (arrayFiles.length == index + 1) {
