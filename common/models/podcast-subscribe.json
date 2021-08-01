@@ -21,7 +21,14 @@
     }
   },
   "validations": [],
-  "relations": {},
+        "podcast": {
+            "type": "belongsTo",
+            "model": "podcast",
+            "foreignKey": "podcastId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
   "acls": [],
   "methods": {}
 }
