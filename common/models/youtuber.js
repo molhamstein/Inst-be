@@ -615,13 +615,21 @@ module.exports = function(Youtuber) {
         }
     }
 
-    Youtuber.getYoutubersCount = async function(searchKey, callback) {
+    Youtuber.getYoutubersCount = async function(searchKey, status,callback) {
         try {
             let youtubersCount = {}
             if (searchKey) {
-                youtubersCount = await Youtuber.app.query.towLevel(Youtuber.app, 'youtuber', 'user', 'userId', 'id', { "user.name": { "like": searchKey } }, true)
+                let where={ "user.name": { "like": searchKey } }
+                if(status){
+                    where['status']=status
+                }
+                youtubersCount = await Youtuber.app.query.towLevel(Youtuber.app, 'youtuber', 'user', 'userId', 'id', where, true)
             } else {
-                youtubersCount["count"] = await Youtuber.count()
+                let where={}
+                if(status){
+                    where['status']=status
+                }
+                youtubersCount["count"] = await Youtuber.count(where)
             }
             callback(null, youtubersCount)
         } catch (error) {
