@@ -588,18 +588,26 @@ module.exports = function(Youtuber) {
 
 
 
-    Youtuber.getYoutubers = async function(searchKey, limit = 10, skip = 0, callback) {
+    Youtuber.getYoutubers = async function(searchKey, status,limit = 10, skip = 0, callback) {
         try {
             let youtuberData = []
             if (searchKey) {
-                let youtubers = await Youtuber.app.query.towLevel(Youtuber.app, 'youtuber', 'user', 'userId', 'id', { limit, skip, "where": { "user.name": { "like": searchKey } } }, false)
+                let where={ "user.name": { "like": searchKey } }
+                if(status){
+                    where['status']=status
+                }
+                let youtubers = await Youtuber.app.query.towLevel(Youtuber.app, 'youtuber', 'user', 'userId', 'id', { limit, skip, "where": where }, false)
                 let youtuberIds = [];
                 youtubers.forEach(element => {
                     youtuberIds.push(element.id);
                 });
                 youtuberData = await Youtuber.find({ "where": { "id": { "inq": youtuberIds } } })
             } else {
-                youtuberData = await Youtuber.find({ limit, skip, "order": "createdAt DESC" })
+                let filter={ limit, skip, "order": "createdAt DESC" }
+                if(status){
+                    filter['where']={status}
+                }
+                youtuberData = await Youtuber.find(filter)
             }
             callback(null, youtuberData)
         } catch (error) {
