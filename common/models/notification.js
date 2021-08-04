@@ -24,7 +24,8 @@ module.exports = function (Notification) {
     for (let index = 0; index < arrayOfObjects.length; index++) {
       const element = arrayOfObjects[index];
       arrayOfObjects[index]['typeId'] = typeId;
-      arrayOfObjects[index]['ownerId'] = ownerId
+      if (ownerId)
+        arrayOfObjects[index]['ownerId'] = ownerId
     }
     Notification.create(arrayOfObjects)
   }

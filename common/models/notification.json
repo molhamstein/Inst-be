@@ -6,7 +6,14 @@
     "validateUpsert": true
   },
   "scope": {
-    "include": ["course", "session"]
+    "include": [
+      "course",
+      "session",
+      "notificationType",
+      "youtuber",
+      "podcast",
+      "onlineSession"
+    ]
   },
   "properties": {
     "studentId": {
@@ -34,6 +41,14 @@
       "required": false
     },
     "youtuberId": {
+      "type": "number",
+      "required": false
+    },
+    "podcastId": {
+      "type": "number",
+      "required": false
+    },
+    "onlineSessionId": {
       "type": "number",
       "required": false
     },
@@ -67,6 +82,30 @@
       "type": "belongsTo",
       "model": "course",
       "foreignKey": "courseId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "youtuber": {
+      "type": "belongsTo",
+      "model": "youtuber",
+      "foreignKey": "youtuberId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "podcast": {
+      "type": "belongsTo",
+      "model": "podcast",
+      "foreignKey": "podcastId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "onlineSession": {
+      "type": "belongsTo",
+      "model": "onlineSession",
+      "foreignKey": "onlineSessionId",
       "options": {
         "nestRemoting": true
       }

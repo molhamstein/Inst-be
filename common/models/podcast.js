@@ -1,8 +1,8 @@
 'use strict';
 var async = require("async");
 
-module.exports = function(Podcast) {
-    Podcast.addPodcast = async function(data, onlineSessions, req, callback) {
+module.exports = function (Podcast) {
+    Podcast.addPodcast = async function (data, onlineSessions, req, callback) {
         try {
             let userId = req.accessToken.userId;
             if (data.youtuberId) {
@@ -23,6 +23,9 @@ module.exports = function(Podcast) {
                 } = models
                 const {
                     subCategory
+                } = models
+                const {
+                    follower
                 } = models
 
                 let mainSubcategory = await subCategory.findById(data['subcategoryId'])
@@ -62,7 +65,7 @@ module.exports = function(Podcast) {
 
                 let subcategoryTree = await subCategory.find({ "where": { "code": { "inq": subCategoryTreeCode } } });
 
-                subcategoryTree.forEach(async(oneSubcategory) => {
+                subcategoryTree.forEach(async (oneSubcategory) => {
                     let newCount = oneSubcategory.podcastCount + 1
                     await oneSubcategory.updateAttribute("podcastCount", newCount);
                 })
@@ -73,6 +76,14 @@ module.exports = function(Podcast) {
                 await onlineSession.create(onlineSessions)
 
                 mainPodcast = await podcast.findById(mainPodcast.id)
+
+                let followerDate = await follower.find({ "where": { "youtuberId": mainPodcast.youtuberId } });
+                let notificationData = []
+                followerDate.forEach(element => {
+                    notificationData.push({ "ownerId": element.ownerId, "podcastId": mainPodcast.id });
+                });
+                Podcast.app.models.notification.createGelpNotifications(notificationData, null, 6)
+
                 callback(null, mainPodcast);
             })
         } catch (error) {
@@ -80,7 +91,7 @@ module.exports = function(Podcast) {
         }
     };
 
-    Podcast.updatePodcast = async function(id, data, onlineSessions,req, callback) {
+    Podcast.updatePodcast = async function (id, data, onlineSessions, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId;
@@ -101,6 +112,12 @@ module.exports = function(Podcast) {
                 const {
                     youtuber
                 } = models
+                const {
+                    follower
+                } = models
+                const {
+                    podcastSubscribe
+                } = models
                 let oldPodcast = await podcast.findById(id)
                 if (oldPodcast == null || oldPodcast.youtuberId != userId) {
                     throw Podcast.app.err.global.authorization()
@@ -111,24 +128,44 @@ module.exports = function(Podcast) {
                 let createrSessionTime = 0;
 
                 data['updatedAt'] = new Date()
+                let newSessions = [];
                 let newPodcast = await oldPodcast.updateAttributes(data);
                 for (var index = 0; index < onlineSessions.length; index++) {
                     var videoElement = onlineSessions[index];
                     let mainVideo;
                     if (videoElement.id != null) {
                         mainVideo = await onlineSession.findById(videoElement.id);
-                        await mainVideo.updateAttributes({ "orderInPodcast":index+1, "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn })
+                        await mainVideo.updateAttributes({ "orderInPodcast": index + 1, "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn })
                     } else {
                         let mainMedia = await media.findById(videoElement.mediaId)
-                        mainVideo = await onlineSession.create({"podcastId":id,  "orderInPodcast":index+1,"nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId,"duration":mainMedia.duration })
+                        mainVideo = await onlineSession.create({ "podcastId": id, "orderInPodcast": index + 1, "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId, "duration": mainMedia.duration })
                         createrSessionTime += mainMedia.duration;
+                        newSessions.push(mainVideo.id)
                     }
                 }
                 tempTotalPoint += (parseInt(createrSessionTime / 60) * 10);
                 tempTotalSessionCreaterTime += createrSessionTime;
                 let levelId = await Podcast.app.service.getLevelId(Podcast.app, mainYouTuber, { "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime });
-                await mainYouTuber.updateAttributes({  "levelId": levelId, "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime })
+                await mainYouTuber.updateAttributes({ "levelId": levelId, "totalPoint": tempTotalPoint, "totalSessionCreaterTime": tempTotalSessionCreaterTime })
 
+                if (newSessions.length != 0) {
+                    let followerDate = await follower.find({ "where": { "youtuberId": oldPodcast.youtuberId } });
+                    let subscribeDate = await podcastSubscribe.find({ "where": { "podcastId": id } });
+
+                    let userData = [];
+                    newSessions.forEach(onlineSessionId => {
+                        followerDate.forEach(element => {
+                            userData.push({ "ownerId": element.ownerId, "onlineSessionId": onlineSessionId, "podcastId": id });
+                        });
+
+                        subscribeDate.forEach(element => {
+                            userData.push({ "ownerId": element.youtuberId, "onlineSessionId": onlineSessionId, "podcastId": id });
+                        });
+                    });
+
+                    Podcast.app.models.notification.createGelpNotifications(userData, null, 8)
+
+                }
                 callback(null, newPodcast);
             })
         } catch (error) {
@@ -136,7 +173,7 @@ module.exports = function(Podcast) {
         }
     };
 
-    Podcast.addOnlineSessionToPodcast = async function(id, data, req, callback) {
+    Podcast.addOnlineSessionToPodcast = async function (id, data, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId
@@ -186,7 +223,7 @@ module.exports = function(Podcast) {
     };
 
 
-    Podcast.subscribePodcast = async function(id, req, callback) {
+    Podcast.subscribePodcast = async function (id, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId
@@ -213,7 +250,7 @@ module.exports = function(Podcast) {
         }
     };
 
-    Podcast.unsubscribePodcast = async function(id, req, callback) {
+    Podcast.unsubscribePodcast = async function (id, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId
@@ -240,13 +277,13 @@ module.exports = function(Podcast) {
         }
     };
 
-    Podcast.getPodcasts = async function(searchKey, code, youtuberId, limit, skip, callback) {
+    Podcast.getPodcasts = async function (searchKey, code, youtuberId, limit, skip, callback) {
         let podcastIds = await Podcast.app.query.getPodcast(Podcast.app, searchKey, code, youtuberId, limit, skip)
         let podcast = await Podcast.find({ "where": { "id": { "inq": podcastIds } } })
         callback(null, podcast)
     }
 
-    Podcast.getOnePodcast = async function(id, callback) {
+    Podcast.getOnePodcast = async function (id, callback) {
         let mainPodcast = await Podcast.findById(id)
         let podcastOnlinesession = await Podcast.app.models.onlineSession.find({ "where": { "podcastId": id }, "order": "orderInPodcast ASC" })
         mainPodcast['onlineSessions'] = podcastOnlinesession
@@ -254,7 +291,7 @@ module.exports = function(Podcast) {
     }
 
 
-    Podcast.publishPodcast = async function(id, req, callback) {
+    Podcast.publishPodcast = async function (id, req, callback) {
         try {
 
             var youtuberId = req.accessToken.userId;
