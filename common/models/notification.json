@@ -6,10 +6,7 @@
     "validateUpsert": true
   },
   "scope": {
-    "include": [
-      "course",
-      "session"
-    ]
+    "include": ["course", "session"]
   },
   "properties": {
     "studentId": {
@@ -20,6 +17,10 @@
       "type": "number",
       "required": false
     },
+    "ownerId": {
+      "type": "number",
+      "required": true
+    },
     "typeId": {
       "type": "number",
       "required": true
@@ -29,6 +30,10 @@
       "required": false
     },
     "courseId": {
+      "type": "number",
+      "required": false
+    },
+    "youtuberId": {
       "type": "number",
       "required": false
     },

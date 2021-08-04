@@ -18,4 +18,14 @@ module.exports = function (Notification) {
     });
     Notification.create(notificationData)
   }
+
+  Notification.createGelpNotifications = function (arrayOfObjects, ownerId, typeId, cb) {
+    var notificationData = []
+    for (let index = 0; index < arrayOfObjects.length; index++) {
+      const element = arrayOfObjects[index];
+      arrayOfObjects[index]['typeId'] = typeId;
+      arrayOfObjects[index]['ownerId'] = ownerId
+    }
+    Notification.create(arrayOfObjects)
+  }
 };

@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = function(Follower) {
+module.exports = function (Follower) {
 
-    Follower.makeFollow = async function(id, req, callback) {
+    Follower.makeFollow = async function (id, req, callback) {
         let userId = req.accessToken.userId;
         let hasFollow = await Follower.findOne({ "where": { "ownerId": userId, "youtuberId": id } })
         if (hasFollow != null) {
@@ -24,13 +24,15 @@ module.exports = function(Follower) {
 
         await user.updateAttributes({ "levelId": levelId, "follower": follower, "totalPoint": tempTotalPoint });
         let newFollow = await Follower.create({ "youtuberId": id, ownerId: owner.id })
+        Follower.app.models.notification.createGelpNotifications([{ "youtuberId": userId }], id, 4)
+
         callback(null, newFollow)
     }
 
 
     // Follower.remoteMethod();
 
-    Follower.makeUnfollow = async function(id, req, callback) {
+    Follower.makeUnfollow = async function (id, req, callback) {
         let userId = req.accessToken.userId;
         let hasFollow = await Follower.findOne({ "where": { "ownerId": userId, "youtuberId": id } })
         if (hasFollow == null) {
