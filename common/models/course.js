@@ -1,16 +1,18 @@
 'use strict';
 var async = require("async");
 
-module.exports = function(Course) {
+module.exports = function (Course) {
 
-    Course.validatesInclusionOf('typeCost', { in: ['course', 'perSession']
+    Course.validatesInclusionOf('typeCost', {
+        in: ['course', 'perSession']
     });
 
-    Course.validatesInclusionOf('status', { in: ['active', 'pending', 'deactivate']
+    Course.validatesInclusionOf('status', {
+        in: ['active', 'pending', 'deactivate']
     });
 
 
-    Course.createNewPhysicalCourse = async function(data, supplies = [], imagesId = [], req, callback) {
+    Course.createNewPhysicalCourse = async function (data, supplies = [], imagesId = [], req, callback) {
         try {
             await Course.app.models.user.checkRoleBranchAdmin(data.instituteId, data.branchId, req)
 
@@ -76,7 +78,7 @@ module.exports = function(Course) {
     };
 
 
-    Course.createNewOnlineCourse = async function(data, req, callback) {
+    Course.createNewOnlineCourse = async function (data, req, callback) {
         try {
             let ownerId = req.accessToken.userId;
             await Course.app.dataSources.mainDB.transaction(async models => {
@@ -133,7 +135,7 @@ module.exports = function(Course) {
         }
     };
 
-    Course.publishOnlineCourse = async function(id, req, callback) {
+    Course.publishOnlineCourse = async function (id, req, callback) {
         try {
 
             var youtuberId = req.accessToken.userId;
@@ -141,11 +143,24 @@ module.exports = function(Course) {
                 const {
                     course
                 } = models
+                const {
+                    follower
+                } = models
+
                 let oldCourse = await course.findById(id);
                 if (oldCourse == null || oldCourse.youtuberId != youtuberId) {
                     throw Course.app.err.global.authorization()
                 }
                 await oldCourse.updateAttribute("status", "active");
+
+                let followerDate = await follower.find({ "where": { "youtuberId": oldCourse.youtuberId } });
+
+                let userData = [];
+                followerDate.forEach(element => {
+                    userData.push({ "ownerId": element.ownerId, "courseId": id });
+                });
+                Course.app.models.notification.createGelpNotifications(userData, null, 5)
+
                 callback(null, "ok")
             })
         } catch (err) {
@@ -153,7 +168,7 @@ module.exports = function(Course) {
         }
     }
 
-    Course.updateOnlineCourse = async function(data, units, req, mainCallback) {
+    Course.updateOnlineCourse = async function (data, units, req, mainCallback) {
         try {
             var youtuberId = data['youtuberId'] ? data['youtuberId'] : req.accessToken.userId;
             await Course.app.dataSources.mainDB.transaction(async models => {
@@ -175,11 +190,16 @@ module.exports = function(Course) {
                 const {
                     subCategory
                 } = models
+                const {
+                    youtuberCourse
+                } = models
 
                 let mainYouTuber = await youtuber.findById(youtuberId);
                 let oldCourse;
+                let isNewCourse = true;
+                let newSessionIds = [];
                 let sessionsNumber = 0;
-                let newCourseDuration=0;
+                let newCourseDuration = 0;
                 let createrSessionTime = 0;
                 let tempTotalPoint = mainYouTuber.totalPoint;
                 units.forEach(element => {
@@ -187,6 +207,7 @@ module.exports = function(Course) {
                 });
 
                 if (data.id != null) {
+                    isNewCourse = false;
                     oldCourse = await course.findById(data.id);
                     console.log(youtuberId)
                     console.log(oldCourse.youtuberId)
@@ -239,7 +260,7 @@ module.exports = function(Course) {
 
                     let subcategoryTree = await subCategory.find({ "where": { "code": { "inq": subCategoryTreeCode } } });
 
-                    subcategoryTree.forEach(async(oneSubcategory) => {
+                    subcategoryTree.forEach(async (oneSubcategory) => {
                         let newCount = oneSubcategory.courseCount + 1
                         await oneSubcategory.updateAttribute("courseCount", newCount);
                     })
@@ -268,8 +289,9 @@ module.exports = function(Course) {
                             console.log("QQQQ")
                             let mainMedia = await media.findById(videoElement.mediaId)
                             createrSessionTime += mainMedia.duration;
-                            newCourseDuration+=mainMedia.duration;
+                            newCourseDuration += mainMedia.duration;
                             mainVideo = await onlineSession.create({ "courseId": oldCourse.id, duration: mainMedia.duration, "unitId": mainUnit.id, "nameEn": videoElement.nameEn, "nameAr": videoElement.nameEn, "descriptionEn": videoElement.descriptionEn, "descriptionAr": videoElement.descriptionEn, "mediaId": videoElement.mediaId })
+                            newSessionIds.push(mainVideo.id)
                         }
                     }
                 }
@@ -277,9 +299,22 @@ module.exports = function(Course) {
                 let levelId = await Course.app.service.getLevelId(Course.app, mainYouTuber, { "totalPoint": tempTotalPoint, "totalSessionCreaterTime": mainYouTuber.totalSessionCreaterTime + createrSessionTime });
 
                 await mainYouTuber.updateAttributes({ "isPublisher": true, "isTrainer": true, "levelId": levelId, "totalPoint": tempTotalPoint, "totalSessionCreaterTime": mainYouTuber.totalSessionCreaterTime + createrSessionTime });
-                await oldCourse.updateAttribute("duration",oldCourse.duration+newCourseDuration)
+                await oldCourse.updateAttribute("duration", oldCourse.duration + newCourseDuration)
                 let mainCourse = await course.findById(oldCourse.id);
                 console.log("Finish")
+
+
+                if (!isNewCourse && mainCourse.status == "active" && newSessionIds.length != 0) {
+                    let youtuberCourseData = await youtuberCourse.find({ "where": { "courseId": mainCourse.id } })
+                    let notificationData = []
+                    newSessionIds.forEach(onlineSessionId => {
+                        youtuberCourseData.forEach(element => {
+                            notificationData.push({ "ownerId": element.youtuberId, "onlineSessionId": onlineSessionId, "courseId": mainCourse.id });
+                        });
+                    });
+                    Course.app.models.notification.createGelpNotifications(notificationData, null, 5)
+
+                }
                 mainCallback(null, mainCourse)
 
             })
@@ -291,7 +326,7 @@ module.exports = function(Course) {
         }
     }
 
-    Course.getOneCourse = async function(id, req, callback) {
+    Course.getOneCourse = async function (id, req, callback) {
         try {
             var mainCourse = await Course.findById(id)
             if (mainCourse == null)
@@ -303,7 +338,7 @@ module.exports = function(Course) {
         }
     };
 
-    Course.getOnlineCourses = async function(searchKey, code, minPrice, maxPrice, youtuberId, limit, skip, req, callback) {
+    Course.getOnlineCourses = async function (searchKey, code, minPrice, maxPrice, youtuberId, limit, skip, req, callback) {
         try {
             let userId;
             if (req.accessToken) {
@@ -318,7 +353,7 @@ module.exports = function(Course) {
         }
     };
 
-    Course.getOneOnlineCourse = async function(id, req, callback) {
+    Course.getOneOnlineCourse = async function (id, req, callback) {
         try {
             let userId
             if (req.accessToken) {
@@ -350,7 +385,7 @@ module.exports = function(Course) {
                         mainCourse['units'][indexUnit]['isCompletedUnit'] = false
                         for (let index = 0; index < elementUnit.onlineSessions.length; index++) {
                             const element = elementUnit.onlineSessions[index];
-                            let isWatchOnlineSession = onlineSessionWatch.find(function(obj) {
+                            let isWatchOnlineSession = onlineSessionWatch.find(function (obj) {
                                 return obj.videoId == element.id;
                             });
                             if (isWatchOnlineSession) {
@@ -358,12 +393,12 @@ module.exports = function(Course) {
                                     mainCourse['units'][indexUnit]['onlineSessions'][index]['isWatchOnlineSession'] = true;
                                     onlineSessionFinishCount++;
                                     mainCourse['finishLessonNumber']++
-                                        if (mainCourse['units'][indexUnit]['onlineSessions'][index + 1]) {
-                                            mainCourse['nextLesson'] = mainCourse['units'][indexUnit]['onlineSessions'][index + 1]
-                                        } else
-                                    if (mainCourse['units'][indexUnit + 1] && mainCourse['units'][indexUnit + 1]['onlineSessions'][0]) {
-                                        mainCourse['nextLesson'] = mainCourse['units'][indexUnit + 1]['onlineSessions'][0]
-                                    }
+                                    if (mainCourse['units'][indexUnit]['onlineSessions'][index + 1]) {
+                                        mainCourse['nextLesson'] = mainCourse['units'][indexUnit]['onlineSessions'][index + 1]
+                                    } else
+                                        if (mainCourse['units'][indexUnit + 1] && mainCourse['units'][indexUnit + 1]['onlineSessions'][0]) {
+                                            mainCourse['nextLesson'] = mainCourse['units'][indexUnit + 1]['onlineSessions'][0]
+                                        }
                                 } else if (isWatchOnlineSession.status == "inProgress") {
                                     mainCourse['units'][indexUnit]['onlineSessions'][index]['isProgress'] = true;
                                 }
@@ -388,7 +423,7 @@ module.exports = function(Course) {
                 }
             } else {
                 mainCourse = JSON.parse(JSON.stringify(mainCourse))
-                    // mainCourse['units'] = []
+                // mainCourse['units'] = []
                 for (let indexUnit = 0; indexUnit < mainCourse.units.length; indexUnit++) {
                     const elementUnit = mainCourse.units[indexUnit];
                     for (let index = 0; index < elementUnit.onlineSessions.length; index++) {
@@ -404,7 +439,7 @@ module.exports = function(Course) {
     };
 
 
-    Course.startCourse = async function(id, req, callback) {
+    Course.startCourse = async function (id, req, callback) {
         try {
             var mainCourse = await Course.findById(id)
             if (mainCourse == null)
@@ -419,7 +454,7 @@ module.exports = function(Course) {
                         "isInQueue": false,
                     }
                 })
-                await Promise.all(studentInCourse.map(async(element, index) => {
+                await Promise.all(studentInCourse.map(async (element, index) => {
                     let student = element.student()
                     let newStudentFrozenBalance = element.frozenBalance - element.cost;
                     let newFrozenBalance = 0;
@@ -462,7 +497,7 @@ module.exports = function(Course) {
     };
 
 
-    Course.editPhysicalCourse = async function(id, data, imagesId, req, callback) {
+    Course.editPhysicalCourse = async function (id, data, imagesId, req, callback) {
         try {
             var mainCourse = await Course.findById(id)
             if (mainCourse == null)
@@ -512,7 +547,7 @@ module.exports = function(Course) {
     };
 
 
-    Course.addTeacherToCourse = async function(id, teacherId, typePaid, value, req, callback) {
+    Course.addTeacherToCourse = async function (id, teacherId, typePaid, value, req, callback) {
         try {
             var mainCourse = await Course.findById(id)
             if (mainCourse == null)
@@ -540,7 +575,7 @@ module.exports = function(Course) {
     };
 
 
-    Course.addSessionToCourse = async function(id, sessions, req, callback) {
+    Course.addSessionToCourse = async function (id, sessions, req, callback) {
         try {
             var mainCourse = await Course.findById(id)
             if (mainCourse == null)
@@ -598,7 +633,7 @@ module.exports = function(Course) {
     };
 
 
-    Course.getTeacherInCourse = async function(id, filter = {
+    Course.getTeacherInCourse = async function (id, filter = {
         "where": {}
     }, req, callback) {
         try {
@@ -622,7 +657,7 @@ module.exports = function(Course) {
     };
 
 
-    Course.getTeacherInCourseCount = async function(id, where = {}, req, callback) {
+    Course.getTeacherInCourseCount = async function (id, where = {}, req, callback) {
         try {
             where['courseId'] = id
             var mainCourse = await Course.findById(id)
@@ -636,17 +671,17 @@ module.exports = function(Course) {
         }
     };
 
-    Course.getSessionInCourse = async function(id, filter = {
+    Course.getSessionInCourse = async function (id, filter = {
         "where": {}
     }, req, callback) {
         try {
             if (filter["where"] == null)
                 filter['where'] = {}
             filter['where']['courseId'] = id
-                // if (filter["limit"] == null)
-                //   filter['limit'] = 10
-                // if (filter["skip"] == null)
-                //   filter['skip'] = 0
+            // if (filter["limit"] == null)
+            //   filter['limit'] = 10
+            // if (filter["skip"] == null)
+            //   filter['skip'] = 0
             var mainCourse = await Course.findById(id)
             if (mainCourse == null)
                 throw Course.app.err.notFound.courseNotFound()
@@ -658,7 +693,7 @@ module.exports = function(Course) {
         }
     }
 
-    Course.getStudentInCourse = async function(id, filter = {
+    Course.getStudentInCourse = async function (id, filter = {
         "where": {}
     }, req, callback) {
         try {
@@ -681,7 +716,7 @@ module.exports = function(Course) {
     };
 
 
-    Course.getStudentInCourseCount = async function(id, where = {}, req, callback) {
+    Course.getStudentInCourseCount = async function (id, where = {}, req, callback) {
         try {
             where['courseId'] = id
             var mainCourse = await Course.findById(id)
@@ -696,11 +731,11 @@ module.exports = function(Course) {
     };
 
 
-    Course.cheackFullCourses = function(coursesId) {
-        return new Promise(function(resolve, reject) {
+    Course.cheackFullCourses = function (coursesId) {
+        return new Promise(function (resolve, reject) {
             var courseHasError = []
-            async.forEachOf(coursesId, function(element, index, callback) {
-                cheackFullnOneCourses(element, function(err, data) {
+            async.forEachOf(coursesId, function (element, index, callback) {
+                cheackFullnOneCourses(element, function (err, data) {
                     if (err) reject(err)
                     if (data) {
                         courseHasError.push({
@@ -709,14 +744,14 @@ module.exports = function(Course) {
                     }
                     callback()
                 })
-            }, function() {
+            }, function () {
                 console.log("Finish loop")
                 resolve(courseHasError)
             })
         })
     }
 
-    Course.rateCourseOnline = async function(id, data, req, callback) {
+    Course.rateCourseOnline = async function (id, data, req, callback) {
         let userId = req.accessToken.userId
         await Course.app.dataSources.mainDB.transaction(async models => {
             const { course } = models
@@ -781,7 +816,7 @@ module.exports = function(Course) {
 
 
     function cheackFullnOneCourses(courseId, callback) {
-        Course.findById(courseId, function(err, data) {
+        Course.findById(courseId, function (err, data) {
             if (err) return callback(err)
             if (data.maxCountStudent < data.countStudent + 1)
                 callback(null, data)
@@ -797,7 +832,7 @@ module.exports = function(Course) {
     }
 
 
-    Course.homePageCourse = async function(req, callback) {
+    Course.homePageCourse = async function (req, callback) {
         try {
 
             let userId;
@@ -835,8 +870,8 @@ module.exports = function(Course) {
     }
 
 
-    Course.checkIsInCourse = function(courses, userId) {
-        return new Promise(function(resolve, reject) {
+    Course.checkIsInCourse = function (courses, userId) {
+        return new Promise(function (resolve, reject) {
             let coursesId = []
             if (userId == null) {
                 for (let index = 0; index < courses.length; index++) {
@@ -849,7 +884,7 @@ module.exports = function(Course) {
                     coursesId.push(element.id)
                 });
 
-                Course.app.models.youtuberCourse.find({ where: { youtuberId: userId, coursesId: { "inq": coursesId } } }, function(err, allCourseMember) {
+                Course.app.models.youtuberCourse.find({ where: { youtuberId: userId, coursesId: { "inq": coursesId } } }, function (err, allCourseMember) {
                     if (err) {
                         reject(err)
                     }

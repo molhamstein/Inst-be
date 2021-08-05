@@ -1,14 +1,15 @@
 'use strict';
 
-module.exports = function(Subcategory) {
+module.exports = function (Subcategory) {
 
 
-    Subcategory.validatesInclusionOf('status', { in: ['active', 'deactive']
+    Subcategory.validatesInclusionOf('status', {
+        in: ['active', 'deactive']
     });
 
 
-    Subcategory.activeSubcategory = function(id, callback) {
-        Subcategory.findById(id, function(err, cubcategory) {
+    Subcategory.activeSubcategory = function (id, callback) {
+        Subcategory.findById(id, function (err, cubcategory) {
             if (err) return callback(err)
             if (cubcategory == null) {
                 return callback(Subcategory.app.err.global.notFound())
@@ -16,7 +17,7 @@ module.exports = function(Subcategory) {
             if (cubcategory.status == 'active') {
                 return callback(Subcategory.app.err.global.alreadyActive())
             }
-            cubcategory.updateAttribute("status", "active", function(err, newSubcategory) {
+            cubcategory.updateAttribute("status", "active", function (err, newSubcategory) {
                 if (err) return callback(err)
                 return callback(null, newSubcategory);
             })
@@ -24,8 +25,8 @@ module.exports = function(Subcategory) {
     };
 
 
-    Subcategory.deactiveSubcategory = function(id, callback) {
-        Subcategory.findById(id, function(err, cubcategory) {
+    Subcategory.deactiveSubcategory = function (id, callback) {
+        Subcategory.findById(id, function (err, cubcategory) {
             if (err) return callback(err)
             if (cubcategory == null) {
                 return callback(Subcategory.app.err.global.notFound())
@@ -33,7 +34,7 @@ module.exports = function(Subcategory) {
             if (cubcategory.status == 'deactive') {
                 return callback(Subcategory.app.err.global.alreadyDeactive())
             }
-            cubcategory.updateAttribute("status", "deactive", function(err, newSubcategory) {
+            cubcategory.updateAttribute("status", "deactive", function (err, newSubcategory) {
                 if (err) return callback(err)
                 return callback(null, newSubcategory);
             })
@@ -41,7 +42,7 @@ module.exports = function(Subcategory) {
     };
 
 
-    Subcategory.getActiveSubcategoryBySubject = async function(subjectId, filter, callback) {
+    Subcategory.getActiveSubcategoryBySubject = async function (subjectId, filter, callback) {
         try {
             const Subject = Subcategory.app.models.Subject
             var sub = await Subject.checkSubject(subjectId)
@@ -69,9 +70,9 @@ module.exports = function(Subcategory) {
     };
 
 
-    Subcategory.checkSubcategory = function(id) {
-        return new Promise(function(resolve, reject) {
-            Subcategory.findById(id, function(err, subcategory) {
+    Subcategory.checkSubcategory = function (id) {
+        return new Promise(function (resolve, reject) {
+            Subcategory.findById(id, function (err, subcategory) {
                 if (err) reject(err)
                 if (subcategory == null || subcategory.status == 'deactive')
                     reject(Subcategory.app.err.global.notFound())
@@ -81,7 +82,7 @@ module.exports = function(Subcategory) {
     }
 
 
-    Subcategory.getActiveSubcategoryBySubcategory = async function(subcategoryId, filter, callback) {
+    Subcategory.getActiveSubcategoryBySubcategory = async function (subcategoryId, filter, callback) {
         try {
             if (filter == null) {
                 filter = {
@@ -104,6 +105,9 @@ module.exports = function(Subcategory) {
                 var subcategory = await Subcategory.checkSubcategory(subcategoryId)
                 filter.where.and.push({ subcategoryId: subcategoryId })
             }
+            else {
+                filter.where.and.push({ subcategoryId: null })
+            }
             var subcategories = await Subcategory.find(filter)
             return subcategories
         } catch (error) {
@@ -112,7 +116,7 @@ module.exports = function(Subcategory) {
     };
 
 
-    Subcategory.getActiveSubcategory = async function(subcategoryId, callback) {
+    Subcategory.getActiveSubcategory = async function (subcategoryId, callback) {
         try {
             let filter = {
                 "where": {
@@ -134,7 +138,7 @@ module.exports = function(Subcategory) {
 
 
 
-    Subcategory.addSubcategory = async function(nameEn, nameAr, subcategoryId, callback) {
+    Subcategory.addSubcategory = async function (nameEn, nameAr, subcategoryId, callback) {
         try {
             await Subcategory.app.dataSources.mainDB.transaction(async models => {
                 const {
@@ -151,8 +155,8 @@ module.exports = function(Subcategory) {
     }
 
 
-    Subcategory.getNewCodeAndLevel = async function(subcategoryId) {
-        return new Promise(async function(resolve, reject) {
+    Subcategory.getNewCodeAndLevel = async function (subcategoryId) {
+        return new Promise(async function (resolve, reject) {
             try {
                 let filter = {};
                 if (subcategoryId) {
