@@ -1,977 +1,946 @@
 {
-  "name": "youtuber",
-  "base": "User",
-  "idInjection": true,
-  "options": {
-    "validateUpsert": true,
-    "ttl": 31536000000
-  },
-  "ownerRelations": true,
-  "scope": {
-    "include": [
-      {
-        "relation": "user"
-      },
-      {
-        "relation": "tags"
-      },
-      {
-        "relation": "level"
-      }
-    ]
-  },
-  "hidden": [
-    "password",
-    "verificationToken",
-    "emailVerified",
-    "realm",
-    "email",
-    "username"
-  ],
-  "properties": {
-    "userId": {
-      "type": "number",
-      "required": true
+    "name": "youtuber",
+    "base": "User",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true,
+        "ttl": 31536000000
     },
-    "levelId": {
-      "type": "number",
-      "required": false
+    "ownerRelations": true,
+    "scope": {
+        "include": [{
+                "relation": "user"
+            },
+            {
+                "relation": "tags"
+            },
+            {
+                "relation": "level"
+            }
+        ]
     },
-    "email": {
-      "type": "string"
+    "hidden": [
+        "password",
+        "verificationToken",
+        "emailVerified",
+        "realm",
+        "email",
+        "username"
+    ],
+    "properties": {
+        "userId": {
+            "type": "number",
+            "required": true
+        },
+        "levelId": {
+            "type": "number",
+            "required": false
+        },
+        "email": {
+            "type": "string"
+        },
+        "socialId": {
+            "type": "string"
+        },
+        "typeLogIn": {
+            "type": "string"
+        },
+        "status": {
+            "type": "string",
+            "required": true,
+            "default": "active"
+        },
+        "frozenBalance": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "balance": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "behanceLink": {
+            "type": "string",
+            "required": false
+        },
+        "facebookLink": {
+            "type": "string",
+            "required": false
+        },
+        "githubLink": {
+            "type": "string",
+            "required": false
+        },
+        "twitterLink": {
+            "type": "string",
+            "required": false
+        },
+        "websiteLink": {
+            "type": "string",
+            "required": false
+        },
+        "linkedinLink": {
+            "type": "string",
+            "required": false
+        },
+        "type": {
+            "type": "string",
+            "required": false
+        },
+        "primaryIdentifier": {
+            "type": "string",
+            "required": false
+        },
+        "about": {
+            "type": "string",
+            "required": false
+        },
+        "percentageCourse": {
+            "type": "number",
+            "required": true,
+            "default": 80
+        },
+        "totalSessionTime": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "totalSessionCount": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "totalSessionCreaterTime": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "enterSystemCount": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "totalPoint": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "completedCourses": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "following": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "follower": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "isPublisher": {
+            "type": "boolean",
+            "required": true,
+            "default": false
+        },
+        "isTrainer": {
+            "type": "boolean",
+            "required": true,
+            "default": false
+        },
+        "isPopular": {
+            "type": "boolean",
+            "required": true,
+            "default": false
+        },
+        "createdAt": {
+            "type": "date",
+            "required": true,
+            "defaultFn": "now"
+        }
     },
-    "socialId": {
-      "type": "string"
+    "validations": [],
+    "relations": {
+        "accessTokens": {
+            "type": "hasMany",
+            "model": "MultiAccessToken",
+            "polymorphic": {
+                "foreignKey": "userId",
+                "discriminator": "principalType"
+            },
+            "options": {
+                "disableInclude": true
+            }
+        },
+        "user": {
+            "type": "belongsTo",
+            "model": "user",
+            "foreignKey": "userId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "level": {
+            "type": "belongsTo",
+            "model": "levels",
+            "foreignKey": "levelId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
+        "tags": {
+            "type": "hasMany",
+            "model": "tag",
+            "foreignKey": "studentId",
+            "options": {
+                "nestRemoting": true
+            },
+            "through": "studentTag",
+            "keyThrough": "tagId"
+        }
     },
-    "typeLogIn": {
-      "type": "string"
-    },
-    "status": {
-      "type": "string",
-      "required": true,
-      "default": "active"
-    },
-    "frozenBalance": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "balance": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "behanceLink": {
-      "type": "string",
-      "required": false
-    },
-    "facebookLink": {
-      "type": "string",
-      "required": false
-    },
-    "githubLink": {
-      "type": "string",
-      "required": false
-    },
-    "twitterLink": {
-      "type": "string",
-      "required": false
-    },
-    "websiteLink": {
-      "type": "string",
-      "required": false
-    },
-    "linkedinLink": {
-      "type": "string",
-      "required": false
-    },
-    "type": {
-      "type": "string",
-      "required": false
-    },
-    "primaryIdentifier": {
-      "type": "string",
-      "required": false
-    },
-    "about": {
-      "type": "string",
-      "required": false
-    },
-    "percentageCourse": {
-      "type": "number",
-      "required": true,
-      "default": 80
-    },
-    "totalSessionTime": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "totalSessionCount": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "totalSessionCreaterTime": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "enterSystemCount": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "totalPoint": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "completedCourses": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "following": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "follower": {
-      "type": "number",
-      "required": true,
-      "default": 0
-    },
-    "isPublisher": {
-      "type": "boolean",
-      "required": true,
-      "default": false
-    },
-    "isTrainer": {
-      "type": "boolean",
-      "required": true,
-      "default": false
-    },
-    "isPopular": {
-      "type": "boolean",
-      "required": true,
-      "default": false
-    },
-    "createdAt": {
-      "type": "date",
-      "required": true,
-      "defaultFn": "now"
+    "acls": [{
+            "accessType": "*",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "DENY"
+        },
+        {
+            "accessType": "*",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "addYoutuber"
+        },
+        {
+            "accessType": "READ",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$unauthenticated",
+            "permission": "ALLOW",
+            "property": "signUp"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$unauthenticated",
+            "permission": "ALLOW",
+            "property": "socialLogin"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "me"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "enterSystem"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "generateInvitationCode"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "changePasswordYoutuber"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "adminChangePassword"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "updateProfile"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "adminUpdateProfile"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "activeYoutuber"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$unauthenticated",
+            "permission": "ALLOW",
+            "property": "requestResetPasswordYoutuber"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "resetPasswordYoutuber"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "myPurchasedCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "getMyNotifications"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "getMyNewNotificationsCount"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW",
+            "property": "userPodcast"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW",
+            "property": "userCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "getYoutubers"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "getYoutubersCount"
+        }
+    ],
+    "methods": {
+        "addYoutuber": {
+            "accepts": [{
+                    "arg": "email",
+                    "type": "string",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "password",
+                    "type": "string",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "name",
+                    "type": "string",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "status",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "behanceLink",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "facebookLink",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "githubLink",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "twitterLink",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "websiteLink",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "linkedinLink",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "primaryIdentifier",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "about",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "percentageCourse",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/addYoutuber",
+                "verb": "post"
+            }]
+        },
+        "getYoutubers": {
+            "accepts": [{
+                    "arg": "searchKey",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "status",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "limit",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "skip",
+                    "type": "number",
+                    "required": false,
+                    "description": ""
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/getYoutubers",
+                "verb": "get"
+            }]
+        },
+        "getYoutubersCount": {
+            "accepts": [{
+                    "arg": "searchKey",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                },
+                {
+                    "arg": "status",
+                    "type": "string",
+                    "required": false,
+                    "description": ""
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/getYoutubersCount",
+                "verb": "get"
+            }]
+        },
+        "adminUpdateProfile": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "data",
+                    "type": "object",
+                    "required": true,
+                    "description": ""
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/adminUpdateProfile",
+                "verb": "put"
+            }]
+        },
+        "updateProfile": {
+            "accepts": [{
+                    "arg": "data",
+                    "type": "object",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "context",
+                    "type": "object",
+                    "http": {
+                        "source": "context"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/updateProfile",
+                "verb": "put"
+            }]
+        },
+        "signUp": {
+            "accepts": [{
+                    "arg": "email",
+                    "type": "string",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "password",
+                    "type": "string",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "name",
+                    "type": "string",
+                    "required": true,
+                    "description": ""
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/signUp",
+                "verb": "post"
+            }]
+        },
+        "socialLogin": {
+            "accepts": [{
+                    "arg": "data",
+                    "type": "object",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "type",
+                    "type": "string",
+                    "required": true,
+                    "description": ""
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/socialLogin",
+                "verb": "post"
+            }]
+        },
+        "me": {
+            "accepts": [{
+                "arg": "context",
+                "type": "object",
+                "http": {
+                    "source": "context"
+                }
+            }],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my info",
+            "http": [{
+                "path": "/me",
+                "verb": "get"
+            }]
+        },
+        "enterSystem": {
+            "accepts": [{
+                "arg": "context",
+                "type": "object",
+                "http": {
+                    "source": "context"
+                }
+            }],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my info",
+            "http": [{
+                "path": "/enterSystem",
+                "verb": "get"
+            }]
+        },
+        "generateInvitationCode": {
+            "accepts": [{
+                "arg": "context",
+                "type": "object",
+                "http": {
+                    "source": "context"
+                }
+            }],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my info",
+            "http": [{
+                "path": "/generateInvitationCode",
+                "verb": "post"
+            }]
+        },
+        "adminChangePassword": {
+            "accepts": [{
+                    "arg": "userId",
+                    "type": "number",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "newPassword",
+                    "type": "string",
+                    "required": true
+                }
+            ],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my info",
+            "http": [{
+                "path": "/:userId/adminChangePassword",
+                "verb": "put"
+            }]
+        },
+        "changePasswordYoutuber": {
+            "accepts": [{
+                    "arg": "oldPassword",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "arg": "newPassword",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "arg": "context",
+                    "type": "object",
+                    "http": {
+                        "source": "context"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my info",
+            "http": [{
+                "path": "/changePasswordYoutuber",
+                "verb": "put"
+            }]
+        },
+        "activeYoutuber": {
+            "accepts": [{
+                "arg": "context",
+                "type": "object",
+                "http": {
+                    "source": "context"
+                }
+            }],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my info",
+            "http": [{
+                "path": "/activeYoutuber",
+                "verb": "get"
+            }]
+        },
+        "resetPasswordYoutuber": {
+            "accepts": [{
+                    "arg": "password",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "arg": "context",
+                    "type": "object",
+                    "http": {
+                        "source": "context"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my info",
+            "http": [{
+                "path": "/resetPasswordYoutuber",
+                "verb": "put"
+            }]
+        },
+        "myPurchasedCourse": {
+            "accepts": [{
+                "arg": "context",
+                "type": "object",
+                "http": {
+                    "source": "context"
+                }
+            }],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my info",
+            "http": [{
+                "path": "/myPurchasedCourse",
+                "verb": "get"
+            }]
+        },
+        "userPodcast": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "string",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "context",
+                    "type": "object",
+                    "http": {
+                        "source": "context"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my info",
+            "http": [{
+                "path": "/:id/userPodcast",
+                "verb": "get"
+            }]
+        },
+        "userCourse": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "id",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "context",
+                    "type": "object",
+                    "http": {
+                        "source": "context"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my info",
+            "http": [{
+                "path": "/:id/userCourse",
+                "verb": "get"
+            }]
+        },
+        "requestResetPasswordYoutuber": {
+            "accepts": [{
+                "arg": "email",
+                "type": "string",
+                "required": true
+            }],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my info",
+            "http": [{
+                "path": "/requestResetPasswordYoutuber",
+                "verb": "post"
+            }]
+        },
+        "getMyNotifications": {
+            "accepts": [{
+                    "arg": "filter",
+                    "type": "object",
+                    "required": false
+                },
+                {
+                    "arg": "context",
+                    "type": "object",
+                    "http": {
+                        "source": "context"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my notification",
+            "http": [{
+                "path": "/getMyNotifications",
+                "verb": "get"
+            }]
+        },
+        "getMyNewNotificationsCount": {
+            "accepts": [{
+                    "arg": "filter",
+                    "type": "object",
+                    "required": false
+                },
+                {
+                    "arg": "context",
+                    "type": "object",
+                    "http": {
+                        "source": "context"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "result",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "get my notification",
+            "http": [{
+                "path": "/getMyNewNotificationsCount",
+                "verb": "get"
+            }]
+        }
+
     }
-  },
-  "validations": [],
-  "relations": {
-    "accessTokens": {
-      "type": "hasMany",
-      "model": "MultiAccessToken",
-      "polymorphic": {
-        "foreignKey": "userId",
-        "discriminator": "principalType"
-      },
-      "options": {
-        "disableInclude": true
-      }
-    },
-    "user": {
-      "type": "belongsTo",
-      "model": "user",
-      "foreignKey": "userId",
-      "options": {
-        "nestRemoting": true
-      }
-    },
-    "level": {
-      "type": "belongsTo",
-      "model": "levels",
-      "foreignKey": "levelId",
-      "options": {
-        "nestRemoting": true
-      }
-    },
-    "tags": {
-      "type": "hasMany",
-      "model": "tag",
-      "foreignKey": "studentId",
-      "options": {
-        "nestRemoting": true
-      },
-      "through": "studentTag",
-      "keyThrough": "tagId"
-    }
-  },
-  "acls": [
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "DENY"
-    },
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "super-admin",
-      "permission": "ALLOW"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "super-admin",
-      "permission": "ALLOW",
-      "property": "addYoutuber"
-    },
-    {
-      "accessType": "READ",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "ALLOW"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$unauthenticated",
-      "permission": "ALLOW",
-      "property": "signUp"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$unauthenticated",
-      "permission": "ALLOW",
-      "property": "socialLogin"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "me"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "enterSystem"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "generateInvitationCode"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "changePasswordYoutuber"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "super-admin",
-      "permission": "ALLOW",
-      "property": "adminChangePassword"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "updateProfile"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "super-admin",
-      "permission": "ALLOW",
-      "property": "adminUpdateProfile"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "activeYoutuber"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$unauthenticated",
-      "permission": "ALLOW",
-      "property": "requestResetPasswordYoutuber"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "resetPasswordYoutuber"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW",
-      "property": "myPurchasedCourse"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "ALLOW",
-      "property": "userPodcast"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "ALLOW",
-      "property": "userCourse"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "super-admin",
-      "permission": "ALLOW",
-      "property": "getYoutubers"
-    },
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "super-admin",
-      "permission": "ALLOW",
-      "property": "getYoutubersCount"
-    }
-  ],
-  "methods": {
-    "addYoutuber": {
-      "accepts": [
-        {
-          "arg": "email",
-          "type": "string",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "password",
-          "type": "string",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "name",
-          "type": "string",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "status",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "behanceLink",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "facebookLink",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "githubLink",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "twitterLink",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "websiteLink",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "linkedinLink",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "primaryIdentifier",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "about",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "percentageCourse",
-          "type": "number",
-          "required": false,
-          "description": ""
-        }
-      ],
-      "returns": [
-        {
-          "arg": "student",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/addYoutuber",
-          "verb": "post"
-        }
-      ]
-    },
-    "getYoutubers": {
-      "accepts": [
-        {
-          "arg": "searchKey",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "status",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "limit",
-          "type": "number",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "skip",
-          "type": "number",
-          "required": false,
-          "description": ""
-        }
-      ],
-      "returns": [
-        {
-          "arg": "student",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/getYoutubers",
-          "verb": "get"
-        }
-      ]
-    },
-    "getYoutubersCount": {
-      "accepts": [
-        {
-          "arg": "searchKey",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "arg": "status",
-          "type": "string",
-          "required": false,
-          "description": ""
-        }
-      ],
-      "returns": [
-        {
-          "arg": "student",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/getYoutubersCount",
-          "verb": "get"
-        }
-      ]
-    },
-    "adminUpdateProfile": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "number",
-          "required": true,
-          "description": "",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "data",
-          "type": "object",
-          "required": true,
-          "description": ""
-        }
-      ],
-      "returns": [
-        {
-          "arg": "student",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/:id/adminUpdateProfile",
-          "verb": "put"
-        }
-      ]
-    },
-    "updateProfile": {
-      "accepts": [
-        {
-          "arg": "data",
-          "type": "object",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "context",
-          "type": "object",
-          "http": {
-            "source": "context"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "student",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/updateProfile",
-          "verb": "put"
-        }
-      ]
-    },
-    "signUp": {
-      "accepts": [
-        {
-          "arg": "email",
-          "type": "string",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "password",
-          "type": "string",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "name",
-          "type": "string",
-          "required": true,
-          "description": ""
-        }
-      ],
-      "returns": [
-        {
-          "arg": "student",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/signUp",
-          "verb": "post"
-        }
-      ]
-    },
-    "socialLogin": {
-      "accepts": [
-        {
-          "arg": "data",
-          "type": "object",
-          "required": true,
-          "description": ""
-        },
-        {
-          "arg": "type",
-          "type": "string",
-          "required": true,
-          "description": ""
-        }
-      ],
-      "returns": [
-        {
-          "arg": "student",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "",
-      "http": [
-        {
-          "path": "/socialLogin",
-          "verb": "post"
-        }
-      ]
-    },
-    "me": {
-      "accepts": [
-        {
-          "arg": "context",
-          "type": "object",
-          "http": {
-            "source": "context"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "get my info",
-      "http": [
-        {
-          "path": "/me",
-          "verb": "get"
-        }
-      ]
-    },
-    "enterSystem": {
-      "accepts": [
-        {
-          "arg": "context",
-          "type": "object",
-          "http": {
-            "source": "context"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "get my info",
-      "http": [
-        {
-          "path": "/enterSystem",
-          "verb": "get"
-        }
-      ]
-    },
-    "generateInvitationCode": {
-      "accepts": [
-        {
-          "arg": "context",
-          "type": "object",
-          "http": {
-            "source": "context"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "get my info",
-      "http": [
-        {
-          "path": "/generateInvitationCode",
-          "verb": "post"
-        }
-      ]
-    },
-    "adminChangePassword": {
-      "accepts": [
-        {
-          "arg": "userId",
-          "type": "number",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "newPassword",
-          "type": "string",
-          "required": true
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "get my info",
-      "http": [
-        {
-          "path": "/:userId/adminChangePassword",
-          "verb": "put"
-        }
-      ]
-    },
-    "changePasswordYoutuber": {
-      "accepts": [
-        {
-          "arg": "oldPassword",
-          "type": "string",
-          "required": true
-        },
-        {
-          "arg": "newPassword",
-          "type": "string",
-          "required": true
-        },
-        {
-          "arg": "context",
-          "type": "object",
-          "http": {
-            "source": "context"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "get my info",
-      "http": [
-        {
-          "path": "/changePasswordYoutuber",
-          "verb": "put"
-        }
-      ]
-    },
-    "activeYoutuber": {
-      "accepts": [
-        {
-          "arg": "context",
-          "type": "object",
-          "http": {
-            "source": "context"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "get my info",
-      "http": [
-        {
-          "path": "/activeYoutuber",
-          "verb": "get"
-        }
-      ]
-    },
-    "resetPasswordYoutuber": {
-      "accepts": [
-        {
-          "arg": "password",
-          "type": "string",
-          "required": true
-        },
-        {
-          "arg": "context",
-          "type": "object",
-          "http": {
-            "source": "context"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "get my info",
-      "http": [
-        {
-          "path": "/resetPasswordYoutuber",
-          "verb": "put"
-        }
-      ]
-    },
-    "myPurchasedCourse": {
-      "accepts": [
-        {
-          "arg": "context",
-          "type": "object",
-          "http": {
-            "source": "context"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "get my info",
-      "http": [
-        {
-          "path": "/myPurchasedCourse",
-          "verb": "get"
-        }
-      ]
-    },
-    "userPodcast": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "string",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "context",
-          "type": "object",
-          "http": {
-            "source": "context"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "get my info",
-      "http": [
-        {
-          "path": "/:id/userPodcast",
-          "verb": "get"
-        }
-      ]
-    },
-    "userCourse": {
-      "accepts": [
-        {
-          "arg": "id",
-          "type": "id",
-          "http": {
-            "source": "path"
-          }
-        },
-        {
-          "arg": "context",
-          "type": "object",
-          "http": {
-            "source": "context"
-          }
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "get my info",
-      "http": [
-        {
-          "path": "/:id/userCourse",
-          "verb": "get"
-        }
-      ]
-    },
-    "requestResetPasswordYoutuber": {
-      "accepts": [
-        {
-          "arg": "email",
-          "type": "string",
-          "required": true
-        }
-      ],
-      "returns": [
-        {
-          "arg": "result",
-          "type": "object",
-          "root": true,
-          "description": ""
-        }
-      ],
-      "description": "get my info",
-      "http": [
-        {
-          "path": "/requestResetPasswordYoutuber",
-          "verb": "post"
-        }
-      ]
-    }
-  }
 }
