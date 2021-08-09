@@ -917,18 +917,12 @@
         },
         "getMyNewNotificationsCount": {
             "accepts": [{
-                    "arg": "filter",
-                    "type": "object",
-                    "required": false
-                },
-                {
-                    "arg": "context",
-                    "type": "object",
-                    "http": {
-                        "source": "context"
-                    }
+                "arg": "context",
+                "type": "object",
+                "http": {
+                    "source": "context"
                 }
-            ],
+            }],
             "returns": [{
                 "arg": "result",
                 "type": "object",
