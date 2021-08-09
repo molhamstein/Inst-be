@@ -588,13 +588,13 @@ module.exports = function(Youtuber) {
 
 
 
-    Youtuber.getYoutubers = async function(searchKey, status,limit = 10, skip = 0, callback) {
+    Youtuber.getYoutubers = async function(searchKey, status, limit = 10, skip = 0, callback) {
         try {
             let youtuberData = []
             if (searchKey) {
-                let where={ "user.name": { "like": searchKey } }
-                if(status){
-                    where['status']=status
+                let where = { "user.name": { "like": searchKey } }
+                if (status) {
+                    where['status'] = status
                 }
                 let youtubers = await Youtuber.app.query.towLevel(Youtuber.app, 'youtuber', 'user', 'userId', 'id', { limit, skip, "where": where }, false)
                 let youtuberIds = [];
@@ -603,9 +603,9 @@ module.exports = function(Youtuber) {
                 });
                 youtuberData = await Youtuber.find({ "where": { "id": { "inq": youtuberIds } } })
             } else {
-                let filter={ limit, skip, "order": "createdAt DESC" }
-                if(status){
-                    filter['where']={status}
+                let filter = { limit, skip, "order": "createdAt DESC" }
+                if (status) {
+                    filter['where'] = { status }
                 }
                 youtuberData = await Youtuber.find(filter)
             }
@@ -615,19 +615,19 @@ module.exports = function(Youtuber) {
         }
     }
 
-    Youtuber.getYoutubersCount = async function(searchKey, status,callback) {
+    Youtuber.getYoutubersCount = async function(searchKey, status, callback) {
         try {
             let youtubersCount = {}
             if (searchKey) {
-                let where={ "user.name": { "like": searchKey } }
-                if(status){
-                    where['status']=status
+                let where = { "user.name": { "like": searchKey } }
+                if (status) {
+                    where['status'] = status
                 }
                 youtubersCount = await Youtuber.app.query.towLevel(Youtuber.app, 'youtuber', 'user', 'userId', 'id', where, true)
             } else {
-                let where={}
-                if(status){
-                    where['status']=status
+                let where = {}
+                if (status) {
+                    where['status'] = status
                 }
                 youtubersCount["count"] = await Youtuber.count(where)
             }
@@ -638,6 +638,31 @@ module.exports = function(Youtuber) {
     }
 
 
+
+    Youtuber.getMyNotifications = async function(filter = { "where": {}, limit: 10, skip: 0 }, context, callback) {
+        try {
+            var userId = context.req.accessToken.userId;
+            if (filter.where == null) {
+                filter.where = {}
+            }
+            filter.where.ownerId = userId;
+            let notification = await Youtuber.app.models.notification.find(filter)
+            callback(null, notification);
+        } catch (error) {
+            callback(error)
+        }
+    }
+
+
+    Youtuber.getMyNewNotificationsCount = async function(context, callback) {
+        try {
+            var userId = context.req.accessToken.userId;
+            let notificationCount = await Youtuber.app.models.notification.count({ "ownerId": userId, "isSeen": false })
+            callback(null, notificationCount);
+        } catch (error) {
+            callback(error)
+        }
+    }
 
 
 
