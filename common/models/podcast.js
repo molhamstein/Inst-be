@@ -1,8 +1,8 @@
 'use strict';
 var async = require("async");
 
-module.exports = function (Podcast) {
-    Podcast.addPodcast = async function (data, onlineSessions, req, callback) {
+module.exports = function(Podcast) {
+    Podcast.addPodcast = async function(data, onlineSessions, req, callback) {
         try {
             let userId = req.accessToken.userId;
             if (data.youtuberId) {
@@ -65,7 +65,7 @@ module.exports = function (Podcast) {
 
                 let subcategoryTree = await subCategory.find({ "where": { "code": { "inq": subCategoryTreeCode } } });
 
-                subcategoryTree.forEach(async (oneSubcategory) => {
+                subcategoryTree.forEach(async(oneSubcategory) => {
                     let newCount = oneSubcategory.podcastCount + 1
                     await oneSubcategory.updateAttribute("podcastCount", newCount);
                 })
@@ -91,7 +91,7 @@ module.exports = function (Podcast) {
         }
     };
 
-    Podcast.updatePodcast = async function (id, data, onlineSessions, req, callback) {
+    Podcast.updatePodcast = async function(id, data, onlineSessions, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId;
@@ -163,7 +163,7 @@ module.exports = function (Podcast) {
                         });
                     });
 
-                    Podcast.app.models.notification.createGelpNotifications(userData, null, 8)
+                    Podcast.app.models.notification.createGelpNotifications(userData, null, 7)
 
                 }
                 callback(null, newPodcast);
@@ -173,7 +173,7 @@ module.exports = function (Podcast) {
         }
     };
 
-    Podcast.addOnlineSessionToPodcast = async function (id, data, req, callback) {
+    Podcast.addOnlineSessionToPodcast = async function(id, data, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId
@@ -223,7 +223,7 @@ module.exports = function (Podcast) {
     };
 
 
-    Podcast.subscribePodcast = async function (id, req, callback) {
+    Podcast.subscribePodcast = async function(id, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId
@@ -250,7 +250,7 @@ module.exports = function (Podcast) {
         }
     };
 
-    Podcast.unsubscribePodcast = async function (id, req, callback) {
+    Podcast.unsubscribePodcast = async function(id, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
             let userId = req.accessToken.userId
@@ -277,13 +277,13 @@ module.exports = function (Podcast) {
         }
     };
 
-    Podcast.getPodcasts = async function (searchKey, code, youtuberId, limit, skip, callback) {
+    Podcast.getPodcasts = async function(searchKey, code, youtuberId, limit, skip, callback) {
         let podcastIds = await Podcast.app.query.getPodcast(Podcast.app, searchKey, code, youtuberId, limit, skip)
         let podcast = await Podcast.find({ "where": { "id": { "inq": podcastIds } } })
         callback(null, podcast)
     }
 
-    Podcast.getOnePodcast = async function (id, callback) {
+    Podcast.getOnePodcast = async function(id, callback) {
         let mainPodcast = await Podcast.findById(id)
         let podcastOnlinesession = await Podcast.app.models.onlineSession.find({ "where": { "podcastId": id }, "order": "orderInPodcast ASC" })
         mainPodcast['onlineSessions'] = podcastOnlinesession
@@ -291,7 +291,7 @@ module.exports = function (Podcast) {
     }
 
 
-    Podcast.publishPodcast = async function (id, req, callback) {
+    Podcast.publishPodcast = async function(id, req, callback) {
         try {
 
             var youtuberId = req.accessToken.userId;
