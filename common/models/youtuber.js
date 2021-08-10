@@ -654,6 +654,18 @@ module.exports = function(Youtuber) {
     }
 
 
+    Youtuber.seenMyNotifications = async function(context, callback) {
+        try {
+            var userId = context.req.accessToken.userId;
+            await Youtuber.app.models.notification.updateAll({ "ownerId": userId }, { "isSeen": true })
+
+            callback(null, {});
+        } catch (error) {
+            callback(error)
+        }
+    }
+
+
     Youtuber.getMyNewNotificationsCount = async function(context, callback) {
         try {
             var userId = context.req.accessToken.userId;
