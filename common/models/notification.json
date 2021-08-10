@@ -57,7 +57,7 @@
             "required": true,
             "default": false
         },
-        "idRead": {
+        "isRead": {
             "type": "boolean",
             "required": true,
             "default": false
