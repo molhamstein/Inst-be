@@ -6,6 +6,7 @@
         "validateUpsert": true
     },
     "scope": {
+        "order": "createdAt DESC",
         "include": [
             "course",
             "session",
