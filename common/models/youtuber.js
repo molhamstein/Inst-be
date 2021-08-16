@@ -680,7 +680,7 @@ module.exports = function(Youtuber) {
     Youtuber.updateFCMToken = async function(fcm, context, callback) {
         try {
             var userId = context.req.accessToken.userId;
-            let mainToken = await Youtuber.app.models.fcmToken.findOne({ "where": { "token": fcm } });
+            let mainToken = await Youtuber.app.models.fcmToken.findOne({ "where": { "token": fcm, "youtuberId": userId } });
             if (mainToken) {
                 callback(null, {})
             } else {
