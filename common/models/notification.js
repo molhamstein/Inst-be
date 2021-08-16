@@ -9,22 +9,27 @@ firebase.initializeApp({
 module.exports = function(Notification) {
     let notificationMessage = {
         "NEW_FOLLOWER": {
+            "click_action": "FLUTTER_NOTIFICATION_CLICK",
             title: "New Follower",
             body: "Someone start follow you"
         },
         "NEW_COURSE": {
+            "click_action": "FLUTTER_NOTIFICATION_CLICK",
             title: "New Course",
             body: "New course was added"
         },
         "NEW_PODCAST": {
+            "click_action": "FLUTTER_NOTIFICATION_CLICK",
             title: "New Podcast",
             body: "New podcast was added"
         },
         "NEW_SESSION_PODCAST": {
+            "click_action": "FLUTTER_NOTIFICATION_CLICK",
             title: "New Session",
             body: "New session was added to podcast"
         },
         "NEW_SESSION_COURSE": {
+            "click_action": "FLUTTER_NOTIFICATION_CLICK",
             title: "New Session",
             body: "New session was added to course"
         },
@@ -62,7 +67,11 @@ module.exports = function(Notification) {
 
         for (let index = 0; index < appNotificationData.length; index++) {
             const element = appNotificationData[index];
-            let data = { "notificationId": element.id.toString(), type: typeObject.name };
+            let data = {
+                "click_action": "FLUTTER_NOTIFICATION_CLICK",
+                "notificationId": element.id.toString(),
+                type: typeObject.name
+            };
             if (element['courseId']) {
                 data['courseId'] = element['courseId'].toString()
             }
@@ -83,7 +92,6 @@ module.exports = function(Notification) {
                 arrayYoutuberToken.push(elementToken.token)
             }
             var messageObject = {
-                "click_action": "FLUTTER_NOTIFICATION_CLICK",
                 notification: notificationMessage[typeObject.name]
 
             };
