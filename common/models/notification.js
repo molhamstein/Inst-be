@@ -1,5 +1,5 @@
 'use strict';
-var firbaseJson = require('../server/gelpFirebase.json');
+var firbaseJson = require('../../server/gelpFirebase.json');
 var firebase = require('firebase-admin');
 firebase.initializeApp({
     credential: firebase.credential.cert(firbaseJson)
