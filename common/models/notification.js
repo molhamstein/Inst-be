@@ -62,18 +62,18 @@ module.exports = function(Notification) {
 
         for (let index = 0; index < appNotificationData.length; index++) {
             const element = appNotificationData[index];
-            let data = { "notificationId": element.id, type: typeObject.name };
+            let data = { "notificationId": element.id.toString(), type: typeObject.name };
             if (element['courseId']) {
-                data['courseId'] = element['courseId']
+                data['courseId'] = element['courseId'].toString()
             }
             if (element['youtuberId']) {
-                data['youtuberId'] = element['youtuberId']
+                data['youtuberId'] = element['youtuberId'].toString()
             }
             if (element['onlineSessionId']) {
-                data['onlineSessionId'] = element['onlineSessionId']
+                data['onlineSessionId'] = element['onlineSessionId'].toString()
             }
             if (element['podcastId']) {
-                data['podcastId'] = element['podcastId']
+                data['podcastId'] = element['podcastId'].toString()
             }
 
             let youtuberToken = await Notification.app.models.fcmToken.find({ "where": { "youtuberId": element.ownerId } })
