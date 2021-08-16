@@ -62,7 +62,7 @@ module.exports = function(Notification) {
 
         for (let index = 0; index < appNotificationData.length; index++) {
             const element = appNotificationData[index];
-            let data = { "notificationId": element.id.toString(), type: typeObject.name };
+            let data = { "click_action": "FLUTTER_NOTIFICATION_CLICK", "notificationId": element.id.toString(), type: typeObject.name };
             if (element['courseId']) {
                 data['courseId'] = element['courseId'].toString()
             }
