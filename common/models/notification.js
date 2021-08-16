@@ -77,13 +77,18 @@ module.exports = function(Notification) {
             }
 
             let youtuberToken = await Notification.app.models.fcmToken.find({ "where": { "youtuberId": element.ownerId } })
-
+            let arrayYoutuberToken = []
+            for (let index = 0; index < youtuberToken.length; index++) {
+                const elementToken = youtuberToken[index];
+                arrayYoutuberToken.push(elementToken.token)
+            }
             var messageObject = {
                 notification: notificationMessage[typeObject.name]
             };
             messageObject['data'] = data;
             console.log(messageObject)
-            firebase.messaging().sendToDevice(youtuberToken, messageObject)
+            console.log(arrayYoutuberToken)
+            firebase.messaging().sendToDevice(arrayYoutuberToken, messageObject)
                 .then(function(response) {
                     console.log("Successfully sent message:", response.results[0]);
                 })
