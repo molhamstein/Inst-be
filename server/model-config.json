@@ -445,5 +445,9 @@
     "logged": {
         "dataSource": "mainDB",
         "public": true
+    },
+    "fcmToken": {
+        "dataSource": "mainDB",
+        "public": true
     }
 }

@@ -175,6 +175,14 @@
                 "disableInclude": true
             }
         },
+        "fcmToken": {
+            "type": "hasMany",
+            "model": "fcmToken",
+            "foreignKey": "youtuberId",
+            "options": {
+                "nestRemoting": true
+            }
+        },
         "user": {
             "type": "belongsTo",
             "model": "user",
@@ -366,6 +374,13 @@
             "principalId": "super-admin",
             "permission": "ALLOW",
             "property": "getYoutubersCount"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "updateFCMToken"
         }
     ],
     "methods": {
@@ -578,6 +593,33 @@
             "description": "",
             "http": [{
                 "path": "/updateProfile",
+                "verb": "put"
+            }]
+        },
+        "updateFCMToken": {
+            "accepts": [{
+                    "arg": "fcm",
+                    "type": "string",
+                    "required": true,
+                    "description": ""
+                },
+                {
+                    "arg": "context",
+                    "type": "object",
+                    "http": {
+                        "source": "context"
+                    }
+                }
+            ],
+            "returns": [{
+                "arg": "student",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/updateFCMToken",
                 "verb": "put"
             }]
         },

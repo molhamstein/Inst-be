@@ -1,6 +1,35 @@
 'use strict';
+var firbaseJson = require('../server/gelpFirebase.json');
+var firebase = require('firebase-admin');
+firebase.initializeApp({
+    credential: firebase.credential.cert(firbaseJson)
+});
+
 
 module.exports = function(Notification) {
+    let notificationMessage = {
+        "NEW_FOLLOWER": {
+            title: "New Follower",
+            body: "Someone start follow you"
+        },
+        "NEW_COURSE": {
+            title: "New Course",
+            body: "New course was added"
+        },
+        "NEW_PODCAST": {
+            title: "New Podcast",
+            body: "New podcast was added"
+        },
+        "NEW_SESSION_PODCAST": {
+            title: "New Session",
+            body: "New session was added to podcast"
+        },
+        "NEW_SESSION_COURSE": {
+            title: "New Session",
+            body: "New session was added to course"
+        },
+
+    }
     Notification.createNotifications = function(arrayOfObjects, key, typeUSer, typeId, keyRelation, objectId, cb) {
         var notificationData = []
         arrayOfObjects.forEach(element => {
@@ -19,15 +48,49 @@ module.exports = function(Notification) {
         Notification.create(notificationData)
     }
 
-    Notification.createGelpNotifications = function(arrayOfObjects, ownerId, typeId, cb) {
-        var notificationData = []
+    Notification.createGelpNotifications = async function(arrayOfObjects, ownerId, typeId, cb) {
+        let typeObject = await Notification.app.models.notificationType.findById(typeId);
         for (let index = 0; index < arrayOfObjects.length; index++) {
             const element = arrayOfObjects[index];
             arrayOfObjects[index]['typeId'] = typeId;
             if (ownerId)
                 arrayOfObjects[index]['ownerId'] = ownerId
         }
-        Notification.create(arrayOfObjects)
+        console.log(arrayOfObjects)
+        let appNotificationData = await Notification.create(arrayOfObjects)
+        console.log(appNotificationData)
+
+        for (let index = 0; index < appNotificationData.length; index++) {
+            const element = appNotificationData[index];
+            let data = { "notificationId": element.id, type: typeObject.name };
+            if (element['courseId']) {
+                data['courseId'] = element['courseId']
+            }
+            if (element['youtuberId']) {
+                data['youtuberId'] = element['youtuberId']
+            }
+            if (element['onlineSessionId']) {
+                data['onlineSessionId'] = element['onlineSessionId']
+            }
+            if (element['podcastId']) {
+                data['podcastId'] = element['podcastId']
+            }
+
+            let youtuberToken = await Notification.app.models.fcmToken.find({ "where": { "youtuberId": element.ownerId } })
+
+            var messageObject = {
+                notification: notificationMessage[typeObject.name]
+            };
+            messageObject['data'] = data;
+            console.log(messageObject)
+            firebase.messaging().sendToDevice(youtuberToken, messageObject)
+                .then(function(response) {
+                    console.log("Successfully sent message:", response.results[0]);
+                })
+                .catch(function(error) {
+                    console.log("Error sending message:", error);
+                });
+        }
     }
 
     Notification.readNotification = async function(id, context, callback) {

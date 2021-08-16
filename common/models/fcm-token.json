@@ -1,0 +1,22 @@
+{
+    "name": "fcmToken",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "token": {
+            "type": "string",
+            "required": true
+        },
+        "youtuberId": {
+            "type": "string",
+            "required": true
+        }
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [],
+    "methods": {}
+}
