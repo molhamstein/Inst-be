@@ -312,5 +312,24 @@ module.exports = function(Podcast) {
     }
 
 
+    Podcast.getSessionByIndex = async function(id, index = 0, req, callback) {
+        try {
+            let mainPodcast = await Podcast.findById(id);
+            if (mainPodcast == null) {
+                throw Podcast.app.err.global.notFound();
+            }
+
+            let onlineSessions = Podcast.find({ "where": { "podcastId": id }, "order": "createdAt ASC" })
+            if (onlineSessions[index] == null) {
+                callback(null, onlineSessions[0])
+            } else {
+                callback(null, onlineSessions[index])
+            }
+        } catch (err) {
+            callback(err)
+        }
+    }
+
+
 
 };
