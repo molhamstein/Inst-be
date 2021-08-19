@@ -319,7 +319,7 @@ module.exports = function(Podcast) {
                 throw Podcast.app.err.global.notFound();
             }
 
-            let onlineSessions = Podcast.find({ "where": { "podcastId": id }, "order": "createdAt ASC" })
+            let onlineSessions = await Podcast.app.models.onlineSession.find({ "where": { "podcastId": id }, "order": "createdAt ASC" })
             if (onlineSessions[index] == null) {
                 callback(null, onlineSessions[0])
             } else {
