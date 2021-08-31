@@ -4,7 +4,6 @@ module.exports = function(Onlinesession) {
     Onlinesession.watchSession = async function(id, req, callback) {
         try {
             // await Student.app.models.user.checkRoleBranchAdmin(instituteId, branchId, req)
-            let userId = req.accessToken.userId
             await Onlinesession.app.dataSources.mainDB.transaction(async models => {
                 const {
                     onlineSession
@@ -20,15 +19,18 @@ module.exports = function(Onlinesession) {
                 let mainSession = await onlineSession.findById(id);
                 if (mainSession) {
                     let data = { "reachCount": mainSession.reachCount + 1 }
-                    let oldVideoWatch = await onlineSessionWatch.findOne({ "where": { "youtuberId": userId, "videoId": id } })
-                    if (oldVideoWatch == null) {
-                        data['viewCount'] = mainSession.viewCount + 1;
-                        let mainYouTuber = await youtuber.findById(userId)
-                        await onlineSessionWatch.create({ "youtuberId": userId, "videoId": id })
-                        let tempTotalPoint = mainYouTuber.totalPoint + 1;
-                        let levelId = await Onlinesession.app.service.getLevelId(Onlinesession.app, mainYouTuber, { "totalPoint": tempTotalPoint });
+                    if (req.accessToken) {
+                        let userId = req.accessToken.userId
+                        let oldVideoWatch = await onlineSessionWatch.findOne({ "where": { "youtuberId": userId, "videoId": id } })
+                        if (oldVideoWatch == null) {
+                            data['viewCount'] = mainSession.viewCount + 1;
+                            let mainYouTuber = await youtuber.findById(userId)
+                            await onlineSessionWatch.create({ "youtuberId": userId, "videoId": id })
+                            let tempTotalPoint = mainYouTuber.totalPoint + 1;
+                            let levelId = await Onlinesession.app.service.getLevelId(Onlinesession.app, mainYouTuber, { "totalPoint": tempTotalPoint });
 
-                        await mainYouTuber.updateAttributes({ "levelId": levelId, "totalPoint": tempTotalPoint });
+                            await mainYouTuber.updateAttributes({ "levelId": levelId, "totalPoint": tempTotalPoint });
+                        }
                     }
                     await mainSession.updateAttributes(data)
                     callback(null, "ok")
