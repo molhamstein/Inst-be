@@ -307,7 +307,7 @@ module.exports = function(Podcast) {
                 followerDate.forEach(element => {
                     notificationData.push({ "ownerId": element.ownerId, "podcastId": mainPodcast.id });
                 });
-                Podcast.app.models.notification.createGelpNotifications(notificationData, null, 6)
+                Podcast.app.models.notification.createGelpNotifications(notificationData, null, 10)
 
                 await mainPodcast.updateAttribute("status", "active");
                 callback(null, "ok")

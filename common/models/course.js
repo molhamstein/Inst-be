@@ -325,7 +325,7 @@ module.exports = function(Course) {
                 if (isNewCourse) {
                     let adminUser = await admin.findOne();
                     let userData = [{ "ownerId": adminUser.id, "typeOwner": "ADMIN", "courseId": mainCourse.id }];
-                    Course.app.models.notification.createGelpNotifications(userData, null, 7)
+                    Course.app.models.notification.createGelpNotifications(userData, null, 9)
 
                 }
                 mainCallback(null, mainCourse)
