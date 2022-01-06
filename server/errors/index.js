@@ -16,6 +16,12 @@ module.exports.global = {
     }
 };
 
+module.exports.Promocode = {
+    notValidPromocode: function() {
+        return new cError(474, 'promo code not valid ', 474);
+    }
+}
+
 module.exports.notFound = {
     instituteNotFound: function() {
         return new cError(490, 'institute not found', 490);

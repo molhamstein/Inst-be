@@ -74,6 +74,9 @@ module.exports = function(app) {
     var levels = app.models.levels
     var logged = app.models.logged
     var fcmToken = app.models.fcmToken
+    var config = app.models.config
+    var promoCode = app.models.promoCode
+    var youtuberCoursePromoCode = app.models.youtuberCoursePromoCode;
 
 
 
@@ -577,7 +580,7 @@ module.exports = function(app) {
             // await customdAutoUpload(teacherSubcategory, 'teacherSubcategory', []);
             // await customdAutoUpload(waitingList, 'waitingList', []);
             // await customdAutoUpload(waitingListStudent, 'waitingListStudent', []);
-            // await customdAutoUpload(course, 'course', []);
+            await customdAutoUpload(course, 'course', []);
             // await customdAutoUpload(supply, 'supply', []);
             // await customdAutoUpload(courseImages, 'courseImages', []);
             // await customdAutoUpload(session, 'session', []);
@@ -591,6 +594,10 @@ module.exports = function(app) {
             // // await customdAutoUpload(packageStudentPayment, 'packageStudentPayment', []);
             await customdAutoUpload(notification, 'notification', []);
             await customdAutoUpload(notificationType, 'notificationType', notificationTypeData);
+            await customdAutoUpload(config, 'config', []);
+            await customdAutoUpload(promoCode, 'promoCode', []);
+            await customdAutoUpload(youtuberCoursePromoCode, 'youtuberCoursePromoCode', [])
+
             // await customdAutoUpload(transaction, 'transaction', []);
             // await customdAutoUpload(messageLog, 'messageLog', []);
             // await customdAutoUpload(institutePayment, 'institutePayment', []);
@@ -672,6 +679,6 @@ module.exports = function(app) {
     if (process.env.NODE_ENV == 'test') {
         // initTest()
     } else {
-        init()
+        // init()
     }
 };

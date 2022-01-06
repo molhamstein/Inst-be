@@ -28,6 +28,10 @@ module.exports = function(Podcast) {
                     follower
                 } = models
 
+                const {
+                    admin
+                } = models
+
                 let mainSubcategory = await subCategory.findById(data['subcategoryId'])
 
                 if (mainSubcategory == null) {
@@ -77,13 +81,9 @@ module.exports = function(Podcast) {
 
                 mainPodcast = await podcast.findById(mainPodcast.id)
 
-                let followerDate = await follower.find({ "where": { "youtuberId": mainPodcast.youtuberId } });
-                let notificationData = []
-                followerDate.forEach(element => {
-                    notificationData.push({ "ownerId": element.ownerId, "podcastId": mainPodcast.id });
-                });
-                Podcast.app.models.notification.createGelpNotifications(notificationData, null, 6)
-
+                let adminUser = await admin.findOne();
+                let userData = [{ "ownerId": adminUser.id, "typeOwner": "ADMIN", "podcastId": mainPodcast.id }];
+                Podcast.app.models.notification.createGelpNotifications(userData, null, 8)
                 callback(null, mainPodcast);
             })
         } catch (error) {
@@ -294,16 +294,22 @@ module.exports = function(Podcast) {
     Podcast.publishPodcast = async function(id, req, callback) {
         try {
 
-            var youtuberId = req.accessToken.userId;
             await Podcast.app.dataSources.mainDB.transaction(async models => {
                 const {
                     podcast
                 } = models
-                let oldPodcast = await podcast.findById(id);
-                if (oldPodcast == null || oldPodcast.youtuberId != youtuberId) {
-                    throw Podcast.app.err.global.authorization()
-                }
-                await oldPodcast.updateAttribute("status", "active");
+                const {
+                    follower
+                } = models
+                let mainPodcast = await podcast.findById(id);
+                let followerDate = await follower.find({ "where": { "youtuberId": mainPodcast.youtuberId } });
+                let notificationData = []
+                followerDate.forEach(element => {
+                    notificationData.push({ "ownerId": element.ownerId, "podcastId": mainPodcast.id });
+                });
+                Podcast.app.models.notification.createGelpNotifications(notificationData, null, 6)
+
+                await mainPodcast.updateAttribute("status", "active");
                 callback(null, "ok")
             })
         } catch (err) {

@@ -182,7 +182,7 @@
         "status": {
             "type": "string",
             "required": true,
-            "default": "active"
+            "default": "pending"
         },
         "fiveRate": {
             "type": "number",
@@ -223,6 +223,31 @@
             "type": "number",
             "required": true,
             "default": 0
+        },
+        "canCreatePromoCode": {
+            "type": "boolean",
+            "required": true,
+            "default": true
+        },
+        "maxUsagePromoCode": {
+            "type": "number",
+            "required": true,
+            "default": true
+        },
+        "typePromoCode": {
+            "type": "string",
+            "required": true,
+            "default": true
+        },
+        "valuePromoCode": {
+            "type": "number",
+            "required": true,
+            "default": true
+        },
+        "validDaysPromoCode": {
+            "type": "number",
+            "required": true,
+            "default": true
         },
         "createdAt": {
             "type": "date",
@@ -345,12 +370,19 @@
             "principalType": "ROLE",
             "principalId": "youtuber",
             "permission": "ALLOW",
-            "property": "updateOnlineCourse"
+            "property": "makeCourseCoupon"
         },
         {
             "accessType": "EXECUTE",
             "principalType": "ROLE",
             "principalId": "youtuber",
+            "permission": "ALLOW",
+            "property": "updateOnlineCourse"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
             "permission": "ALLOW",
             "property": "publishOnlineCourse"
         },
@@ -1103,6 +1135,35 @@
             "http": [{
                 "path": "/homePageCourse",
                 "verb": "get"
+            }]
+        },
+        "makeCourseCoupon": {
+            "accepts": [{
+                    "arg": "id",
+                    "type": "number",
+                    "required": true,
+                    "description": "",
+                    "http": {
+                        "source": "path"
+                    }
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "type": "array",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/makeCourseCoupon",
+                "verb": "post"
             }]
         }
     }

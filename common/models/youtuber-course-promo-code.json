@@ -1,0 +1,166 @@
+{
+    "name": "youtuberCoursePromoCode",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "replaceOnPUT": false,
+    "scope": {
+        "include": [{
+            "relation": "youtuber"
+        }]
+    },
+    "properties": {
+        "courseId": {
+            "type": "number",
+            "required": true
+        },
+        "youtuberId": {
+            "type": "number",
+            "required": true
+        },
+        "ownerId": {
+            "type": "number",
+            "required": true
+        },
+        "promoCodeId": {
+            "type": "number",
+            "required": true
+        },
+        "reason": {
+            "type": "string",
+            "required": true
+        },
+        "type": {
+            "type": "string",
+            "required": true
+        },
+        "value": {
+            "type": "number",
+            "required": true
+        }
+    },
+    "validations": [],
+    "relations": {
+        "youtuber": {
+            "type": "belongsTo",
+            "model": "youtuber",
+            "foreignKey": "youtuberId",
+            "options": {
+                "nestRemoting": true
+            }
+        }
+    },
+    "acls": [{
+            "accessType": "*",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "DENY"
+        },
+        {
+            "accessType": "WRITE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "READ",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "getActiveCategory"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$unauthenticated",
+            "permission": "ALLOW",
+            "property": "getActiveCategory"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "activeCategory"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW",
+            "property": "deactiveCategory"
+        }
+    ],
+    "methods": {
+        "getActiveCategory": {
+            "accepts": [{
+                "arg": "filter",
+                "type": "object",
+                "required": false,
+                "description": ""
+            }],
+            "returns": [{
+                "type": "array",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/getActiveCategory",
+                "verb": "get"
+            }]
+        },
+        "activeCategory": {
+            "accepts": [{
+                "arg": "id",
+                "type": "string",
+                "required": true,
+                "description": "",
+                "http": {
+                    "source": "path"
+                }
+            }],
+            "returns": [{
+                "arg": "category",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/activeCategory",
+                "verb": "put"
+            }]
+        },
+        "deactiveCategory": {
+            "accepts": [{
+                "arg": "id",
+                "type": "string",
+                "required": true,
+                "description": "",
+                "http": {
+                    "source": "path"
+                }
+            }],
+            "returns": [{
+                "arg": "category",
+                "type": "object",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/:id/deactiveCategory",
+                "verb": "put"
+            }]
+        }
+    }
+}

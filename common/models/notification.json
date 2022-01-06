@@ -29,6 +29,11 @@
             "type": "number",
             "required": true
         },
+        "typeOwner": {
+            "type": "string",
+            "required": true,
+            "default": "YOUTUBER"
+        },
         "typeId": {
             "type": "number",
             "required": true

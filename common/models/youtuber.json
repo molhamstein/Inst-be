@@ -24,7 +24,6 @@
         "verificationToken",
         "emailVerified",
         "realm",
-        "email",
         "username"
     ],
     "properties": {
@@ -38,6 +37,10 @@
         },
         "email": {
             "type": "string"
+        },
+        "hasEmail": {
+            "type": "boolean",
+            "required": true
         },
         "socialId": {
             "type": "string"

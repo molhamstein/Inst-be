@@ -20,4 +20,43 @@ module.exports = function(Admin) {
         let loggedActiveUser = await Admin.app.query.getTransactionsReport(Admin.app, filter);
         callback(null, loggedActiveUser)
     }
+
+
+
+    Admin.getMyNotifications = async function(filter = { "where": {}, limit: 10, skip: 0 }, context, callback) {
+        try {
+            var userId = context.req.accessToken.userId;
+            if (filter.where == null) {
+                filter.where = {}
+            }
+            filter.where.ownerId = userId;
+            filter.where.ownerType = "ADMIN";
+            let notification = await Admin.app.models.notification.find(filter)
+            callback(null, notification);
+        } catch (error) {
+            callback(error)
+        }
+    }
+
+
+    Admin.seenMyNotifications = async function(context, callback) {
+        try {
+            var userId = context.req.accessToken.userId;
+            await Admin.app.models.notification.updateAll({ "ownerId": userId, "ownerType": "ADMIIN" }, { "isSeen": true })
+            callback(null, {});
+        } catch (error) {
+            callback(error)
+        }
+    }
+
+
+    Admin.getMyNewNotificationsCount = async function(context, callback) {
+        try {
+            var userId = context.req.accessToken.userId;
+            let notificationCount = await Admin.app.models.notification.count({ "ownerId": userId, "ownerType": "ADMIN", "isSeen": false })
+            callback(null, notificationCount);
+        } catch (error) {
+            callback(error)
+        }
+    }
 };

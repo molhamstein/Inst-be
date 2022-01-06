@@ -64,47 +64,48 @@ module.exports = function(Notification) {
         console.log(arrayOfObjects)
         let appNotificationData = await Notification.create(arrayOfObjects)
         console.log(appNotificationData)
+        if (arrayOfObjects[0] && arrayOfObjects[0].ownerType == "YOUTUBER") {
+            for (let index = 0; index < appNotificationData.length; index++) {
+                const element = appNotificationData[index];
+                let data = {
+                    "click_action": "FLUTTER_NOTIFICATION_CLICK",
+                    "notificationId": element.id.toString(),
+                    type: typeObject.name
+                };
+                if (element['courseId']) {
+                    data['courseId'] = element['courseId'].toString()
+                }
+                if (element['youtuberId']) {
+                    data['youtuberId'] = element['youtuberId'].toString()
+                }
+                if (element['onlineSessionId']) {
+                    data['onlineSessionId'] = element['onlineSessionId'].toString()
+                }
+                if (element['podcastId']) {
+                    data['podcastId'] = element['podcastId'].toString()
+                }
 
-        for (let index = 0; index < appNotificationData.length; index++) {
-            const element = appNotificationData[index];
-            let data = {
-                "click_action": "FLUTTER_NOTIFICATION_CLICK",
-                "notificationId": element.id.toString(),
-                type: typeObject.name
-            };
-            if (element['courseId']) {
-                data['courseId'] = element['courseId'].toString()
-            }
-            if (element['youtuberId']) {
-                data['youtuberId'] = element['youtuberId'].toString()
-            }
-            if (element['onlineSessionId']) {
-                data['onlineSessionId'] = element['onlineSessionId'].toString()
-            }
-            if (element['podcastId']) {
-                data['podcastId'] = element['podcastId'].toString()
-            }
+                let youtuberToken = await Notification.app.models.fcmToken.find({ "where": { "youtuberId": element.ownerId } })
+                let arrayYoutuberToken = []
+                for (let index = 0; index < youtuberToken.length; index++) {
+                    const elementToken = youtuberToken[index];
+                    arrayYoutuberToken.push(elementToken.token)
+                }
+                var messageObject = {
+                    notification: notificationMessage[typeObject.name]
 
-            let youtuberToken = await Notification.app.models.fcmToken.find({ "where": { "youtuberId": element.ownerId } })
-            let arrayYoutuberToken = []
-            for (let index = 0; index < youtuberToken.length; index++) {
-                const elementToken = youtuberToken[index];
-                arrayYoutuberToken.push(elementToken.token)
+                };
+                messageObject['data'] = data;
+                console.log(messageObject)
+                console.log(arrayYoutuberToken)
+                firebase.messaging().sendToDevice(arrayYoutuberToken, messageObject)
+                    .then(function(response) {
+                        console.log("Successfully sent message:", response.results[0]);
+                    })
+                    .catch(function(error) {
+                        console.log("Error sending message:", error);
+                    });
             }
-            var messageObject = {
-                notification: notificationMessage[typeObject.name]
-
-            };
-            messageObject['data'] = data;
-            console.log(messageObject)
-            console.log(arrayYoutuberToken)
-            firebase.messaging().sendToDevice(arrayYoutuberToken, messageObject)
-                .then(function(response) {
-                    console.log("Successfully sent message:", response.results[0]);
-                })
-                .catch(function(error) {
-                    console.log("Error sending message:", error);
-                });
         }
     }
 

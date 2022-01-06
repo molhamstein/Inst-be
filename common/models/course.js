@@ -146,9 +146,6 @@ module.exports = function(Course) {
                 } = models
 
                 let oldCourse = await course.findById(id);
-                if (oldCourse == null || oldCourse.youtuberId != youtuberId) {
-                    throw Course.app.err.global.authorization()
-                }
                 await oldCourse.updateAttribute("status", "active");
 
                 let followerDate = await follower.find({ "where": { "youtuberId": oldCourse.youtuberId } });
@@ -191,7 +188,12 @@ module.exports = function(Course) {
                 const {
                     youtuberCourse
                 } = models
-
+                const {
+                    config
+                } = models
+                const {
+                    admin
+                } = models
                 let mainYouTuber = await youtuber.findById(youtuberId);
                 let oldCourse;
                 let isNewCourse = true;
@@ -225,6 +227,7 @@ module.exports = function(Course) {
                         "courseSegment": data.courseSegment,
                         "imageId": data.imageId,
                         "videoId": data.videoId,
+                        "canCreatePromoCode": data.canCreatePromoCode,
                         "unitsNumber": units.length,
                         "requirements": data.requirements,
                         "sessionsNumber": sessionsNumber,
@@ -232,6 +235,7 @@ module.exports = function(Course) {
                     }
                     await oldCourse.updateAttributes(updateData);
                 } else {
+                    let mainConfig = await config.findOne({ "where": { "type": "COURSE_PROMO_CODE" } })
                     data['youtuberId'] = data['youtuberId'] ? data['youtuberId'] : youtuberId;
                     data['isStarted'] = true
                     data['maxCountStudent'] = 999999999
@@ -245,6 +249,10 @@ module.exports = function(Course) {
                     data['unitsNumber'] = units.length
                     data['sessionsNumber'] = sessionsNumber
                     data["isOnlineCourse"] = true;
+                    data["maxUsagePromoCode"] = mainConfig.maxUsage;
+                    data["typePromoCode"] = mainConfig.typePromoCode;
+                    data["valuePromoCode"] = mainConfig.value;
+                    data["validDaysPromoCode"] = mainConfig.validDays;
 
                     let mainSubcategory = await subCategory.findById(data['subcategoryId'])
 
@@ -271,9 +279,9 @@ module.exports = function(Course) {
                     let mainUnit;
                     if (element.id != null) {
                         mainUnit = await unit.findById(element.id);
-                        await mainUnit.updateAttributes({ "nameEn": element.nameEn, "nameAr": element.nameEn, "onlineSessionsCount": element.onlineSessions ? element.onlineSessions.length : 0 })
+                        await mainUnit.updateAttributes({ "nameEn": element.nameEn, "descriptionEn": element.descriptionEn, "descriptionAr": element.descriptionEn, "nameAr": element.nameEn, "onlineSessionsCount": element.onlineSessions ? element.onlineSessions.length : 0 })
                     } else {
-                        mainUnit = await unit.create({ "courseId": oldCourse.id, "nameEn": element.nameEn, "nameAr": element.nameEn, "onlineSessionsCount": element.onlineSessions ? element.onlineSessions.length : 0 })
+                        mainUnit = await unit.create({ "courseId": oldCourse.id, "nameEn": element.nameEn, "nameAr": element.nameEn, "descriptionEn": element.descriptionEn, "descriptionAr": element.descriptionEn, "onlineSessionsCount": element.onlineSessions ? element.onlineSessions.length : 0 })
                     }
 
                     // async.forEachOf(element.onlineSessions, async function (videoElement, index, callback) {
@@ -311,6 +319,13 @@ module.exports = function(Course) {
                         });
                     });
                     Course.app.models.notification.createGelpNotifications(notificationData, null, 8)
+
+                }
+
+                if (isNewCourse) {
+                    let adminUser = await admin.findOne();
+                    let userData = [{ "ownerId": adminUser.id, "typeOwner": "ADMIN", "courseId": mainCourse.id }];
+                    Course.app.models.notification.createGelpNotifications(userData, null, 7)
 
                 }
                 mainCallback(null, mainCourse)
@@ -365,9 +380,13 @@ module.exports = function(Course) {
             mainCourse['nextLesson'] = null;
             mainCourse['isCompleted'] = false;
             mainCourse['rate'] = null;
+            mainCourse['promoCode'] = null;
+
 
 
             if (userId) {
+
+                mainCourse['promoCode'] = await Course.app.models.youtuberCoursePromoCode.findOne({ "where": { "courseId": id, "ownerId": userId } })
                 mainCourse['rate'] = await Course.app.models.rate.findOne({ "where": { "courseId": id, "youtuberId": userId } })
                 let mainYoutuberCourse = await Course.app.models.youtuberCourse.findOne({ "where": { "courseId": id, "youtuberId": userId } })
                 if (mainYoutuberCourse || userId == mainCourse.youtuberId) {
@@ -906,5 +925,42 @@ module.exports = function(Course) {
 
         })
     }
+
+
+    Course.makeCourseCoupon = async function(id, req, callback) {
+        try {
+            let userId = req.accessToken.userId;
+            await Course.app.dataSources.mainDB.transaction(async models => {
+                const {
+                    course
+                } = models
+                const {
+                    promoCode
+                } = models
+                let mainCourse = await course.findById(id);
+                if (mainCourse == null)
+                    throw Course.app.err.notFound.courseNotFound()
+
+                var validDate = new Date();
+                validDate.setDate(validDate.getDate() + mainCourse.validDaysPromoCode);
+                let code = await Course.app.models.promoCode.getValidPromocode()
+                let data = {
+                    "code": code,
+                    "inviterId": userId,
+                    "maxUsage": mainCourse.maxUsagePromoCode,
+                    "validDate": validDate,
+                    "typeCode": "COUPON",
+                    "courseId": id,
+                    "type": mainCourse.typePromoCode,
+                    "value": mainCourse.valuePromoCode
+                }
+                let newPromoCode = await promoCode.create(data);
+                callback(null, newPromoCode)
+            })
+        } catch (error) {
+            callback(error)
+        }
+    }
+
 
 };

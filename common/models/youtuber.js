@@ -66,13 +66,6 @@ module.exports = function(Youtuber) {
                 let url = config.domain + config.restApiRoot + "/youtuber/activate?access_token" + newToken.id
                 var html_body = renderer({ "url": url, "name": name });
                 console.log(html_body)
-                    // await Users.app.models.Email.send({
-                    //   to: email, //"besmayahcity@gmail.com", //superAdminUser ? superAdminUser.email : "gelpcourse@gmail.com",
-                    //   from: "anas@s.com",
-                    //   subject: 'activate account',
-                    //   html: html_body
-                    // })
-
                 callback(null, newYoutuber)
             })
         } catch (error) {
@@ -146,7 +139,8 @@ module.exports = function(Youtuber) {
             var socialId = data.socialId;
             var image = data.image;
             var phonenumber = data.phonenumber;
-            var email = data.email;
+            var hasEmail = data.email ? true : false;
+            var email = data.email ? data.email : socialId + "@" + type + ".com";
             var name = data.name;
             var gender = data.gender;
             var birthdate = data.birthdate;
@@ -168,7 +162,7 @@ module.exports = function(Youtuber) {
                     })
                 }
                 let mainUser = await Youtuber.app.models.user.create({ "imageId": media ? media.id : null, "email": email, "name": name, gender, birthdate })
-                youtuber = await Youtuber.create({ "socialId": socialId, "email": email, "typeLogIn": type, "userId": mainUser.id, "password": "000000" })
+                youtuber = await Youtuber.create({ "socialId": socialId, hasEmail: hasEmail, "email": email, "typeLogIn": type, "userId": mainUser.id, "password": "000000" })
                 var newRoleMapping = await Youtuber.app.models.RoleMapping.create({
                     "principalType": "youtuber",
                     "principalId": youtuber.id,
@@ -609,6 +603,7 @@ module.exports = function(Youtuber) {
                 }
                 youtuberData = await Youtuber.find(filter)
             }
+            console.log(youtuberData)
             callback(null, youtuberData)
         } catch (error) {
             callback(error)
@@ -646,6 +641,7 @@ module.exports = function(Youtuber) {
                 filter.where = {}
             }
             filter.where.ownerId = userId;
+            filter.where.ownerType = "YOUTUBER";
             let notification = await Youtuber.app.models.notification.find(filter)
             callback(null, notification);
         } catch (error) {
@@ -657,7 +653,7 @@ module.exports = function(Youtuber) {
     Youtuber.seenMyNotifications = async function(context, callback) {
         try {
             var userId = context.req.accessToken.userId;
-            await Youtuber.app.models.notification.updateAll({ "ownerId": userId }, { "isSeen": true })
+            await Youtuber.app.models.notification.updateAll({ "ownerId": userId, "ownerType": "YOUTUBER" }, { "isSeen": true })
 
             callback(null, {});
         } catch (error) {
@@ -669,7 +665,7 @@ module.exports = function(Youtuber) {
     Youtuber.getMyNewNotificationsCount = async function(context, callback) {
         try {
             var userId = context.req.accessToken.userId;
-            let notificationCount = await Youtuber.app.models.notification.count({ "ownerId": userId, "isSeen": false })
+            let notificationCount = await Youtuber.app.models.notification.count({ "ownerId": userId, "isSeen": false, "ownerType": "YOUTUBER" })
             callback(null, notificationCount);
         } catch (error) {
             callback(error)

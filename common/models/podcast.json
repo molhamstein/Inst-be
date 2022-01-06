@@ -99,7 +99,13 @@
             }
         }
     },
-    "acls": [],
+    "acls": [{
+        "accessType": "EXECUTE",
+        "principalType": "ROLE",
+        "principalId": "super-admin",
+        "permission": "ALLOW",
+        "property": "publishPodcast"
+    }],
     "methods": {
         "addPodcast": {
             "accepts": [{

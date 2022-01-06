@@ -1,0 +1,147 @@
+{
+    "name": "promoCode",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "replaceOnPUT": false,
+    "properties": {
+        "title": {
+            "type": "string",
+            "required": false
+        },
+        "code": {
+            "type": "string",
+            "required": true
+        },
+        "inviterId": {
+            "type": "number",
+            "required": false
+        },
+        "type": {
+            "type": "string",
+            "required": false
+        },
+        "value": {
+            "type": "number",
+            "required": false
+        },
+        "maxUsage": {
+            "type": "number",
+            "required": true
+        },
+        "currentUsage": {
+            "type": "number",
+            "required": true,
+            "default": 0
+        },
+        "validDate": {
+            "type": "date",
+            "required": true
+        },
+        "typeCode": {
+            "type": "string",
+            "required": true
+        },
+        "courseId": {
+            "type": "number",
+            "required": false
+        },
+        "inviterBalance": {
+            "type": "number",
+            "required": false
+        },
+        "userBalance": {
+            "type": "number",
+            "required": false
+        },
+        "createdAt": {
+            "type": "date",
+            "required": true,
+            "defaultFn": "now"
+        }
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [{
+            "accessType": "*",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "DENY"
+        },
+        {
+            "accessType": "WRITE",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "READ",
+            "principalType": "ROLE",
+            "principalId": "super-admin",
+            "permission": "ALLOW"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$authenticated",
+            "permission": "ALLOW",
+            "property": "makeInvitationCoupon"
+        },
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$everyone",
+            "permission": "ALLOW",
+            "property": "checkValidPromocode"
+        }
+    ],
+    "methods": {
+        "makeInvitationCoupon": {
+            "accepts": [{
+                "arg": "req",
+                "type": "object",
+                "http": {
+                    "source": "req"
+                }
+            }],
+            "returns": [{
+                "type": "array",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/makeInvitationCoupon",
+                "verb": "post"
+            }]
+        },
+        "checkValidPromocode": {
+            "accepts": [{
+                    "arg": "code",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "arg": "req",
+                    "type": "object",
+                    "required": true,
+                    "http": {
+                        "source": "req"
+                    }
+                }
+            ],
+            "returns": [{
+                "type": "array",
+                "root": true,
+                "description": ""
+            }],
+            "description": "",
+            "http": [{
+                "path": "/checkValidPromocode",
+                "verb": "get"
+            }]
+        }
+    }
+}

@@ -23,6 +23,14 @@
             "type": "string",
             "required": true
         },
+        "descriptionEn": {
+            "type": "string",
+            "required": true
+        },
+        "descriptionAr": {
+            "type": "string",
+            "required": true
+        },
         "onlineSessionsCount": {
             "type": "number",
             "required": true

@@ -449,5 +449,18 @@
     "fcmToken": {
         "dataSource": "mainDB",
         "public": true
+    },
+    "config": {
+        "dataSource": "mainDB",
+        "public": true
+    },
+    "promoCode": {
+        "dataSource": "mainDB",
+        "public": true
+    },
+    "youtuberCoursePromoCode": {
+        "dataSource": "mainDB",
+        "public": true
     }
+
 }
