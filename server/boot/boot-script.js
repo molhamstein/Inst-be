@@ -556,7 +556,7 @@ module.exports = function(app) {
             // await customdAutoUpload(country, 'country', countryData);
 
             // await customdAutoUpload(SubCategory, 'subCategory', []);
-            await customdAutoUpload(fcmToken, 'fcmToken', []);
+            // await customdAutoUpload(fcmToken, 'fcmToken', []);
             // await customdAutoUpload(Property, 'property', []);
             // await customdAutoUpload(User, 'user', []);
             // await customdAutoUpload(userInstitute, 'userInstitute', []);
@@ -580,7 +580,7 @@ module.exports = function(app) {
             // await customdAutoUpload(teacherSubcategory, 'teacherSubcategory', []);
             // await customdAutoUpload(waitingList, 'waitingList', []);
             // await customdAutoUpload(waitingListStudent, 'waitingListStudent', []);
-            await customdAutoUpload(course, 'course', []);
+            // await customdAutoUpload(course, 'course', []);
             // await customdAutoUpload(supply, 'supply', []);
             // await customdAutoUpload(courseImages, 'courseImages', []);
             // await customdAutoUpload(session, 'session', []);
@@ -679,6 +679,6 @@ module.exports = function(app) {
     if (process.env.NODE_ENV == 'test') {
         // initTest()
     } else {
-        // init()
+        init()
     }
 };
