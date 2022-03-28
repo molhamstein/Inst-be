@@ -28,7 +28,7 @@
     "httpMode": false,
     "certConfig": {
         "path": " /etc/cloudflare/cert/",
-        "key": "privkey.pem",
+        "key": "key.pem",
         "cert": "cert.pem",
         "ca": [],
         "requestCert": false,
