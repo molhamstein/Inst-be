@@ -27,7 +27,7 @@
     },
     "httpMode": false,
     "certConfig": {
-        "path": "/etc/letsencrypt/live/gelp.academy/",
+        "path": " /etc/cloudflare/cert/",
         "key": "privkey.pem",
         "cert": "cert.pem",
         "ca": [],
