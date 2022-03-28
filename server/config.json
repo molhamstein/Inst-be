@@ -27,7 +27,7 @@
     },
     "httpMode": false,
     "certConfig": {
-        "path": " /etc/cloudflare/cert/",
+        "path": "/etc/cloudflare/cert/",
         "key": "key.pem",
         "cert": "cert.pem",
         "ca": [],
