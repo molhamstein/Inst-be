@@ -543,77 +543,77 @@ module.exports = function(app) {
     async function init() {
         try {
 
-            await customdAutoUpload(Category, 'category', categoryData).then(result => {})
-            await customdAutoUpload(Admin, 'admin', adminData);
-            await customdAutoUpload(Role, 'Role', roleData);
-            await customdAutoUpload(RoleMapping, 'RoleMapping', []);
-            await addRoleToadmin();
-            await customdAutoUpload(AccessToken, 'AccessToken', []);
-            await customdAutoUpload(MultiAccessToken, 'MultiAccessToken', []);
-            await customdAutoUpload(ACL, 'ACL', []);
-            await customdAutoUpload(Subject, 'subject', subjectData);
-            await customdAutoUpload(youtuber, 'youtuber', []);
-            await customdAutoUpload(country, 'country', countryData);
+            // await customdAutoUpload(Category, 'category', categoryData).then(result => {})
+            // await customdAutoUpload(Admin, 'admin', adminData);
+            // await customdAutoUpload(Role, 'Role', roleData);
+            // await customdAutoUpload(RoleMapping, 'RoleMapping', []);
+            // await addRoleToadmin();
+            // await customdAutoUpload(AccessToken, 'AccessToken', []);
+            // await customdAutoUpload(MultiAccessToken, 'MultiAccessToken', []);
+            // await customdAutoUpload(ACL, 'ACL', []);
+            // await customdAutoUpload(Subject, 'subject', subjectData);
+            // await customdAutoUpload(youtuber, 'youtuber', []);
+            // await customdAutoUpload(country, 'country', countryData);
 
-            await customdAutoUpload(SubCategory, 'subCategory', []);
-            await customdAutoUpload(fcmToken, 'fcmToken', []);
-            await customdAutoUpload(Property, 'property', []);
-            await customdAutoUpload(User, 'user', []);
-            await customdAutoUpload(userInstitute, 'userInstitute', []);
-            await customdAutoUpload(Media, 'media', []);
-            await customdAutoUpload(Institute, 'institute', []);
-            await customdAutoUpload(restriction, 'restriction', []);
-            await customdAutoUpload(InstitutesImages, 'institutesImages', []);
-            await customdAutoUpload(instituteAdmin, 'instituteAdmin', []);
-            await customdAutoUpload(Branch, 'branch', []);
-            await customdAutoUpload(branchImages, 'branchImages', []);
-            await customdAutoUpload(branchAdmin, 'branchAdmin', []);
-            await customdAutoUpload(venue, 'venue', []);
-            await customdAutoUpload(venueProperties, 'venueProperties', []);
-            await customdAutoUpload(venueImages, 'venueImages', []);
-            await customdAutoUpload(student, 'student', []);
-            await customdAutoUpload(verificationCode, 'verificationCode', []);
-            await customdAutoUpload(studentPayment, 'studentPayment', []);
-            await customdAutoUpload(studentNote, 'studentNote', []);
-            await customdAutoUpload(teacher, 'teacher', []);
-            await customdAutoUpload(teacherNote, 'teacherNote', []);
-            await customdAutoUpload(teacherSubcategory, 'teacherSubcategory', []);
-            await customdAutoUpload(waitingList, 'waitingList', []);
-            await customdAutoUpload(waitingListStudent, 'waitingListStudent', []);
-            await customdAutoUpload(course, 'course', []);
-            await customdAutoUpload(supply, 'supply', []);
-            await customdAutoUpload(courseImages, 'courseImages', []);
-            await customdAutoUpload(session, 'session', []);
-            await customdAutoUpload(teacherCourse, 'teacherCourse', []);
-            await customdAutoUpload(teacherCoursePayment, 'teacherCoursePayment', []);
-            await customdAutoUpload(teacherPayment, 'teacherPayment', []);
-            await customdAutoUpload(studentCourse, 'studentCourse', []);
-            await customdAutoUpload(packageStudent, 'packageStudent', []);
-            await customdAutoUpload(packageCourse, 'packageCourse', []);
-            await customdAutoUpload(studentSession, 'studentSession', []);
-            await customdAutoUpload(packageStudentPayment, 'packageStudentPayment', []);
+            // await customdAutoUpload(SubCategory, 'subCategory', []);
+            // await customdAutoUpload(fcmToken, 'fcmToken', []);
+            // await customdAutoUpload(Property, 'property', []);
+            // await customdAutoUpload(User, 'user', []);
+            // await customdAutoUpload(userInstitute, 'userInstitute', []);
+            // await customdAutoUpload(Media, 'media', []);
+            // await customdAutoUpload(Institute, 'institute', []);
+            // await customdAutoUpload(restriction, 'restriction', []);
+            // await customdAutoUpload(InstitutesImages, 'institutesImages', []);
+            // await customdAutoUpload(instituteAdmin, 'instituteAdmin', []);
+            // await customdAutoUpload(Branch, 'branch', []);
+            // await customdAutoUpload(branchImages, 'branchImages', []);
+            // await customdAutoUpload(branchAdmin, 'branchAdmin', []);
+            // await customdAutoUpload(venue, 'venue', []);
+            // await customdAutoUpload(venueProperties, 'venueProperties', []);
+            // await customdAutoUpload(venueImages, 'venueImages', []);
+            // await customdAutoUpload(student, 'student', []);
+            // await customdAutoUpload(verificationCode, 'verificationCode', []);
+            // await customdAutoUpload(studentPayment, 'studentPayment', []);
+            // await customdAutoUpload(studentNote, 'studentNote', []);
+            // await customdAutoUpload(teacher, 'teacher', []);
+            // await customdAutoUpload(teacherNote, 'teacherNote', []);
+            // await customdAutoUpload(teacherSubcategory, 'teacherSubcategory', []);
+            // await customdAutoUpload(waitingList, 'waitingList', []);
+            // await customdAutoUpload(waitingListStudent, 'waitingListStudent', []);
+            // await customdAutoUpload(course, 'course', []);
+            // await customdAutoUpload(supply, 'supply', []);
+            // await customdAutoUpload(courseImages, 'courseImages', []);
+            // await customdAutoUpload(session, 'session', []);
+            // await customdAutoUpload(teacherCourse, 'teacherCourse', []);
+            // await customdAutoUpload(teacherCoursePayment, 'teacherCoursePayment', []);
+            // await customdAutoUpload(teacherPayment, 'teacherPayment', []);
+            // await customdAutoUpload(studentCourse, 'studentCourse', []);
+            // // await customdAutoUpload(packageStudent, 'packageStudent', []);
+            // // await customdAutoUpload(packageCourse, 'packageCourse', []);
+            // await customdAutoUpload(studentSession, 'studentSession', []);
+            // // await customdAutoUpload(packageStudentPayment, 'packageStudentPayment', []);
             await customdAutoUpload(notification, 'notification', []);
             await customdAutoUpload(notificationType, 'notificationType', notificationTypeData);
             await customdAutoUpload(config, 'config', []);
             await customdAutoUpload(promoCode, 'promoCode', []);
             await customdAutoUpload(youtuberCoursePromoCode, 'youtuberCoursePromoCode', [])
 
-            await customdAutoUpload(transaction, 'transaction', []);
-            await customdAutoUpload(messageLog, 'messageLog', []);
-            await customdAutoUpload(institutePayment, 'institutePayment', []);
-            await customdAutoUpload(tag, 'tag', []);
-            await customdAutoUpload(studentTag, 'studentTag', []);
-            await customdAutoUpload(unit, 'unit', []);
-            await customdAutoUpload(onlineSession, 'onlineSession', []);
-            await customdAutoUpload(youtuberCourse, 'youtuberCourse', []);
-            await customdAutoUpload(onlineSessionWatch, 'onlineSessionWatch', []);
-            await customdAutoUpload(podcast, 'podcast', [])
-            await customdAutoUpload(podcastSubscribe, 'podcastSubscribe', [])
-            await customdAutoUpload(rate, 'rate', [])
-            await customdAutoUpload(follower, 'follower', [])
-            await customdAutoUpload(invitationCode, 'invitationCode', [])
-            await customdAutoUpload(levels, 'levels', [])
-            await customdAutoUpload(logged, 'logged', []);
+            // await customdAutoUpload(transaction, 'transaction', []);
+            // await customdAutoUpload(messageLog, 'messageLog', []);
+            // await customdAutoUpload(institutePayment, 'institutePayment', []);
+            // await customdAutoUpload(tag, 'tag', []);
+            // await customdAutoUpload(studentTag, 'studentTag', []);
+            // await customdAutoUpload(unit, 'unit', []);
+            // await customdAutoUpload(onlineSession, 'onlineSession', []);
+            // await customdAutoUpload(youtuberCourse, 'youtuberCourse', []);
+            // await customdAutoUpload(onlineSessionWatch, 'onlineSessionWatch', []);
+            // await customdAutoUpload(podcast, 'podcast', [])
+            // await customdAutoUpload(podcastSubscribe, 'podcastSubscribe', [])
+            // await customdAutoUpload(rate, 'rate', [])
+            // await customdAutoUpload(follower, 'follower', [])
+            // await customdAutoUpload(invitationCode, 'invitationCode', [])
+            // await customdAutoUpload(levels, 'levels', [])
+            // await customdAutoUpload(logged, 'logged', []);
 
 
 
