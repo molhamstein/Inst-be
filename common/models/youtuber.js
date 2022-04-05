@@ -46,7 +46,8 @@ module.exports = function(Youtuber) {
                 var newYoutuber = await youtuber.create({
                     "userId": userObj.id,
                     "password": password,
-                    "email": email
+                    "email": email,
+                    "hasEmail": true
                 });
 
                 var newRoleMapping = await RoleMapping.create({
