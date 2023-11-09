@@ -1,29 +1,26 @@
 {
-    "restApiRoot": "/api",
-    "host": "192.168.1.123",
-    "domain": "http://192.168.1.123:3030",
-    "siteDomain": "http://192.168.1.123:3030",
-    "thumbUrl": "C:/ffmpeg/x32/",
-    "programFFmpegName": [
-        "ffmpeg.exe",
-        "ffprobe.exe"
-    ],
-    "port": 3030,
-    "remoting": {
-        "context": false,
-        "rest": {
-            "handleErrors": false,
-            "normalizeHttpPath": false,
-            "xml": false
-        },
-        "json": {
-            "strict": false,
-            "limit": "100kb"
-        },
-        "urlencoded": {
-            "extended": true,
-            "limit": "100kb"
-        },
-        "cors": false
-    }
+  "restApiRoot": "/api",
+  "host": "0.0.0.0",
+  "domain": "http://localhost:3000",
+  "siteDomain": "http://localhost:3000",
+  "thumbUrl": "C:/ffmpeg/x32/",
+  "programFFmpegName": ["ffmpeg.exe", "ffprobe.exe"],
+  "port": 3000,
+  "remoting": {
+    "context": false,
+    "rest": {
+      "handleErrors": false,
+      "normalizeHttpPath": false,
+      "xml": false
+    },
+    "json": {
+      "strict": false,
+      "limit": "100kb"
+    },
+    "urlencoded": {
+      "extended": true,
+      "limit": "100kb"
+    },
+    "cors": false
+  }
 }

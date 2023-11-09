@@ -1,37 +1,35 @@
 {
-    "restApiRoot": "/api",
-    "host": "0.0.0.0",
-    "domain": "https://gelp.academy:3000",
-    "siteDomain": "https://gelp.academy:3000",
-    "programFFmpegName": [
-        "ffmpeg.exe",
-        "ffprobe.exe"
-    ],
-    "port": 3000,
-    "remoting": {
-        "context": false,
-        "rest": {
-            "handleErrors": false,
-            "normalizeHttpPath": false,
-            "xml": false
-        },
-        "json": {
-            "strict": false,
-            "limit": "100kb"
-        },
-        "urlencoded": {
-            "extended": true,
-            "limit": "100kb"
-        },
-        "cors": false
+  "restApiRoot": "/api",
+  "host": "0.0.0.0",
+  "domain": "http://localhost:3000",
+  "siteDomain": "http://localhost:3000",
+  "thumbUrl": "C:/ffmpeg/x32/",
+  "programFFmpegName": ["ffmpeg.exe", "ffprobe.exe"],
+  "port": 3000,
+  "remoting": {
+    "context": false,
+    "rest": {
+      "handleErrors": false,
+      "normalizeHttpPath": false,
+      "xml": false
     },
-    "httpMode": false,
-    "certConfig": {
-        "path": "/etc/cloudflare/cert/",
-        "key": "key.pem",
-        "cert": "cert.pem",
-        "ca": [],
-        "requestCert": false,
-        "rejectUnauthorized": false
-    }
+    "json": {
+      "strict": false,
+      "limit": "100kb"
+    },
+    "urlencoded": {
+      "extended": true,
+      "limit": "100kb"
+    },
+    "cors": false
+  },
+  "httpMode": false,
+  "certConfig": {
+    "path": "/etc/cloudflare/cert/",
+    "key": "key.pem",
+    "cert": "cert.pem",
+    "ca": [],
+    "requestCert": false,
+    "rejectUnauthorized": false
+  }
 }

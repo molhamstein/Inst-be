@@ -1,34 +1,36 @@
 {
-    "mainDB": {
-        "host": "127.0.0.1",
-        "database": "gelp",
-        "username": "root",
-        "password": "g2@eElp3H!32o",
-        "name": "mainDB",
-        "connector": "mysql",
-        "allowExtendedOperators": true
-    },
-    "email": {
-        "name": "email",
-        "connector": "mail",
-        "transports": [{
-            "type": "smtp",
-            "host": "smtp.gmail.com",
-            "secure": true,
-            "port": 465,
-            "tls": {
-                "rejectUnauthorized": false
-            },
-            "auth": {
-                "user": "gelpcourse@gmail.com",
-                "pass": "dxsj?7DA7_EGTku_"
-            }
-        }]
-    },
-    "files": {
-        "name": "files",
-        "connector": "loopback-component-storage",
-        "provider": "filesystem",
-        "root": "../MGMTImage/uploadFiles"
-    }
+  "mainDB": {
+    "host": "127.0.0.1",
+    "database": "gelp",
+    "username": "root",
+    "password": "",
+    "name": "mainDB",
+    "connector": "mysql",
+    "allowExtendedOperators": true
+  },
+  "email": {
+    "name": "email",
+    "connector": "mail",
+    "transports": [
+      {
+        "type": "smtp",
+        "host": "smtp.gmail.com",
+        "secure": true,
+        "port": 465,
+        "tls": {
+          "rejectUnauthorized": false
+        },
+        "auth": {
+          "user": "gelpcourse@gmail.com",
+          "pass": "dxsj?7DA7_EGTku_"
+        }
+      }
+    ]
+  },
+  "files": {
+    "name": "files",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "./MGMTImage/uploadFiles"
+  }
 }

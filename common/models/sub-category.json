@@ -1,328 +1,363 @@
 {
-    "name": "subCategory",
-    "base": "PersistedModel",
-    "idInjection": true,
-    "options": {
-        "validateUpsert": true
+  "name": "subCategory",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "replaceOnPUT": false,
+  "scope": {
+    "include": [
+      {
+        "relation": "subject"
+      },
+      {
+        "relation": "subCategory"
+      },
+      {
+        "relation": "media"
+      }
+    ]
+  },
+  "properties": {
+    "nameEn": {
+      "type": "string",
+      "required": true
     },
-    "replaceOnPUT": false,
-    "scope": {
-        "include": [{
-                "relation": "subject"
-            },
-            {
-                "relation": "subCategory"
-            },
-            {
-                "relation": "media"
-            }
-        ]
+    "nameAr": {
+      "type": "string",
+      "required": true
     },
-    "properties": {
-        "nameEn": {
-            "type": "string",
-            "required": true
-        },
-        "nameAr": {
-            "type": "string",
-            "required": true
-        },
-        "subjectId": {
-            "type": "number"
-        },
-        "subcategoryId": {
-            "type": "number"
-        },
-        "mediaId": {
-            "type": "number"
-        },
-        "status": {
-            "type": "string",
-            "required": true,
-            "default": "active"
-        },
-        "isFeatured": {
-            "type": "boolean",
-            "required": true,
-            "default": false
-        },
-        "level": {
-            "type": "number",
-            "required": true,
-            "default": 1
-        },
-        "code": {
-            "type": "string",
-            "required": true
-        },
-        "courseCount": {
-            "type": "number",
-            "required": true,
-            "default": 0
-        },
-        "podcastCount": {
-            "type": "number",
-            "required": true,
-            "default": 0
-        },
-        "createdAt": {
-            "type": "date",
-            "required": true,
-            "defaultFn": "now"
-        }
+    "subjectId": {
+      "type": "number"
     },
-    "validations": [],
-    "relations": {
-        "subject": {
-            "type": "belongsTo",
-            "model": "subject",
-            "foreignKey": "subjectId",
-            "options": {
-                "nestRemoting": true
-            }
-        },
-        "media": {
-            "type": "belongsTo",
-            "model": "media",
-            "foreignKey": "mediaId",
-            "options": {
-                "nestRemoting": true
-            }
-        },
-        "subCategory": {
-            "type": "belongsTo",
-            "model": "subCategory",
-            "foreignKey": "subcategoryId",
-            "options": {
-                "nestRemoting": true
-            }
-        }
+    "subcategoryId": {
+      "type": "number"
     },
-    "acls": [{
-            "accessType": "*",
-            "principalType": "ROLE",
-            "principalId": "$everyone",
-            "permission": "DENY"
-        },
-        {
-            "accessType": "WRITE",
-            "principalType": "ROLE",
-            "principalId": "super-admin",
-            "permission": "ALLOW"
-        },
-        {
-            "accessType": "READ",
-            "principalType": "ROLE",
-            "principalId": "super-admin",
-            "permission": "ALLOW"
-        },
-        {
-            "accessType": "EXECUTE",
-            "principalType": "ROLE",
-            "principalId": "super-admin",
-            "permission": "ALLOW",
-            "property": "activeSubcategory"
-        },
-        {
-            "accessType": "EXECUTE",
-            "principalType": "ROLE",
-            "principalId": "super-admin",
-            "permission": "ALLOW",
-            "property": "addSubcategory"
-        },
-        {
-            "accessType": "EXECUTE",
-            "principalType": "ROLE",
-            "principalId": "super-admin",
-            "permission": "ALLOW",
-            "property": "deactiveSubcategory"
-        },
-        {
-            "accessType": "EXECUTE",
-            "principalType": "ROLE",
-            "principalId": "$authenticated",
-            "permission": "ALLOW",
-            "property": "getActiveSubcategoryBySubject"
-        },
-        {
-            "accessType": "EXECUTE",
-            "principalType": "ROLE",
-            "principalId": "$authenticated",
-            "permission": "ALLOW",
-            "property": "getActiveSubcategoryBySubcategory"
-        },
-        {
-            "accessType": "EXECUTE",
-            "principalType": "ROLE",
-            "principalId": "$unauthenticated",
-            "permission": "ALLOW",
-            "property": "getActiveSubcategoryBySubcategory"
-        },
-        {
-            "accessType": "EXECUTE",
-            "principalType": "ROLE",
-            "principalId": "$authenticated",
-            "permission": "ALLOW",
-            "property": "getActiveSubcategory"
-        },
-        {
-            "accessType": "EXECUTE",
-            "principalType": "ROLE",
-            "principalId": "$unauthenticated",
-            "permission": "ALLOW",
-            "property": "getActiveSubcategory"
-        }
-    ],
-    "methods": {
-        "addSubcategory": {
-            "accepts": [{
-                    "arg": "nameEn",
-                    "type": "string",
-                    "required": true,
-                    "description": ""
-                },
-                {
-                    "arg": "nameAr",
-                    "type": "string",
-                    "required": true,
-                    "description": ""
-                },
-                {
-                    "arg": "subcategoryId",
-                    "type": "number",
-                    "required": false,
-                    "description": ""
-                }
-            ],
-            "returns": [{
-                "arg": "result",
-                "type": "object",
-                "root": true,
-                "description": ""
-            }],
-            "description": "",
-            "http": [{
-                "path": "/addSubcategory",
-                "verb": "post"
-            }]
-        },
-        "activeSubcategory": {
-            "accepts": [{
-                "arg": "id",
-                "type": "string",
-                "required": true,
-                "description": "",
-                "http": {
-                    "source": "path"
-                }
-            }],
-            "returns": [{
-                "arg": "category",
-                "type": "object",
-                "root": true,
-                "description": ""
-            }],
-            "description": "",
-            "http": [{
-                "path": "/:id/activeSubcategory",
-                "verb": "put"
-            }]
-        },
-        "deactiveSubcategory": {
-            "accepts": [{
-                "arg": "id",
-                "type": "string",
-                "required": true,
-                "description": "",
-                "http": {
-                    "source": "path"
-                }
-            }],
-            "returns": [{
-                "arg": "category",
-                "type": "object",
-                "root": true,
-                "description": ""
-            }],
-            "description": "",
-            "http": [{
-                "path": "/:id/deactiveSubcategory",
-                "verb": "put"
-            }]
-        },
-        "getActiveSubcategoryBySubject": {
-            "accepts": [{
-                    "arg": "subjectId",
-                    "type": "number",
-                    "required": true,
-                    "description": "",
-                    "http": {
-                        "source": "path"
-                    }
-                },
-                {
-                    "arg": "filter",
-                    "type": "object",
-                    "required": false,
-                    "description": ""
-                }
-            ],
-            "returns": [{
-                "arg": "result",
-                "type": "array",
-                "root": true,
-                "description": ""
-            }],
-            "description": "",
-            "http": [{
-                "path": "/getActiveSubcategoryBySubject/:subjectId",
-                "verb": "get"
-            }]
-        },
-        "getActiveSubcategoryBySubcategory": {
-            "accepts": [{
-                    "arg": "subcategoryId",
-                    "type": "number",
-                    "required": false,
-                    "description": ""
-                },
-                {
-                    "arg": "filter",
-                    "type": "object",
-                    "required": false,
-                    "description": ""
-                }
-            ],
-            "returns": [{
-                "arg": "result",
-                "type": "array",
-                "root": true,
-                "description": ""
-            }],
-            "description": "",
-            "http": [{
-                "path": "/getActiveSubcategoryBySubcategory",
-                "verb": "get"
-            }]
-        },
-        "getActiveSubcategory": {
-            "accepts": [{
-                "arg": "subcategoryId",
-                "type": "number",
-                "required": true,
-                "description": ""
-            }],
-            "returns": [{
-                "arg": "result",
-                "type": "array",
-                "root": true,
-                "description": ""
-            }],
-            "description": "",
-            "http": [{
-                "path": "/:subcategoryId/getActiveSubcategory",
-                "verb": "get"
-            }]
-        }
+    "mediaId": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "required": true,
+      "default": "active"
+    },
+    "isFeatured": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "level": {
+      "type": "number",
+      "required": true,
+      "default": 1
+    },
+    "code": {
+      "type": "string",
+      "required": true
+    },
+    "courseCount": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "podcastCount": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
+    "createdAt": {
+      "type": "date",
+      "required": true,
+      "defaultFn": "now"
     }
+  },
+  "validations": [],
+  "relations": {
+    "subject": {
+      "type": "belongsTo",
+      "model": "subject",
+      "foreignKey": "subjectId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "media": {
+      "type": "belongsTo",
+      "model": "media",
+      "foreignKey": "mediaId",
+      "options": {
+        "nestRemoting": true
+      }
+    },
+    "subCategory": {
+      "type": "belongsTo",
+      "model": "subCategory",
+      "foreignKey": "subcategoryId",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "super-admin",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "super-admin",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "super-admin",
+      "permission": "ALLOW",
+      "property": "activeSubcategory"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "super-admin",
+      "permission": "ALLOW",
+      "property": "addSubcategory"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "super-admin",
+      "permission": "ALLOW",
+      "property": "deactiveSubcategory"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "getActiveSubcategoryBySubject"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "getActiveSubcategoryBySubcategory"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "ALLOW",
+      "property": "getActiveSubcategoryBySubcategory"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "getActiveSubcategory"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "ALLOW",
+      "property": "getActiveSubcategory"
+    }
+  ],
+  "methods": {
+    "addSubcategory": {
+      "accepts": [
+        {
+          "arg": "nameEn",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "nameAr",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "arg": "subcategoryId",
+          "type": "number",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/addSubcategory",
+          "verb": "post"
+        }
+      ]
+    },
+    "activeSubcategory": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "string",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "category",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/:id/activeSubcategory",
+          "verb": "put"
+        }
+      ]
+    },
+    "deactiveSubcategory": {
+      "accepts": [
+        {
+          "arg": "id",
+          "type": "string",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "category",
+          "type": "object",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/:id/deactiveSubcategory",
+          "verb": "put"
+        }
+      ]
+    },
+    "getActiveSubcategoryBySubject": {
+      "accepts": [
+        {
+          "arg": "subjectId",
+          "type": "number",
+          "required": true,
+          "description": "",
+          "http": {
+            "source": "path"
+          }
+        },
+        {
+          "arg": "filter",
+          "type": "object",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "array",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/getActiveSubcategoryBySubject/:subjectId",
+          "verb": "get"
+        }
+      ]
+    },
+    "getActiveSubcategoryBySubcategory": {
+      "accepts": [
+        {
+          "arg": "subcategoryId",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "arg": "filter",
+          "type": "object",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "array",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/getActiveSubcategoryBySubcategory",
+          "verb": "get"
+        }
+      ]
+    },
+    "getActiveSubcategory": {
+      "accepts": [
+        {
+          "arg": "subcategoryId",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ],
+      "returns": [
+        {
+          "arg": "result",
+          "type": "array",
+          "root": true,
+          "description": ""
+        }
+      ],
+      "description": "",
+      "http": [
+        {
+          "path": "/:subcategoryId/getActiveSubcategory",
+          "verb": "get"
+        }
+      ]
+    }
+  }
 }
